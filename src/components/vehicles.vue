@@ -39,6 +39,8 @@
                 <td class="py-1" v-if="faq.status == 1"><span style="color:brown">Under-Refurbish</span></td>
                 <td class="py-1" v-if="faq.status == 2"><span style="color:purple">In Stock</span></td>
                 <td class="py-1" v-if="faq.status == 3"><span style="color:red">Live!</span></td>
+                <td class="py-1" v-if="faq.status == 4"><span style="color:red">Booked!</span></td>
+                <td class="py-1" v-if="faq.status == 5"><span style="color:red">Sold!</span></td>
 
                 <td class="py-1" v-if="faq.imageUpload == 0"><span style="color:red"><i class="fa fa-times" aria-hidden="true"></i></span></td>
                 <td class="py-1" v-if="faq.imageUpload == 1"><span style="color:red"><i class="fa fa-clock-o" aria-hidden="true"></i></span></td>
@@ -83,6 +85,8 @@
                  <option value=1>Under Refurbishment</option>
                  <option value=2>In Stock</option>
                  <option value=3>Live</option>
+                <option value=4>Booked</option>
+                 <option value=5>Sold</option>
              </select>
             </div>
            <div class="col-md-12 text-right mb-4">
@@ -520,7 +524,7 @@ export default {
     },
     created(){
       this.loading = true
-          this.$http.get('http://localhost:8080/api/procurements')
+          this.$http.get('http://localhost:8081/api/procurements')
           .then(response=>{
           this.procured_vehicels = response.body
           this.loading = false
@@ -556,7 +560,7 @@ export default {
                 this.openEditStatusModel = false
             },
             procureVehicle: function(){
-            this.$http.post('http://localhost:8080/api/procurements/',{
+            this.$http.post('http://localhost:8081/api/procurements/',{
               vehicle_number:this.vehicle_number,
               model_id:this.model,
               manufacture_year:this.mfg_year,
@@ -595,7 +599,7 @@ export default {
             })   
             },
             updateForm: function(){
-            this.$http.put('http://localhost:8080/api/procurements/'+ this.idtoedit,{
+            this.$http.put('http://localhost:8081/api/procurements/'+ this.idtoedit,{
               vehicle_number:this.vehicle_number,
               model_id:this.model,
               manufacture_year:this.mfg_year,
@@ -634,7 +638,7 @@ export default {
             })   
             },
             chop: function(){
-            this.$http.delete('http://localhost:8080/api/procurements/' + this.idtoedit)
+            this.$http.delete('http://localhost:8081/api/procurements/' + this.idtoedit)
             . then(response=>{
             this.editModal = false;
             this.$swal('Vehicle Deleted');
@@ -681,7 +685,7 @@ export default {
              this.statusModel=vehicleToEdit.vehicle_number
          },
          changeStatus(){
-                this.$http.put('http://localhost:8080/api/procurestatus/'+ this.editStatusid,{
+                this.$http.put('http://localhost:8081/api/procurestatus/'+ this.editStatusid,{
                 status:this.status,
                 date:this.date
             }).

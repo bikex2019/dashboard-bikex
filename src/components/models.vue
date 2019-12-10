@@ -565,7 +565,7 @@ export default {
     },
     created(){
           this.loading = true
-          this.$http.get('http://localhost:8080/api/models')
+          this.$http.get('http://localhost:8081/api/models')
           .then(response=>{
            this.modals = response.body
            this.loading= false
@@ -624,7 +624,7 @@ export default {
             })   
             },
             updateForm: function(){
-            this.$http.put('http://localhost:8080/api/models/'+ this.idtoedit,{
+            this.$http.put('http://localhost:8081/api/models/'+ this.idtoedit,{
                 modal_name:this.modal_name,
                 make:this.make,
                 engine_cc: this.engine_cc,
@@ -660,7 +660,7 @@ export default {
             })   
             },
             chop: function(){
-            this.$http.delete('http://localhost:8080/api/models/' + this.idtoedit)
+            this.$http.delete('http://localhost:8081/api/models/' + this.idtoedit)
             . then(response=>{
             this.editModal = false;
             this.$swal('Vehicle Deleted');

@@ -17,7 +17,7 @@
     <div class="col-md-3 m-0 pt-3 pb-3 p-0 display border">
       <p>COVER IMAGE</p>
       <div class="image-container " v-for="(image, index) in display" :key="index">
-        <img :src="'https://immense-chamber-94004.herokuapp.com/myImages/bikex-Display-Images/'+ image.images" width="90%">
+        <img :src="image.path" width="90%">
       </div>
       <div class="container" v-show="loading == false && display.length >0">
         <button type="button" class="btn mt-4 custom" data-toggle="modal" data-target="#myModal"><i class="fa fa-trash-o" aria-hidden="true"></i></button>
@@ -65,7 +65,7 @@
       <p>DISPLAYED IMAGES</p>
       <div class="row no-wrap">
         <div class="image-container col-md-3 mb-3" v-for="(image, index) in uploadedImage" :key="index">
-          <img :src="'https://immense-chamber-94004.herokuapp.com/myImages/bikexImages/'+ image" width="auto" height="100px">
+          <img :src="image" width="auto" height="100px">
         </div>
         <div class="container" v-show="loading == false && uploadedImage.length >0">
           <button type="button" class="btn mt-2 mb-2 custom" v-on:click="deleteuploads"><i class="fa fa-trash-o" aria-hidden="true"></i></button>

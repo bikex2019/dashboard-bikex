@@ -105,7 +105,7 @@ export default {
         }
     },
     beforeMount(){
-        this.$http.get('http://localhost:8080/api/faq')
+        this.$http.get('http://localhost:8081/api/faq')
         .then(response=>{
 		this.faqsData= response.body;
       })
@@ -127,7 +127,7 @@ export default {
             this.addModal = false;
         },
         addfaqs: function(){
-            this.$http.post('http://localhost:8080/api/faq/',{
+            this.$http.post('http://localhost:8081/api/faq/',{
             question: this.question,
             answer: this.answer
             }).
@@ -143,7 +143,7 @@ export default {
             })
         },
         updatefaq: function(){
-            this.$http.put('http://localhost:8080/api/faq/'+ this.idtoedit,{
+            this.$http.put('http://localhost:8081/api/faq/'+ this.idtoedit,{
             question: this.question,
             answer: this.answer
             }).
@@ -153,7 +153,7 @@ export default {
             })
         },
         chop: function(id){
-            this.$http.delete('http://localhost:8080/api/faq/' + id)
+            this.$http.delete('http://localhost:8081/api/faq/' + id)
             .then(response=>{
             this.chopped= response.body 
                  window.location.reload()

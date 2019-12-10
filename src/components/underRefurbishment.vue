@@ -288,12 +288,12 @@ export default {
     },
     created(){
       this.loading = true
-          this.$http.get('http://localhost:8080/api/fetch/under-refurbish')
+          this.$http.get('http://localhost:8081/api/fetch/under-refurbish')
           .then(response=>{
           this.procured_vehicels = response.body
           this.loading = false
          })
-          this.$http.get('http://localhost:8080/api/models')
+          this.$http.get('http://localhost:8081/api/models')
           .then(response=>{
            this.modals = response.body
          })
@@ -318,7 +318,7 @@ export default {
                 this.openEditStatusModel = false
             },
             procureVehicle: function(){
-            this.$http.post('http://localhost:8080/api/procurements/',{
+            this.$http.post('http://localhost:8081/api/procurements/',{
                 vehicle_number:this.vehicle_number,
                 source: this.state,
                 pincode: this.pincode,
@@ -358,7 +358,7 @@ export default {
             })   
             },
             updateForm: function(){
-            this.$http.put('http://localhost:8080/api/procurements/'+ this.idtoedit,{
+            this.$http.put('http://localhost:8081/api/procurements/'+ this.idtoedit,{
                 vehicle_number:this.vehicle_number,
                 source: this.source,
                 pincode: this.pincode,
@@ -399,7 +399,7 @@ export default {
             })   
             },
             chop: function(){
-            this.$http.delete('http://localhost:8080/api/procurements/' + this.idtoedit)
+            this.$http.delete('http://localhost:8081/api/procurements/' + this.idtoedit)
             . then(response=>{
             this.editModal = false;
             this.$swal('Vehicle Deleted');
@@ -446,7 +446,7 @@ export default {
              this.statusModel=vehicleToEdit.vehicle_number
          },
          changeStatus(){
-                this.$http.put('http://localhost:8080/api/procurestatus/'+ this.editStatusid,{
+                this.$http.put('http://localhost:8081/api/procurestatus/'+ this.editStatusid,{
                 status:this.status,
                 date:this.date
             }).

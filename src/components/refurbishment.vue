@@ -229,13 +229,13 @@ export default {
     },
     created(){
           this.loading = true
-          this.$http.get('http://localhost:8080/api/models')
+          this.$http.get('http://localhost:8081/api/models')
           .then(response=>{
            this.modals = response.body
            this.loading= false
          })
          this.loading_procured = true
-          this.$http.get('http://localhost:8080/api/procurements')
+          this.$http.get('http://localhost:8081/api/procurements')
           .then(response=>{
            this.procured_vehicels = response.body
            this.loading_procured= false
@@ -258,7 +258,7 @@ export default {
                 this.editModal= false;
             },
             refurbishVehicle: function(){
-            this.$http.post('http://localhost:8080/api/refurbished/',{
+            this.$http.post('http://localhost:8081/api/refurbished/',{
                 vehicle_number:this.vehicle_number,
                 center_code:this.centercode,
                 make:this.make,
@@ -280,7 +280,7 @@ export default {
             })   
             },
             updateForm: function(){
-            this.$http.put('http://localhost:8080/api/models/'+ this.idtoedit,{
+            this.$http.put('http://localhost:8081/api/models/'+ this.idtoedit,{
                 vehicle_number:this.vehicle_number,
                 center_code:this.centercode,
                 make:this.make,
@@ -302,7 +302,7 @@ export default {
             })   
             },
             chop: function(){
-            this.$http.delete('http://localhost:8080/api/models/' + this.idtoedit)
+            this.$http.delete('http://localhost:8081/api/models/' + this.idtoedit)
             . then(response=>{
             this.editModal = false;
             this.$swal('Vehicle Deleted');
