@@ -206,7 +206,9 @@ export default {
     font-family: 'Montserrat', sans-serif;
 }
 .faqs{
-    margin: 0 auto
+    margin: 0 auto;
+    font-family: 'Montserrat', sans-serif;
+    font-size: 12px;
 }
 .button{
     border-radius: 50%;
