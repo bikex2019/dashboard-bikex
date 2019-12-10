@@ -141,13 +141,13 @@ export default {
   created(){
     this.loading = true
      this.id = this.$route.params.id
-     this.$http.get('https://immense-chamber-94004.herokuapp.com/api/upload-display/'+ this.id)
+     this.$http.get('https://backend-bikex.herokuapp.com/api/upload-display/'+ this.id)
           .then(response=>{
            this.display = response.body.data
            this.idtoedit= response.body.data[0]._id
            this.loading=false
          })
-      this.$http.get('https://immense-chamber-94004.herokuapp.com/api/uploads/'+ this.id)
+      this.$http.get('https://backend-bikex.herokuapp.com/api/uploads/'+ this.id)
           .then(res=>{
            this.uploaded = res.body.data
            this.uploadidtoedit=this.uploaded[0]._id
@@ -156,7 +156,7 @@ export default {
          }).catch(()=>{
            this.loading = false
          })
-           this.$http.get('https://immense-chamber-94004.herokuapp.com/api/procurements/'+ this.id)
+           this.$http.get('https://backend-bikex.herokuapp.com/api/procurements/'+ this.id)
           .then(response=>{
           this.vehicles = response.body
           window.console.log(this.vehicles)
@@ -185,10 +185,10 @@ export default {
     const fd = new FormData
     fd.append('vehicle_id', this.id)
     fd.append('Image', this.image)
-     this.$http.post('https://immense-chamber-94004.herokuapp.com/api/upload-display/',fd).
+     this.$http.post('https://backend-bikex.herokuapp.com/api/upload-display/',fd).
             then(response=>{
 
-               this.$http.put('http://localhost:3000/api/uploadstatus/'+ this.id, {"status":1})
+               this.$http.put('https://backend-bikex.herokuapp.com/api/uploadstatus/'+ this.id, {"status":1})
             this.$swal('Tada uploaded!', response);
 
             setTimeout(()=>{
@@ -201,7 +201,7 @@ export default {
     edituploadDisplay(){
     const fd = new FormData
     fd.append('Image', this.image)
-    this.$http.put('https://immense-chamber-94004.herokuapp.com/api/upload-display/'+ this.idtoedit,fd).
+    this.$http.put('https://backend-bikex.herokuapp.com/api/upload-display/'+ this.idtoedit,fd).
             then(response=>{
               window.console.log(response)
             this.$swal('Tada updated!', response);
@@ -214,7 +214,7 @@ export default {
             })  
       },
       deletedisplay(){
-        this.$http.delete('https://immense-chamber-94004.herokuapp.com/api/upload-display/'+ this.idtoedit).
+        this.$http.delete('https://backend-bikex.herokuapp.com/api/upload-display/'+ this.idtoedit).
                   then(response=>{
                   this.$swal('Vehicle Image Removed!', response);
 
@@ -226,7 +226,7 @@ export default {
                   }) 
       },
       deleteuploads(){
-        this.$http.delete('https://immense-chamber-94004.herokuapp.com/api/uploads/'+ this.uploadidtoedit).
+        this.$http.delete('https://backend-bikex.herokuapp.com/api/uploads/'+ this.uploadidtoedit).
                   then(response=>{
                   this.$swal('Vehicle Image Removed!', response);
 
@@ -245,7 +245,7 @@ export default {
                 fd.append('Image',file)
           }
           fd.append('vehicle_id', this.id)
-          this.$http.post('https://immense-chamber-94004.herokuapp.com/api/uploads',fd,
+          this.$http.post('https://backend-bikex.herokuapp.com/api/uploads',fd,
               {
               headers: {
                   'Content-Type': 'multipart/form-data'

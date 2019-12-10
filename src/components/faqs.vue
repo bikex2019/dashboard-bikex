@@ -29,7 +29,7 @@
                     </div>
                 </td>
             </tr>
-             <tr>
+             <!-- <tr>
                 <td>demo</td>
                 <td>demo</td>
                 <td>demo</td>
@@ -39,8 +39,16 @@
                     <button class="button btn btn-primary m-0"><i class="fa fa-pencil" aria-hidden="true"></i></button>
                     </div>
                 </td>
-            </tr>
+            </tr> -->
         </table>
+        <div class="loader mt-5" style="min-height:200px;" v-if="loadingData">
+            <h5 class="pt-4">Fetching all Faq's.....</h5>
+            <div class="spinner-grow text-success mt-4"></div>
+        </div>
+        <div class="loader mt-5" style="min-height:200px;" v-if="!loadingData && faqs.length == 0">
+            <h5 class="pt-4">It seems that there are no datas here or server is down.....</h5>
+            <h6>Try refreshing, or check your internet connectivity!</h6>
+        </div>
     </div>
 
     <div id="mymodals" class="modals" v-bind:class="{'displayModal':addModal}">
@@ -60,7 +68,10 @@
                         <label for="answer">Answer</label>
                         <textarea class="form-control" v-model="answer" id="answer" rows="3"></textarea>
                     </div>
-                    <button type="submit" v-on:click="addfaqs" class="button1 btn btn-primary">Add FAQ</button>
+                    <button type="submit" v-on:click="addfaqs" class="button1 btn btn-primary">
+                        <span class="spinner-border spinner-border-sm" v-if="loading"></span>
+                        <span v-else>ADD FAQ</span>
+                    </button>
                 </form>
             </div>
         </div>
@@ -87,7 +98,11 @@
             </div>
         </div>
     </div>
-
+     <div id="overlay" class="loading text-center mb-4" style="min-height:200px" v-if="loading">
+                        <div id="text" class="spinner-border" role="status">
+                        <span class="sr-only">Loading...</span>
+            </div>
+        </div>
 </div>
 </template>
 <script>
@@ -101,13 +116,16 @@ export default {
             answer:'',
             chopped:'',
             idtoedit:'',
-            message:''
+            message:'',
+            loadingData:true,
+            loading:false
         }
     },
     beforeMount(){
-        this.$http.get('http://localhost:8081/api/faq')
+        this.$http.get('https://backend-bikex.herokuapp.com/api/faq')
         .then(response=>{
-		this.faqsData= response.body;
+        this.faqsData= response.body;
+        this.loadingData =  false
       })
     },
     methods:{
@@ -127,7 +145,8 @@ export default {
             this.addModal = false;
         },
         addfaqs: function(){
-            this.$http.post('http://localhost:8081/api/faq/',{
+            this.loading=true
+            this.$http.post('https://backend-bikex.herokuapp.com/api/faq/',{
             question: this.question,
             answer: this.answer
             }).
@@ -137,26 +156,36 @@ export default {
             this.data = response.body;
             setTimeout(()=>{
                     window.location.reload()
+                    this.loading = false
             },2000)
             }).catch(error => { 
                     this.message = error.body.msg
+                    this.loading= false
             })
         },
         updatefaq: function(){
-            this.$http.put('http://localhost:8081/api/faq/'+ this.idtoedit,{
+            this.loading = true
+            this.$http.put('https://backend-bikex.herokuapp.com/api/faq/'+ this.idtoedit,{
             question: this.question,
             answer: this.answer
             }).
             then(response=>{
+            this.loading= false
             this.data = response.body;
             window.location.reload()
+            }).catch(()=>{
+                this.loading =  false
             })
         },
         chop: function(id){
-            this.$http.delete('http://localhost:8081/api/faq/' + id)
+            this.loading = true
+            this.$http.delete('https://backend-bikex.herokuapp.com/api/faq/' + id)
             .then(response=>{
+                this.loading=false
             this.chopped= response.body 
                  window.location.reload()
+            }).catch(()=>{
+                this.loading = false
             })
             },
         },
@@ -227,5 +256,23 @@ export default {
   color: #000;
   text-decoration: none;
   cursor: pointer;
+}
+#overlay {
+  position: fixed;
+  width: 100%;
+  height: 100%;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(233, 227, 227, 0.3);
+  z-index: 2;
+  cursor: pointer;
+}
+
+#text{
+  position: absolute;
+  top: 50%;
+  left: 50%;
 }
 </style>

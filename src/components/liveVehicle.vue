@@ -41,12 +41,11 @@
                 </td>
             </tr>
         </tbody>
-          <div id="overlay" v-if="loading">
-      <div class="load" id="text"></div>
-       <div id="text">Loading...</div>
-    </div>
     </table>
-    
+     <div class="loader mt-5" style="min-height:200px;" v-if="loading">
+            <h5 class="pt-4">Fetching all Live Vehicles's.....</h5>
+            <div class="spinner-grow text-success mt-4"></div>
+      </div> 
     <div class="container" style="margin-top:80px" v-if="loading == false && filteredList.length == 0">
       <p>Sorry :(</p>
       <p>Currently no vehicles are Live !</p>
@@ -288,12 +287,12 @@ export default {
     },
     created(){
       this.loading = true
-          this.$http.get('http://localhost:8081/api/fetch/live-vehicle')
+          this.$http.get('https://backend-bikex.herokuapp.com/api/fetch/live-vehicle')
           .then(response=>{
           this.procured_vehicels = response.body
           this.loading = false
          })
-          this.$http.get('http://localhost:8081/api/models')
+          this.$http.get('https://backend-bikex.herokuapp.com/api/models')
           .then(response=>{
            this.modals = response.body
          })
@@ -318,7 +317,7 @@ export default {
                 this.openEditStatusModel = false
             },
             procureVehicle: function(){
-            this.$http.post('http://localhost:8081/api/procurements/',{
+            this.$http.post('https://backend-bikex.herokuapp.com/api/procurements/',{
                 vehicle_number:this.vehicle_number,
                 source: this.state,
                 pincode: this.pincode,
@@ -358,7 +357,7 @@ export default {
             })   
             },
             updateForm: function(){
-            this.$http.put('http://localhost:8081/api/procurements/'+ this.idtoedit,{
+            this.$http.put('https://backend-bikex.herokuapp.com/api/procurements/'+ this.idtoedit,{
                 vehicle_number:this.vehicle_number,
                 source: this.source,
                 pincode: this.pincode,
@@ -399,7 +398,7 @@ export default {
             })   
             },
             chop: function(){
-            this.$http.delete('http://localhost:8081/api/procurements/' + this.idtoedit)
+            this.$http.delete('https://backend-bikex.herokuapp.com/api/procurements/' + this.idtoedit)
             . then(response=>{
             this.editModal = false;
             this.$swal('Vehicle Deleted');
@@ -446,7 +445,7 @@ export default {
              this.statusModel=vehicleToEdit.vehicle_number
          },
          changeStatus(){
-                this.$http.put('http://localhost:8081/api/procurestatus/'+ this.editStatusid,{
+                this.$http.put('https://backend-bikex.herokuapp.com/api/procurestatus/'+ this.editStatusid,{
                 status:this.status,
                 date:this.date
             }).

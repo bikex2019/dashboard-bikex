@@ -114,7 +114,7 @@ export default {
         }
     },
     beforeMount(){
-        this.$http.get('http://localhost:8080/api/centres')
+        this.$http.get('https://backend-bikex.herokuapp.com/api/centres')
         .then(response=>{
 		this.centreData= response.body;
       })
@@ -137,7 +137,7 @@ export default {
             this.addModal = false;
         },
         addcentres: function(){
-            this.$http.post('http://localhost:8080/api/centres/',{
+            this.$http.post('https://backend-bikex.herokuapp.com/api/centres/',{
             code: this.code,
             phone: this.phone,
             address: this.address
@@ -148,7 +148,7 @@ export default {
             })
         },
         updatecentre: function(){
-            this.$http.put('http://localhost:8080/api/centres/'+ this.idtoedit,{
+            this.$http.put('https://backend-bikex.herokuapp.com/api/centres/'+ this.idtoedit,{
             code: this.code,
             phone: this.phone,
             address: this.address
@@ -159,7 +159,7 @@ export default {
             })
         },
         chop: function(id){
-            this.$http.delete('http://localhost:8080/api/centres/' + id)
+            this.$http.delete('https://backend-bikex.herokuapp.com/api/centres/' + id)
             .then(response=>{
             this.chopped= response.body 
                  window.location.reload()

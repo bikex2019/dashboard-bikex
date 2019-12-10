@@ -434,12 +434,12 @@ export default {
     },
     created(){
       this.loading = true
-          this.$http.get('https://immense-chamber-94004.herokuapp.com/api/fetch/procured-vehicle')
+          this.$http.get('https://backend-bikex.herokuapp.com/api/fetch/procured-vehicle')
           .then(response=>{
           this.procured_vehicels = response.body
           this.loading = false
          })
-          this.$http.get('https://immense-chamber-94004.herokuapp.com/api/models')
+          this.$http.get('https://backend-bikex.herokuapp.com/api/models')
           .then(response=>{
            this.modals = response.body
          })

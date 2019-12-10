@@ -39,15 +39,18 @@
           <td class="py-1"><button class="button btn btn-primary m-0 py-1 custom-button" v-on:click="editModals(faq)"><i class="fa fa-pencil" aria-hidden="true"></i></button></td>
         </tr>
       </tbody>
-      <div id="overlay" v-if="loading">
+      <!-- <div id="overlay" v-if="loading">
         <div class="load" id="text"></div>
         <div id="text">Loading...</div>
-      </div>
+      </div> -->
     </table>
-
-    <div class="container" style="margin-top:80px" v-if="filteredList.length == 0">
+     <div class="loader mt-5" style="min-height:200px;" v-if="loading">
+            <h5 class="pt-4">Fetching all Model's.....</h5>
+            <div class="spinner-grow text-success mt-4"></div>
+      </div> 
+    <div class="container" style="margin-top:80px" v-if="loading == false && filteredList.length == 0">
       <p>Sorry :(</p>
-      <p>No results Found</p>
+      <p>Currently no vehicles are Live !</p>
     </div>
 
     <div class="col-md-12">
@@ -58,7 +61,7 @@
           </div>
       </div>
     </div>
-
+ 
     <div id="mymodals" class="modals" v-bind:class="{'displayModal':addModal}">
     <!-- modals content -->
       <div class="modals-content" style="top:0">
@@ -565,7 +568,7 @@ export default {
     },
     created(){
           this.loading = true
-          this.$http.get('http://localhost:8081/api/models')
+          this.$http.get('https://backend-bikex.herokuapp.com/api/models')
           .then(response=>{
            this.modals = response.body
            this.loading= false
@@ -624,7 +627,7 @@ export default {
             })   
             },
             updateForm: function(){
-            this.$http.put('http://localhost:8081/api/models/'+ this.idtoedit,{
+            this.$http.put('https://backend-bikex.herokuapp.com/api/models/'+ this.idtoedit,{
                 modal_name:this.modal_name,
                 make:this.make,
                 engine_cc: this.engine_cc,
@@ -660,7 +663,7 @@ export default {
             })   
             },
             chop: function(){
-            this.$http.delete('http://localhost:8081/api/models/' + this.idtoedit)
+            this.$http.delete('https://backend-bikex.herokuapp.com/api/models/' + this.idtoedit)
             . then(response=>{
             this.editModal = false;
             this.$swal('Vehicle Deleted');
@@ -938,7 +941,7 @@ input[type="checkbox"]:checked + label:before {
   animation: mymove 1s infinite;
 }
 
-@keyframes mymove {
+/* @keyframes mymove {
   from {transform: rotate(-45deg);}
   to {transform: rotate(45deg);}
 }
@@ -988,7 +991,7 @@ input[type="checkbox"]:checked + label:before {
   transform-origin: 0px 5.1em;
   -webkit-animation: load2 2s infinite ease;
   animation: load2 2s infinite ease;
-}
+} */
 @-webkit-keyframes load2 {
   0% {
     -webkit-transform: rotate(0deg);

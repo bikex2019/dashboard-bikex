@@ -53,13 +53,17 @@
                 </td>
             </tr>
         </tbody>
-          <div id="overlay" v-if="loading">
+          <!-- <div id="overlay" v-if="loading">
       <div class="load" id="text"></div>
        <div id="text">Loading...</div>
-    </div>
+    </div> -->
     </table>
-    
-    <div class="container" style="margin-top:80px" v-if="loading == false && filteredList.length == 0">
+       <div class="loader mt-5" style="min-height:200px;" v-if="loading">
+            <h5 class="pt-4">Fetching all Vehicles's.....</h5>
+            <div class="spinner-grow text-success mt-4"></div>
+        </div>
+
+    <div class="container" style="margin-top:80px" v-if="!loading && filteredList.length == 0">
       <p>Sorry :(</p>
       <p>No results Found</p>
     </div>
@@ -140,6 +144,13 @@
                 <input type="number" v-model="fines" class="inputText form-control" required/>
                 <span class="floating-label">Fines (if any)</span>
               </div>
+                 <div class="col-md-4 mb-4">
+                   <select type="text" class="inputText form-control" v-model="type" required>
+                    <option value="standard">Standard</option>
+                    <option value="premium">Premium</option>
+                  </select>
+                  <span class="floating-label">Type</span>
+                </div>
             </div>
  
          <!--  -->
@@ -473,16 +484,17 @@
 export default {
     data(){
         return{
-                data:[],
-                message:'',
-                procured_vehicels:[],
-                show:true,
-                filtered:[],
-                modals:[],
-                search:'',
-                pageNumber: 0,
-                itemperpage:10,
-               addModal:false,
+              data:[],
+              type:'',
+              message:'',
+              procured_vehicels:[],
+              show:true,
+              filtered:[],
+              modals:[],
+              search:'',
+              pageNumber: 0,
+              itemperpage:10,
+              addModal:false,
               editModal:false,
               vehicle_number:'',
               make:'',
@@ -524,12 +536,12 @@ export default {
     },
     created(){
       this.loading = true
-          this.$http.get('http://localhost:8081/api/procurements')
+          this.$http.get('https://backend-bikex.herokuapp.com/api/procurements')
           .then(response=>{
           this.procured_vehicels = response.body
           this.loading = false
          })
-          this.$http.get('http://localhost:3000/api/models')
+          this.$http.get('https://backend-bikex.herokuapp.com/api/models')
           .then(response=>{
            this.modals = response.body
          })
@@ -560,9 +572,10 @@ export default {
                 this.openEditStatusModel = false
             },
             procureVehicle: function(){
-            this.$http.post('http://localhost:8081/api/procurements/',{
+            this.$http.post('https://backend-bikex.herokuapp.com/api/procurements/',{
               vehicle_number:this.vehicle_number,
               model_id:this.model,
+              type:this.type,
               manufacture_year:this.mfg_year,
               color:this.color,
               fines:this.fines,
@@ -599,7 +612,7 @@ export default {
             })   
             },
             updateForm: function(){
-            this.$http.put('http://localhost:8081/api/procurements/'+ this.idtoedit,{
+            this.$http.put('https://backend-bikex.herokuapp.com/api/procurements/'+ this.idtoedit,{
               vehicle_number:this.vehicle_number,
               model_id:this.model,
               manufacture_year:this.mfg_year,
@@ -638,7 +651,7 @@ export default {
             })   
             },
             chop: function(){
-            this.$http.delete('http://localhost:8081/api/procurements/' + this.idtoedit)
+            this.$http.delete('https://backend-bikex.herokuapp.com/api/procurements/' + this.idtoedit)
             . then(response=>{
             this.editModal = false;
             this.$swal('Vehicle Deleted');
@@ -685,7 +698,7 @@ export default {
              this.statusModel=vehicleToEdit.vehicle_number
          },
          changeStatus(){
-                this.$http.put('http://localhost:8081/api/procurestatus/'+ this.editStatusid,{
+                this.$http.put('https://backend-bikex.herokuapp.com/api/procurestatus/'+ this.editStatusid,{
                 status:this.status,
                 date:this.date
             }).
