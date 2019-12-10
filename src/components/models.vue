@@ -49,8 +49,8 @@
             <div class="spinner-grow text-success mt-4"></div>
       </div> 
     <div class="container" style="margin-top:80px" v-if="loading == false && filteredList.length == 0">
-      <p>Sorry :(</p>
-      <p>Currently no vehicles are Live !</p>
+      <h6>Sorry :(</h6>
+      <p>No Models Found..</p>
     </div>
 
     <div class="col-md-12">
