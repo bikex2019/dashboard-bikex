@@ -591,7 +591,7 @@ export default {
                 this.editModal= false;
             },
             procureVehicle: function(){
-            this.$http.post('http://localhost:8082/api/models/',{
+            this.$http.post('https://backend-bikex.herokuapp.com/api/models/',{
                 modal_name:this.modal_name,
                 make:this.make,
                 engine_cc: this.engine_cc,

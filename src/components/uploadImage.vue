@@ -54,8 +54,8 @@
           <button class="btn" v-on:click="uploadDisplay">Upload</button>
         </div>
       </div>
-      <div v-show="loading"  class="loading text-center mb-4" style="min-height:200px" >
-        <div class="spinner-border" role="status">
+      <div v-show="loading"  class="loading text-center mb-4 mt-5" style="min-height:200px" >
+        <div class="spinner-border mt-5" role="status">
           <span class="sr-only">Loading...</span>
         </div>
       </div>
@@ -82,7 +82,7 @@
       </div>
 
       <div v-show="loading"  class="loading text-center mb-4" style="min-height:200px" >
-        <div class="spinner-border" role="status">
+        <div class="spinner-border mt-5" role="status">
           <span class="sr-only">Loading...</span>
         </div>
       </div>

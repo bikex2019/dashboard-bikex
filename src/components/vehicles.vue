@@ -286,7 +286,10 @@
 
            
             </div>
-            <button type="button bt" class="btn btn-danger px-5" v-on:click="procureVehicle">Add Vehicle</button>               
+            <button type="button bt" class="btn btn-danger px-5" v-on:click="procureVehicle">
+              <span >Add Vehicle</span>
+              <div v-if="loadonadd" class="spinner-border spinner-border-sm ml-2"></div>
+              </button>               
          </form>
             </div>
         </div>
@@ -528,6 +531,7 @@ export default {
               statusModel:'',
               editStatusid:'',
               loading:false,
+              loadonadd:false,
               selectedFiles:null
         }
     },
@@ -572,6 +576,7 @@ export default {
                 this.openEditStatusModel = false
             },
             procureVehicle: function(){
+              this.loadonadd = true
             this.$http.post('https://backend-bikex.herokuapp.com/api/procurements/',{
               vehicle_number:this.vehicle_number,
               model_id:this.model,
@@ -602,6 +607,7 @@ export default {
             }).
             then(response=>{
             this.addModal = false;
+            this.loadonadd=false
             this.$swal('Tada! Vehicle Procured');
             this.data = response.body;
             setTimeout(()=>{
@@ -609,9 +615,11 @@ export default {
             },2000)
             }).catch(error => { 
                     this.message = error.body.msg
+                    this.loadonadd=false
             })   
             },
             updateForm: function(){
+              this.loadonadd= true
             this.$http.put('https://backend-bikex.herokuapp.com/api/procurements/'+ this.idtoedit,{
               vehicle_number:this.vehicle_number,
               model_id:this.model,
@@ -641,6 +649,7 @@ export default {
             }).
             then(response=>{
             this.editModal = false;
+            this.loadonadd = false
             this.$swal('Tada! Vehicle Updated');
             this.data = response.body;
             setTimeout(()=>{
@@ -648,19 +657,24 @@ export default {
             },2000)
             }).catch(error => { 
                     this.message = error.body.msg
+                    this.loadonadd = false
             })   
             },
             chop: function(){
+              this.loadonadd = true
             this.$http.delete('https://backend-bikex.herokuapp.com/api/procurements/' + this.idtoedit)
             . then(response=>{
             this.editModal = false;
+            this.loadonadd = false
             this.$swal('Vehicle Deleted');
             this.data = response.body;
             setTimeout(()=>{
                     window.location.reload()
+
             },2000)
             }).catch(error => { 
                     this.message = error.body.msg
+                    this.loadonadd=false
             })   
             },
             editModals: function(vehicleToEdit){
