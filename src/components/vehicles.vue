@@ -4,6 +4,7 @@
             <div class="row">
                 <div class="col-md-6 p-0 m-0 text-left pt-1 d-flex">
                     <p class="p-0 m-0">Showing {{paginatedData.length}} out of {{procured_vehicels.length}}</p>
+                    <span class="ml-3"> Page No. {{pageNumber + 1}}</span>
                 </div>
                 <div class="col-md-2 pt-1">
                     <input type="text" v-model="search" placeholder="search vehicle number">
@@ -92,11 +93,11 @@
                 <option value=4>Booked</option>
                  <option value=5>Sold</option>
              </select>
-            </div>
-           <div class="col-md-12 text-right mb-4">
-                <button type="button bt" class="btn btn-danger px-5" v-on:click="changeStatus">Save</button> 
-            </div>              
+            </div>            
             </form>
+             <div class="col-md-12 text-right mb-4">
+                <button type="button bt" class="btn btn-danger px-5" v-on:click="changeStatus">Save</button> 
+            </div>  
         </div>
       </div>
 

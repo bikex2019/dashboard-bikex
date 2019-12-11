@@ -3,7 +3,9 @@
     <div class="col-md-11 ml-4 mb-2">
             <div class="row">
                 <div class="col-md-6 p-0 m-0 text-left pt-1 d-flex">
-                    <p class="p-0 m-0">Showing {{paginatedData.length}} out of {{procured_vehicels.length}}</p>
+                    <p class="p-0 m-0">Showing {{paginatedData.length}} out of {{procured_vehicels.length}}
+                      <span>Page No. {{pageNumber}}</span>
+                    </p>
                 </div>
                 <div class="col-md-2 pt-1">
                     <input type="text" v-model="search" placeholder="search vehicle number">

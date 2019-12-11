@@ -67,12 +67,12 @@
                     <div class="form-group text-left">
                         <label for="answer">Answer</label>
                         <textarea class="form-control" v-model="answer" id="answer" rows="3"></textarea>
-                    </div>
-                    <button type="submit" v-on:click="addfaqs" class="button1 btn btn-primary">
+                    </div>   
+                </form>
+                <button type="submit" v-on:click="addfaqs" class="button1 btn btn-primary">
                         <span class="spinner-border spinner-border-sm" v-if="loading"></span>
                         <span v-else>ADD FAQ</span>
                     </button>
-                </form>
             </div>
         </div>
     </div>
@@ -93,8 +93,8 @@
                         <label for="answer">Answer</label>
                         <textarea v-model="answer" class="form-control" id="answer" rows="3"></textarea>
                     </div>
-                    <button type="submit" v-on:click="updatefaq()" class="button1 btn btn-primary">Update FAQ</button>
                 </form>
+                <button type="submit" v-on:click="updatefaq()" class="button1 btn btn-primary">Update FAQ</button>
             </div>
         </div>
     </div>
