@@ -293,7 +293,9 @@
               </div> 
         </div>        
             </form>
-                        <button type="button bt" class="btn btn-danger px-5" v-on:click="procureVehicle">Add</button>               
+                        <button type="button bt" class="btn btn-danger px-5" v-on:click="procureVehicle">
+                           <span >Add Model</span>
+              <div v-if="loadonadd" class="spinner-border spinner-border-sm ml-2"></div></button>               
             </div>
         </div>
 
@@ -575,6 +577,7 @@ export default {
                 weight:'',
                 idtoedit:'',
                 loading:false,
+                loadonadd:false,
                 comments:'',
                 loading_procured:false
         }
@@ -607,6 +610,7 @@ export default {
                 this.editModal= false;
             },
             procureVehicle: function(){
+              this.loadonadd=true
             this.$http.post('https://backend-bikex.herokuapp.com/api/models/',{
                 modal_name:this.modal_name,
                 make:this.make,
@@ -632,6 +636,7 @@ export default {
                 comments:this.comments,
             }).
             then(response=>{
+              this.loadonadd=false
             this.addModal = false;
             this.$swal('Tada! Vehicle Procured');
             this.data = response.body;
@@ -640,6 +645,7 @@ export default {
             },2000)
             }).catch(error => { 
                     this.message = error.body.msg
+                    this.loadonadd=false
             })   
             },
             updateForm: function(){
