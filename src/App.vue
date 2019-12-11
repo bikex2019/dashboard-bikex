@@ -29,4 +29,11 @@ export default {
   padding-left: 70px;
   padding-top: 0px
 }
+
+@media only screen and (max-width: 768px) {
+  .custom{
+  padding-left: 0px !important;
+  padding-top: 0px
+}
+}
 </style>

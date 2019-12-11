@@ -35,7 +35,7 @@
           <td class="py-1">{{modals.engine_cc}}</td>
           <td class="py-1">{{modals.fuel_system}}</td>
           <td class="py-1">{{modals.mileage}}</td>
-          <td>{{modals.date}}</td>
+          <td>{{modals.date| moment("MMMM Do YYYY")}}</td>
           <td class="py-1"><button class="button btn btn-primary m-0 py-1 custom-button" v-on:click="editModals(modals)"><i class="fa fa-pencil" aria-hidden="true"></i></button></td>
         </tr>
       </tbody>
@@ -529,15 +529,35 @@
                 <textarea type="text" v-model="comments" class="inputText form-control" required/>
                  <span class="floating-label">Other Comments</span>
               </div> 
-        </div>        
-            <button type="button bt" class="btn btn-danger px-5" v-on:click="updateForm">Update</button>
-            <button class="button btn btn-primary mr-2 m-0 ml-2" v-on:click="chop()">Delete</button>                      
+        </div>                            
             </form>
-                    
+            <button type="button bt" class="btn btn-danger px-5" v-on:click="updateForm">Update</button>
+            <button type="button" class="button btn btn-primary mr-2 m-0 ml-2"
+             data-toggle="modal" data-target="#exampleModal" v-on:click="confirmdelete">
+              Delete
+            </button>
+            <!-- <button class="button btn btn-primary mr-2 m-0 ml-2" v-on:click="chop()">Delete</button>    -->
             </div>
         </div>
     </div>
-
+      <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+          <div class="modal-content">
+            <div class="modal-header">
+              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+              </button>
+            </div>
+            <div class="modal-body">
+              Do you want to delete?
+            </div>
+            <div class="modal-footer">
+              <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+              <button type="button" class="btn btn-primary" v-on:click="chop()">Yes, Delete</button>
+            </div>
+          </div>
+        </div>
+</div>
 </div>
 </template>
 <script>
@@ -551,7 +571,7 @@ export default {
                 filtered:[],
                 search:'',
                 pageNumber: 0,
-                itemperpage:5,
+                itemperpage:10,
                 addModal:false,
                 editModal:false,
                 modal_name:'',
@@ -579,7 +599,8 @@ export default {
                 loading:false,
                 loadonadd:false,
                 comments:'',
-                loading_procured:false
+                loading_procured:false,
+                confirm: false
         }
     },
     components:{
@@ -638,14 +659,15 @@ export default {
             then(response=>{
               this.loadonadd=false
             this.addModal = false;
-            this.$swal('Tada! Vehicle Procured');
+            this.$swal('Tada! Modal has been added..');
             this.data = response.body;
             setTimeout(()=>{
                     window.location.reload()
             },2000)
             }).catch(error => { 
                     this.message = error.body.msg
-                    this.loadonadd=false
+                    this.loadonadd=false;
+                    this.$swal('Sorry, some error occured');
             })   
             },
             updateForm: function(){
@@ -676,7 +698,7 @@ export default {
             }).
             then(response=>{
             this.editModal = false;
-            this.$swal('Tada! Model Updated');
+            this.$swal('Tada! Model Updated Sucessfull');
             this.data = response.body;
             setTimeout(()=>{
                     window.location.reload()
@@ -685,11 +707,17 @@ export default {
                     this.message = error.body.msg
             })   
             },
+            confirmdelete(){
+              this.editModal = false
+            },
+            dontDelete(){
+              this.confirm = false
+            },
             chop: function(){
             this.$http.delete('https://backend-bikex.herokuapp.com/api/models/' + this.idtoedit)
             . then(response=>{
             this.editModal = false;
-            this.$swal('Vehicle Deleted');
+            this.$swal('Modal has been Deleted');
             this.data = response.body;
             setTimeout(()=>{
                     window.location.reload()
@@ -772,7 +800,9 @@ export default {
     background-color: transparent;
     border-color: transparent;
 }
-
+.modal-body{
+  border: none !important
+}
 input[type=date]:required:invalid::-webkit-datetime-edit {
     color: transparent;
 }

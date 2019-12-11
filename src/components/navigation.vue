@@ -3,7 +3,7 @@
     <div class="row col-md-12 col-12 top-nav custom mt-0 pt-0" v-bind:class="{main: !toggle}">
       <div class="col-md-6 col-4 text-left pl-4">
         <span style="font-size:25px;cursor:pointer" v-if="toggle" v-on:click="toggle =!toggle">&#9776;</span>
-                <span style="font-size:25px;cursor:pointer" v-if="!toggle" v-on:click="toggle =!toggle">&times;</span>
+                <span class="phone" style="font-size:25px;cursor:pointer" v-if="!toggle" v-on:click="toggle =!toggle">&times;</span>
 
       </div>
       <div class="col-md-6 col-8 text-right pr-4">
@@ -18,7 +18,7 @@
         </div>
       </div>
     </div>
-    <div id="mySidenav" class="sidenav">          
+    <div id="mySidenav" class="sidenav" v-bind:class="{showclass: !toggle}">          
       <div class="col-md-12 text-center border-bottom p-0" v-if="toggle">
         <p class="p-0 m-0"><router-link to="/" exact-active-class="active" v-on:click="homes"
         class="bikex-header mb-0 p-0 logo" style="color:red">X</router-link></p>
@@ -273,6 +273,30 @@ border-bottom: 1px solid gray
 .main{
   /* transition: margin-left .5s; */
   padding-left:140px !important;
+}
+@media only screen and (max-width: 768px) {
+  .custom{
+  margin-left: 0px !important;
+  padding-top: 0px
+}
+.showclass{
+  display: block !important
+}
+.phone{
+  margin: 11px !important
+}
+.dropdown-content {
+ display: none;
+  position: absolute;
+  right: 0;
+  background-color: #f9f9f9;
+  min-width: 0px !important;
+  box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+  z-index: 1;
+}
+.sidenav{
+  display: none
+}
 }
 .custom{
     margin-left: 30px;
