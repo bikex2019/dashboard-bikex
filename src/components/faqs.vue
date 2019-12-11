@@ -122,7 +122,7 @@ export default {
         }
     },
     beforeMount(){
-        this.$http.get('http://localhost:8081/api/faq')
+        this.$http.get('https://backend-bikex.herokuapp.com/api/faq')
         .then(response=>{
         this.faqsData= response.body;
         this.loadingData =  false

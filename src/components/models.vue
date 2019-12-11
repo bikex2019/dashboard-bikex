@@ -292,8 +292,8 @@
                  <span class="floating-label">Other Comments</span>
               </div> 
         </div>        
-            <button type="button bt" class="btn btn-danger px-5" v-on:click="procureVehicle">Add</button>               
             </form>
+                        <button type="button bt" class="btn btn-danger px-5" v-on:click="procureVehicle">Add</button>               
             </div>
         </div>
 

@@ -13,6 +13,7 @@ import procuredVehicle from './components/procuredvehicle'
 import uploads from './components/uploadImage'
 import pendingUpload from './components/pending-upload'
 import notfound from './components/404page'
+import fines from './components/fines'
 
 export default[
     {path:'/', component:homepage},
@@ -28,6 +29,7 @@ export default[
     {path:'/live', component:live},
     {path:'/uploads/:id', component:uploads},
     {path:'/pending-upload', component:pendingUpload},
+    {path:'/fines', component:fines},
     {path:'/procured-vehicle', component:procuredVehicle},
     {path:'*', component:notfound}
     ]
