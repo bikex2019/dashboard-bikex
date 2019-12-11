@@ -285,12 +285,12 @@
    <hr>
 
            
-            </div>
-            <button type="button bt" class="btn btn-danger px-5" v-on:click="procureVehicle">
+            </div>             
+         </form>
+         <button type="button bt" class="btn btn-danger px-5" v-on:click="procureVehicle">
               <span >Add Vehicle</span>
               <div v-if="loadonadd" class="spinner-border spinner-border-sm ml-2"></div>
-              </button>               
-         </form>
+              </button>  
             </div>
         </div>
 

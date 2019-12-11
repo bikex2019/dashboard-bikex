@@ -36,7 +36,7 @@
           <td class="py-1">{{modals.fuel_system}}</td>
           <td class="py-1">{{modals.mileage}}</td>
           <td>{{modals.date}}</td>
-          <td class="py-1"><button class="button btn btn-primary m-0 py-1 custom-button" v-on:click="editModals(faq)"><i class="fa fa-pencil" aria-hidden="true"></i></button></td>
+          <td class="py-1"><button class="button btn btn-primary m-0 py-1 custom-button" v-on:click="editModals(modals)"><i class="fa fa-pencil" aria-hidden="true"></i></button></td>
         </tr>
       </tbody>
       <!-- <div id="overlay" v-if="loading">
@@ -310,22 +310,26 @@
         <div class="form row">
           <div class="col-md-4 mb-4">            
             <input list="hosting-plan4" type="text" class="form-control" v-model="modal_name" required>
-                <span class="floating-label">Modal Name</span>
+              <span class="floating-label">Modal Name</span>
+          </div>
+          <div class="col-md-4 mb-4">            
+            <input list="hosting-plan4" type="text" class="form-control" v-model="make" required>
+              <span class="floating-label">Make</span>
           </div>
 
           <div class="col-md-4 mb-4">
-            <input list="hosting-plan2" type="text" class="form-control" v-model="engine_cc" required>
+            <input list="hosting-plan2" type="number" class="form-control" v-model="engine_cc" required>
               <datalist id="hosting-plan2">
-                         <option value="100 CC"></option>
-                         <option value="110 CC"></option>
-                         <option value="125 CC"></option>
-                         <option value="150 CC"></option>
-                         <option value="180 CC"></option>
-                         <option value="200 CC"></option>
-                         <option value="220 CC"></option>
-                         <option value="250 CC"></option>
-                         <option value="350 CC"></option>
-                         <option value="390 CC"></option>
+                         <option value=100></option>
+                         <option value=110></option>
+                         <option value=125></option>
+                         <option value=150></option>
+                         <option value=180></option>
+                         <option value=200></option>
+                         <option value=220></option>
+                         <option value=250></option>
+                         <option value=350></option>
+                         <option value=390></option>
               </datalist>
               <span class="floating-label">Engine CC</span>
           </div>
@@ -336,6 +340,17 @@
               </datalist>
                   <span class="floating-label">Fuel Type</span>
                 </div>
+
+                   <div class="col-md-4 mb-4">
+            <select class="form-control" v-model="vehicle_type" required>
+            
+                <option value="commuters">Commuters</option>
+                 <option value="bikes">Bikes</option>                         
+                  <option value="adventurer">Adventurer</option> 
+            </select>
+                  <span class="floating-label">Vehicle Type</span>
+                </div>
+
             </div>
             <div class="form row">
               <div class="col-md-4 mb-4">
@@ -377,12 +392,12 @@
                 <span class="floating-label">Mileage (kmpl)</span>
               </div>
               <div class="col-md-4 mb-5">
-                 <input list="hosting-plan8" type="text" class="form-control" v-model="gears" required>
+                 <input list="hosting-plan8" type="number" class="form-control" v-model="gears" required>
                     <datalist id="hosting-plan8">
-                         <option value="4 Speed"></option>
-                         <option value="5 Speed"></option>        
-                         <option value="6 Speed"></option>  
-                         <option value="Automatic"></option>                                                                                               
+                         <option value=4></option>
+                         <option value=5></option>        
+                         <option value=6></option>  
+                         <option value=7></option>                                                                                               
                     </datalist>
                 <span class="floating-label">No Of Gears</span>
               </div>
@@ -448,7 +463,8 @@
                  <input list="hosting-plan14" type="text" class="form-control" v-model="rear_brake" required>
                     <datalist id="hosting-plan14">
                          <option value="Disk Brake"></option>
-                         <option value="Drum Brake"></option>                                                                                                    
+                         <option value="Drum Brake"></option>      
+                                                                                                                     
                     </datalist>
                 <span class="floating-label">Rear Brake Type</span>
               </div>
@@ -511,7 +527,7 @@
                 <textarea type="text" v-model="comments" class="inputText form-control" required/>
                  <span class="floating-label">Other Comments</span>
               </div> 
-        </div> 
+        </div>        
             <button type="button bt" class="btn btn-danger px-5" v-on:click="updateForm">Update</button>
             <button class="button btn btn-primary mr-2 m-0 ml-2" v-on:click="chop()">Delete</button>                      
             </form>
@@ -632,6 +648,7 @@ export default {
                 make:this.make,
                 engine_cc: this.engine_cc,
                 fuel_type:this.fuel_type,
+                vehicle_type:this.vehicle_type,
                 power:this.power,
                 fuel_system:this.fuelsystem,
                 mileage:this.mileage,
@@ -653,7 +670,7 @@ export default {
             }).
             then(response=>{
             this.editModal = false;
-            this.$swal('Tada! Vehicle Updated');
+            this.$swal('Tada! Model Updated');
             this.data = response.body;
             setTimeout(()=>{
                     window.location.reload()
@@ -679,11 +696,14 @@ export default {
             this.editModal = true;
             this.idtoedit = vehicleToEdit._id
             this.modal_name = vehicleToEdit.modal_name
+            this.make = vehicleToEdit.make
             this.engine_cc = vehicleToEdit.engine_cc
             this.fuel_type = vehicleToEdit.fuel_type
+            this.vehicle_type = vehicleToEdit.vehicle_type
             this.mileage=vehicleToEdit.mileage
             this.power = vehicleToEdit.power
             this.fuelsystem = vehicleToEdit.fuel_system
+            this.mileage = vehicleToEdit.mileage
             this.abs = vehicleToEdit.abs
             this.gears = vehicleToEdit.number_of_gears
             this.transmission_type = vehicleToEdit.transmission_type
