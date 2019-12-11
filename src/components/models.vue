@@ -531,7 +531,10 @@
               </div> 
         </div>                            
             </form>
-            <button type="button bt" class="btn btn-danger px-5" v-on:click="updateForm">Update</button>
+            <button type="button bt" class="btn btn-danger px-5" v-on:click="updateForm">
+              <span >Update</span>
+              <div v-if="loadonadd" class="spinner-border spinner-border-sm ml-2"></div>
+            </button>
             <button type="button" class="button btn btn-primary mr-2 m-0 ml-2"
              data-toggle="modal" data-target="#exampleModal" v-on:click="confirmdelete">
               Delete
@@ -671,6 +674,7 @@ export default {
             })   
             },
             updateForm: function(){
+            this.loadonadd = true
             this.$http.put('https://backend-bikex.herokuapp.com/api/models/'+ this.idtoedit,{
                 modal_name:this.modal_name,
                 make:this.make,
@@ -697,6 +701,7 @@ export default {
                 updated: this.date
             }).
             then(response=>{
+              this.loadonadd=false
             this.editModal = false;
             this.$swal('Tada! Model Updated Sucessfull');
             this.data = response.body;
@@ -705,6 +710,7 @@ export default {
             },2000)
             }).catch(error => { 
                     this.message = error.body.msg
+                    this.loadonadd=false
             })   
             },
             confirmdelete(){

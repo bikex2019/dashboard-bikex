@@ -251,7 +251,7 @@ export default {
                   'Content-Type': 'multipart/form-data'
               }
             }).then(response=>{
-                this.$http.put('https://immense-chamber-94004.herokuapp.com/'+ this.id, {"status":2})
+                this.$http.put('https://backend-bikex.herokuapp.com/api/uploadstatus/'+ this.id, {"status":2})
                   this.$swal('Tada!', response);
 
                   setTimeout(()=>{

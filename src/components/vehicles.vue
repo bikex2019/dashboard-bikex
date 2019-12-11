@@ -30,27 +30,27 @@
         </tr>
         </thead>
         <tbody>
-            <tr v-for="(faq, index) in paginatedData" :key="index">
-                <td class="py-1">{{faq.vehicle_id}}</td>
-                <td class="py-1">{{faq.vehicle_number}}</td>
-                <td class="py-1">{{faq.source}}</td>
-                <td class="py-1">{{faq.pincode}}</td>
+            <tr v-for="(data, index) in paginatedData" :key="index">
+                <td class="py-1">{{data.vehicle_id}}</td>
+                <td class="py-1">{{data.vehicle_number}}</td>
+                <td class="py-1">{{data.source}}</td>
+                <td class="py-1">{{data.pincode}}</td>
 
-                <td class="py-1" v-if="faq.status == 0"><span style="color:green">Procured</span></td>
-                <td class="py-1" v-if="faq.status == 1"><span style="color:brown">Under-Refurbish</span></td>
-                <td class="py-1" v-if="faq.status == 2"><span style="color:purple">In Stock</span></td>
-                <td class="py-1" v-if="faq.status == 3"><span style="color:red">Live!</span></td>
-                <td class="py-1" v-if="faq.status == 4"><span style="color:red">Booked!</span></td>
-                <td class="py-1" v-if="faq.status == 5"><span style="color:red">Sold!</span></td>
+                <td class="py-1" v-if="data.status == 0"><span style="color:green">Procured</span></td>
+                <td class="py-1" v-if="data.status == 1"><span style="color:brown">Under-Refurbish</span></td>
+                <td class="py-1" v-if="data.status == 2"><span style="color:purple">In Stock</span></td>
+                <td class="py-1" v-if="data.status == 3"><span style="color:red">Live!</span></td>
+                <td class="py-1" v-if="data.status == 4"><span style="color:red">Booked!</span></td>
+                <td class="py-1" v-if="data.status == 5"><span style="color:red">Sold!</span></td>
 
-                <td class="py-1" v-if="faq.imageUpload == 0"><span style="color:red"><i class="fa fa-times" aria-hidden="true"></i></span></td>
-                <td class="py-1" v-if="faq.imageUpload == 1"><span style="color:red"><i class="fa fa-clock-o" aria-hidden="true"></i></span></td>
-                <td class="py-1" v-if="faq.imageUpload == 2"><span><i class="fa fa-check" aria-hidden="true"></i></span></td>
-                <td class="py-1"  v-if="faq.imageUpload == null"><span>-</span></td>
+                <td class="py-1" v-if="data.imageUpload == 0"><span style="color:red"><i class="fa fa-times" aria-hidden="true"></i></span></td>
+                <td class="py-1" v-if="data.imageUpload == 1"><span style="color:red"><i class="fa fa-clock-o" aria-hidden="true"></i></span></td>
+                <td class="py-1" v-if="data.imageUpload == 2"><span><i class="fa fa-check" aria-hidden="true"></i></span></td>
+                <td class="py-1"  v-if="data.imageUpload == null"><span>-</span></td>
       
-                <td class="py-1"><button class="button btn btn-primary m-0 p-0 custom-button" v-on:click="editModals(faq)"><i class="fa fa-pencil px-1" aria-hidden="true"></i></button>
-                <button class="button btn btn-primary m-0 p-0  custom-button" v-on:click="editStatus(faq)"><i class="fa fa-bicycle px-1" aria-hidden="true"></i></button>
-               <button class="button btn btn-primary m-0 p-0  custom-button" v-on:click="goToUpload(faq.vehicle_id)"><i class="fa fa-eye px-1" aria-hidden="true"></i></button>
+                <td class="py-1"><button class="button btn btn-primary m-0 p-0 custom-button" v-on:click="editModals(data)"><i class="fa fa-pencil px-1" aria-hidden="true"></i></button>
+                <button class="button btn btn-primary m-0 p-0  custom-button" v-on:click="editStatus(data)"><i class="fa fa-bicycle px-1" aria-hidden="true"></i></button>
+               <button class="button btn btn-primary m-0 p-0  custom-button" v-on:click="goToUpload(data.vehicle_id)"><i class="fa fa-eye px-1" aria-hidden="true"></i></button>
                 </td>
             </tr>
         </tbody>
@@ -105,6 +105,181 @@
     <!-- modals content -->
         <div class="modals-content" style="top:0">
             <span class="close" v-on:click="closeModal">&times;</span>
+            <form>     
+            <div>
+            <h4 class="mb-4 mt-2" style="font-weight:bold">Add Vehicle!</h4>
+              <div class="error">
+              <p>{{message}}</p>
+              </div>
+            <h5 class="col-sm-4 mb-4 p-0 font-weight-bold text-left">Vehicle Details: </h5>
+            </div>
+            <div class="form row">         
+                <div class="col-md-4 mb-4">
+                  <input type="text" v-model="vehicle_number" class="inputText form-control" required />
+                  <span class="floating-label" >Vehicle No</span>
+                </div>
+                <div class="col-md-4 mb-4">
+                  <select class="inputText form-control" v-model="make" required>
+                    <option v-for="(model, index) in modals" :key="index">{{model.make}}</option>
+                  </select>
+                  <span class="floating-label">Make</span>
+                </div>
+                <div class="col-md-4 mb-4">
+                   <select class="inputText form-control" v-model="model" required>
+                      <option v-if="!make">Select Make First</option>
+                    <option :value="mod._id"  v-for="(mod, index) in filteredmodels" :key="index">{{mod.modal_name}}</option>
+                  </select>
+                  <span class="floating-label">Model Name</span>
+                </div>
+            </div>
+            <div class="form row">
+              <div class="col-md-4 mb-4">
+                <input type="text" v-model="mfg_year" class="inputText form-control" required/>
+                <span class="floating-label">Manufacture Year</span>
+              </div>
+              <div class="col-md-4 mb-4">
+                <input type="text" v-model="color" class="inputText form-control" required/>
+                <span class="floating-label">Color</span>
+              </div>
+                  <div class="col-md-4 mb-4">
+                <input type="number" v-model="fines" class="inputText form-control" required/>
+                <span class="floating-label">Fines (if any)</span>
+              </div>
+                 <div class="col-md-4 mb-4">
+                   <select type="text" class="inputText form-control" v-model="type" required>
+                    <option value="standard">Standard</option>
+                    <option value="premium">Premium</option>
+                  </select>
+                  <span class="floating-label">Type</span>
+                </div>
+            </div>
+ 
+         <!--  -->
+          <hr>
+         <!--  -->
+
+          <div>
+            <h5 class="col-sm-4 mb-4 p-0 font-weight-bold text-left">Procurred Address:</h5>
+          </div>
+            <div class="row form">
+              <div class="col-md-4 mb-4">
+                <input type="text" v-model="source" class="inputText form-control" required/>
+                <span class="floating-label">Source</span>
+              </div>
+              <div class="col-md-4 mb-4">
+                <input type="text" v-model="city" class="inputText form-control" required/>
+                <span class="floating-label">city</span>
+              </div>
+               <div class="col-md-4 mb-4">
+                <input type="Number" v-model="pincode" class="inputText form-control" required/>
+                <span class="floating-label">Pincode</span>
+              </div>              
+            </div>
+
+            <div class="row form">
+              <div class="col-md-4 mb-4">
+                <input type="text" v-model="state" class="inputText form-control" required/>
+                <span class="floating-label">State*</span>
+              </div>
+             <div class="col-md-8 mb-4">
+                <textarea type="text" v-model="address" class="inputText form-control" required/>
+                <span class="floating-label">Complete Address</span>
+              </div>
+            </div>
+          <!--  -->
+            <hr>
+
+           <!--  -->
+            <div class="form row">                    
+              <div class="col-md-12 mb-4 text-left d-flex">
+                 <h5 class="col-sm-4 mb-4 p-0 font-weight-bold text-left">Documents Collected:</h5>
+
+                <input type="checkbox" v-model="rc_card" id="box-1">
+                <label for="box-1" class="mr-3">RC card</label>
+
+                 <input type="checkbox" v-model="insurance" id="box-2">
+                <label for="box-2" class="mr-3">Insurance</label>
+
+                 <input type="checkbox" v-model="b_extract" id="box-4">
+                <label for="box-4" class="mr-3">B Extract</label>
+
+                 <input type="checkbox" v-model="hypothecation" id="box-5">
+                <label for="box-5" class="mr-3">Hypothecation</label>
+              </div>
+              
+            </div>
+            <div class="row form">
+              <div class="col-md-4 mb-4">
+                <input type="text" v-model="regn_no" class="inputText form-control" required/>
+                <span class="floating-label">Registration No</span>
+              </div>
+              <div class="col-md-4 mb-4">
+                <input type="text" v-model="chassis_no" class="inputText form-control" required/>
+                <span class="floating-label">Chassis No</span>
+              </div>
+               <div class="col-md-4 mb-4">
+                <input type="text" v-model="insurance_policy_number" class="inputText form-control" required/>
+                <span class="floating-label">Insurance Policy Number</span>
+              </div>              
+            </div>
+
+
+            <div class="form row mt-2 mb-3">
+                <div class="col-md-3 mb-4">
+                  <input type="date" v-model="rc_start" class="inputText form-control" required/>
+                 <span class="floating-label">RC Start</span>
+                </div>
+                <div class="col-md-3 mb-4 border-right">
+                  <input type="date" v-model="rc_end" class="inputText form-control" required/>
+                 <span class="floating-label">RC End</span>
+                </div>
+                <div class="col-md-3 mb-4">
+                  <input type="date" v-model="insurance_start" class="inputText form-control" required/>
+                 <span class="floating-label">Insurance Start</span>
+                </div>
+                <div class="col-md-3 mb-4">
+                 <input type="date" v-model="insurance_end" class="inputText form-control" required/>
+                 <span class="floating-label">Insurance End*</span>
+                </div>
+            </div>
+               <div class="col-md-12 mb-4 ">
+                <textarea type="text" v-model="remarks" class="inputText form-control" required/>
+                 <span class="floating-label">Remarks</span>
+              </div> 
+              <hr>
+
+            <div class="form row">
+             
+              <div class="col-md-4 mb-4">
+                <input type="date" v-model="procured_date" class="inputText form-control" required/>
+                 <span class="floating-label">Procure date</span>
+              </div>   
+              <div class="col-md-4 mb-4">
+                <input type="number" v-model="procured_price" class="inputText form-control" required/>
+                <span class="floating-label">Procured Price</span>
+              </div> 
+               <div class="col-md-4 mb-4">
+                <input type="number" v-model="selling_price" class="inputText form-control" required/>
+                <span class="floating-label">Selling Price</span>
+              </div> 
+              <hr>
+
+           
+            </div>             
+         </form>
+         <button type="button bt" class="btn btn-danger px-5" v-on:click="procureVehicle">
+              <span >Add Vehicle</span>
+              <div v-if="loadonadd" class="spinner-border spinner-border-sm ml-2">
+              </div>
+              </button>  
+        </div>
+    </div>
+
+         <div id="mymodals" class="modals" v-bind:class="{'displayModal':editModal}">
+    <!-- modals content -->
+        <div class="modals-content">
+            <span class="close" v-on:click="closeeditModal">&times;</span>
+            <div>
             <form>     
         <div>
             <h4 class="mb-4 mt-2" style="font-weight:bold">Add Vehicle!</h4>
@@ -208,27 +383,6 @@
               </div>
               
             </div>
-
-            <!-- <div class="form row">    
-              <div class="col-md-3 mb-4" v-if="have_rc">
-                {{selectedFiles}}
-                <label for="file">RC upload:</label>
-                <input type="file" @change="processFile($event)"  class="inputText form-control"/>
-              </div>
-               <div class="col-md-3 mb-4" v-if="have_insurance">
-                <label for="file">Insurance upload:</label>
-                <input type="file" class="inputText form-control"/>
-              </div>
-               <div class="col-md-3 mb-4" v-if="have_bextract">
-                <label for="file">B-Extract upload:</label>
-                <input type="file" class="inputText form-control"/>
-              </div>
-               <div class="col-md-3 mb-4" v-if="have_hypothecation">
-                <label for="file">Hypothecation upload:</label>
-                <input type="file" class="inputText form-control"/>
-              </div>
-            </div> -->
-
             <div class="row form">
               <div class="col-md-4 mb-4">
                 <input type="text" v-model="regn_no" class="inputText form-control" required/>
@@ -247,6 +401,7 @@
 
             <div class="form row mt-2 mb-3">
                 <div class="col-md-3 mb-4">
+                  {{rc_start}}
                   <input type="date" v-model="rc_start" class="inputText form-control" required/>
                  <span class="floating-label">RC Start</span>
                 </div>
@@ -267,7 +422,7 @@
                 <textarea type="text" v-model="remarks" class="inputText form-control" required/>
                  <span class="floating-label">Remarks</span>
               </div> 
-<hr>
+              <hr>
 
             <div class="form row">
              
@@ -283,196 +438,8 @@
                 <input type="number" v-model="selling_price" class="inputText form-control" required/>
                 <span class="floating-label">Selling Price</span>
               </div> 
-   <hr>
-
-           
+              <hr>
             </div>             
-         </form>
-         <button type="button bt" class="btn btn-danger px-5" v-on:click="procureVehicle">
-              <span >Add Vehicle</span>
-              <div v-if="loadonadd" class="spinner-border spinner-border-sm ml-2"></div>
-              </button>  
-            </div>
-        </div>
-
-         <div id="mymodals" class="modals" v-bind:class="{'displayModal':editModal}">
-    <!-- modals content -->
-        <div class="modals-content">
-            <span class="close" v-on:click="closeeditModal">&times;</span>
-            <div>
-            <form>     
-        <div>
-            <h4 class="mb-4 mt-2" style="font-weight:bold">Add Vehicle!</h4>
-              <div class="error">
-              <p>{{message}}</p>
-            </div>
-            <h5 class="col-sm-4 mb-4 p-0 font-weight-bold text-left">Vehicle Details: </h5>
-         </div>
-            <div class="form row">         
-                <div class="col-md-4 mb-4">
-                  <input type="text" v-model="vehicle_number" class="inputText form-control" required />
-                  <span class="floating-label" >Vehicle No</span>
-                </div>
-                <div class="col-md-4 mb-4">
-                  <select class="inputText form-control" v-model="make" required>
-                    <option v-for="(model, index) in modals" :key="index">{{model.make}}</option>
-                  </select>
-                  <span class="floating-label">Make</span>
-                </div>
-                <div class="col-md-4 mb-4">
-                   <select class="inputText form-control" v-model="model" required>
-                      <option v-if="!make">Select Make First</option>
-                    <option :value="mod._id"  v-for="(mod, index) in filteredmodels" :key="index">{{mod.modal_name}}</option>
-                  </select>
-                  <span class="floating-label">Model Name</span>
-                </div>
-            </div>
-            <div class="form row">
-              <div class="col-md-4 mb-4">
-                <input type="text" v-model="mfg_year" class="inputText form-control" required/>
-                <span class="floating-label">Manufacture Year</span>
-              </div>
-              <div class="col-md-4 mb-4">
-                <input type="text" v-model="color" class="inputText form-control" required/>
-                <span class="floating-label">Color</span>
-              </div>
-                  <div class="col-md-4 mb-4">
-                <input type="number" v-model="fines" class="inputText form-control" required/>
-                <span class="floating-label">Fines (if any)</span>
-              </div>
-            </div>
- 
-         <!--  -->
-          <hr>
-         <!--  -->
-
-          <div>
-            <h5 class="col-sm-4 mb-4 p-0 font-weight-bold text-left">Procurred Address:</h5>
-          </div>
-            <div class="row form">
-              <div class="col-md-4 mb-4">
-                <input type="text" v-model="source" class="inputText form-control" required/>
-                <span class="floating-label">Source</span>
-              </div>
-              <div class="col-md-4 mb-4">
-                <input type="text" v-model="city" class="inputText form-control" required/>
-                <span class="floating-label">city</span>
-              </div>
-               <div class="col-md-4 mb-4">
-                <input type="Number" v-model="pincode" class="inputText form-control" required/>
-                <span class="floating-label">Pincode</span>
-              </div>              
-            </div>
-
-            <div class="row form">
-              <div class="col-md-4 mb-4">
-                <input type="text" v-model="state" class="inputText form-control" required/>
-                <span class="floating-label">State*</span>
-              </div>
-             <div class="col-md-8 mb-4">
-                <textarea type="text" v-model="address" class="inputText form-control" required/>
-                <span class="floating-label">Complete Address</span>
-              </div>
-            </div>
-          <!--  -->
-            <hr>
-
-           <!--  -->
-            <div class="form row">                    
-              <div class="col-md-12 mb-4 text-left d-flex">
-                 <h5 class="col-sm-4 mb-4 p-0 font-weight-bold text-left">Documents Collected:</h5>
-
-                <input type="checkbox" v-model="rc_card" id="box-1">
-                <label for="box-1" class="mr-3">RC card</label>
-
-                 <input type="checkbox" v-model="insurance" id="box-2">
-                <label for="box-2" class="mr-3">Insurance</label>
-
-                 <input type="checkbox" v-model="b_extract" id="box-4">
-                <label for="box-4" class="mr-3">B Extract</label>
-
-                 <input type="checkbox" v-model="hypothecation" id="box-5">
-                <label for="box-5" class="mr-3">Hypothecation</label>
-              </div>
-              
-            </div>
-
-            <!-- <div class="form row">    
-              <div class="col-md-3 mb-4" v-if="have_rc">
-                {{selectedFiles}}
-                <label for="file">RC upload:</label>
-                <input type="file" @change="processFile($event)"  class="inputText form-control"/>
-              </div>
-               <div class="col-md-3 mb-4" v-if="have_insurance">
-                <label for="file">Insurance upload:</label>
-                <input type="file" class="inputText form-control"/>
-              </div>
-               <div class="col-md-3 mb-4" v-if="have_bextract">
-                <label for="file">B-Extract upload:</label>
-                <input type="file" class="inputText form-control"/>
-              </div>
-               <div class="col-md-3 mb-4" v-if="have_hypothecation">
-                <label for="file">Hypothecation upload:</label>
-                <input type="file" class="inputText form-control"/>
-              </div>
-            </div> -->
-
-            <div class="row form">
-              <div class="col-md-4 mb-4">
-                <input type="text" v-model="regn_no" class="inputText form-control" required/>
-                <span class="floating-label">Registration No</span>
-              </div>
-              <div class="col-md-4 mb-4">
-                <input type="text" v-model="chassis_no" class="inputText form-control" required/>
-                <span class="floating-label">Chassis No</span>
-              </div>
-               <div class="col-md-4 mb-4">
-                <input type="text" v-model="insurance_policy_number" class="inputText form-control" required/>
-                <span class="floating-label">Insurance Policy Number</span>
-              </div>              
-            </div>
-
-
-            <div class="form row mt-2 mb-3">
-                <div class="col-md-3 mb-4">
-                  <input type="date" v-model="rc_start" class="inputText form-control" required/>
-                 <span class="floating-label">RC Start</span>
-                </div>
-                <div class="col-md-3 mb-4 border-right">
-                  <input type="date" v-model="rc_end" class="inputText form-control" required/>
-                 <span class="floating-label">RC End</span>
-                </div>
-                <div class="col-md-3 mb-4">
-                  <input type="date" v-model="insurance_start" class="inputText form-control" required/>
-                 <span class="floating-label">Insurance Start</span>
-                </div>
-                <div class="col-md-3 mb-4">
-                 <input type="date" v-model="insurance_end" class="inputText form-control" required/>
-                 <span class="floating-label">Insurance End*</span>
-                </div>
-            </div>
-               <div class="col-md-12 mb-4 ">
-                <textarea type="text" v-model="remarks" class="inputText form-control" required/>
-                 <span class="floating-label">Remarks</span>
-              </div> 
-<hr>
-
-            <div class="form row">
-             
-              <div class="col-md-4 mb-4">
-                <input type="date" v-model="procured_date" class="inputText form-control" required/>
-                 <span class="floating-label">Procure date</span>
-              </div>   
-              <div class="col-md-4 mb-4">
-                <input type="number" v-model="procured_price" class="inputText form-control" required/>
-                <span class="floating-label">Procured Price</span>
-              </div> 
-               <div class="col-md-4 mb-4">
-                <input type="number" v-model="selling_price" class="inputText form-control" required/>
-                <span class="floating-label">Selling Price</span>
-              </div> 
-               <hr>
-            </div>
                     <button type="submit" v-on:click="updateForm()" class="button1 btn btn-primary">Update</button>
                     <button type="submit" v-on:click="chop()" class="button1 btn btn-danger ml-2">Delete</button>
                 </form>
@@ -484,6 +451,7 @@
 </div>
 </template>
 <script>
+// import moment from 'moment'
 // import * as _ from 'lodash';
 export default {
     data(){
@@ -585,6 +553,7 @@ export default {
               manufacture_year:this.mfg_year,
               color:this.color,
               fines:this.fines,
+              insurance_policy_number:this.insurance_policy_number,
               source:this.source,
               city:this.city,
               pincode:this.pincode,
@@ -596,7 +565,7 @@ export default {
               hypothecation:this.hypothecation,
               regn_no:this.regn_no,
               chassis_no:this.chassis_no,
-              rc_start:this.rc_start,
+              rc_start:this.this.rc_start,
               rc_end:this.rc_end,
               insurance_start:this.insurance_start,
               insurance_end:this.insurance_end,
@@ -621,7 +590,7 @@ export default {
             },
             updateForm: function(){
               this.loadonadd= true
-            this.$http.put('https://backend-bikex.herokuapp.com/api/procurements/'+ this.idtoedit,{
+              this.$http.put('https://backend-bikex.herokuapp.com/api/procurements/'+ this.idtoedit,{
               vehicle_number:this.vehicle_number,
               model_id:this.model,
               manufacture_year:this.mfg_year,
@@ -636,6 +605,7 @@ export default {
               insurance:this.insurance,
               b_extract:this.b_extract,
               hypothecation:this.hypothecation,
+              insurance_policy_number:this.insurance_policy_number,
               regn_no:this.regn_no,
               chassis_no:this.chassis_no,
               rc_start:this.rc_start,
@@ -684,7 +654,8 @@ export default {
             this.vehicle_number = vehicleToEdit.vehicle_number
             this.model = vehicleToEdit.model_id
             this.mfg_year = vehicleToEdit.manufacture_year
-            this.color = vehicleToEdit.color  
+            this.color = vehicleToEdit.color
+            this.type = vehicleToEdit.type  
             this.fines = vehicleToEdit.fines
             this.source= vehicleToEdit.source
             this.city = vehicleToEdit.city

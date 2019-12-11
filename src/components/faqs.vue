@@ -94,7 +94,10 @@
                         <textarea v-model="answer" class="form-control" id="answer" rows="3"></textarea>
                     </div>
                 </form>
-                <button type="submit" v-on:click="updatefaq()" class="button1 btn btn-primary">Update FAQ</button>
+                <button type="submit" v-on:click="updatefaq" class="button1 btn btn-primary">
+                    <span v-if="!loading">Update FAQ</span>
+                    <span v-else>loading.</span>
+                </button>
             </div>
         </div>
     </div>
@@ -170,6 +173,7 @@ export default {
             answer: this.answer
             }).
             then(response=>{
+                this.$swal('Tada! FAQ has been updated');
             this.loading= false
             this.data = response.body;
             window.location.reload()
