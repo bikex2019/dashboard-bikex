@@ -589,7 +589,7 @@ export default {
             },
             updateForm: function(){
               this.loadonadd= true
-              this.$http.put('http://localhost:3000/api/procurements/'+ this.idtoedit,{
+              this.$http.put('https://backend-bikex.herokuapp.com/api/procurements/'+ this.idtoedit,{
               vehicle_number:this.vehicle_number,
               model_id:this.model,
               type:this.type,
