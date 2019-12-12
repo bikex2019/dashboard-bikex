@@ -22,10 +22,12 @@
             <!-- <i class="fa fa-sort-amount-asc ml-3 sorter" aria-hidden="true" v-on:click="asc" v-if="show"></i>
             <i class="fa fa-sort-amount-desc ml-3 sorter" aria-hidden="true" v-on:click="desc" v-else></i> -->
             </th>
-            <th>SOURCE</th>
-            <th>PINCODE</th>
+            <th>Model</th>
+            <th>Make</th>
+            <th>Chasis No.</th>
             <th>STATUS</th>
-            <th>IMAGE UPLOAD</th>
+            <th>Type</th>
+            <th>UPLOAD</th>
             <th>Action</th>
         </tr>
         </thead>
@@ -33,21 +35,20 @@
             <tr v-for="(data, index) in paginatedData" :key="index">
                 <td class="py-1">{{data.vehicle_id}}</td>
                 <td class="py-1">{{data.vehicle_number}}</td>
-                <td class="py-1">{{data.source}}</td>
-                <td class="py-1">{{data.pincode}}</td>
-
+                <td class="py-1">{{data.modal_name}}</td>
+                <td class="py-1">{{data.make}}</td>
+                <td class="py-1">{{data.chassis_no}}</td>
                 <td class="py-1" v-if="data.status == 0"><span style="color:green">Procured</span></td>
                 <td class="py-1" v-if="data.status == 1"><span style="color:brown">Under-Refurbish</span></td>
                 <td class="py-1" v-if="data.status == 2"><span style="color:purple">In Stock</span></td>
                 <td class="py-1" v-if="data.status == 3"><span style="color:red">Live!</span></td>
                 <td class="py-1" v-if="data.status == 4"><span style="color:red">Booked!</span></td>
                 <td class="py-1" v-if="data.status == 5"><span style="color:red">Sold!</span></td>
-
+                <td class="py-1">{{data.vehicle_type}}</td>
                 <td class="py-1" v-if="data.imageUpload == 0"><span style="color:red"><i class="fa fa-times" aria-hidden="true"></i></span></td>
                 <td class="py-1" v-if="data.imageUpload == 1"><span style="color:red"><i class="fa fa-clock-o" aria-hidden="true"></i></span></td>
                 <td class="py-1" v-if="data.imageUpload == 2"><span><i class="fa fa-check" aria-hidden="true"></i></span></td>
                 <td class="py-1"  v-if="data.imageUpload == null"><span>-</span></td>
-      
                 <td class="py-1"><button class="button btn btn-primary m-0 p-0 custom-button" v-on:click="editModals(data)"><i class="fa fa-pencil px-1" aria-hidden="true"></i></button>
                 <button class="button btn btn-primary m-0 p-0  custom-button" v-on:click="editStatus(data)"><i class="fa fa-bicycle px-1" aria-hidden="true"></i></button>
                <button class="button btn btn-primary m-0 p-0  custom-button" v-on:click="goToUpload(data.vehicle_id)"><i class="fa fa-eye px-1" aria-hidden="true"></i></button>
@@ -710,6 +711,17 @@ export default {
          }
     },
     computed:{
+      displayData(){
+        const temp = []
+        this.procured_vehicels.forEach(x => {
+            this.modals.forEach(y => {
+            if (x.model_id === y._id) {
+                temp.push({ ...x, ...y })
+            }
+            })
+        })
+      return temp
+      },
       filteredmodels(){
          var m = this.modals.filter(datas=>{
            return datas.make == this.make
@@ -733,7 +745,7 @@ export default {
         return new Date()
       },
       p(){
-          return this.procured_vehicels
+          return this.displayData
       },
       perpage(){
           return this.itemperpage
