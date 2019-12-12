@@ -157,7 +157,6 @@
          <!--  -->
           <hr>
          <!--  -->
-
           <div>
             <h5 class="col-sm-4 mb-4 p-0 font-weight-bold text-left">Procurred Address:</h5>
           </div>
@@ -733,7 +732,10 @@ export default {
       },
       filteredList() {
         return this.p.filter(post => {
-        return post.vehicle_number.toLowerCase().includes(this.search.toLowerCase())
+        return (post.vehicle_number.toLowerCase().includes(this.search.toLowerCase()) 
+        ||
+        post.vehicle_id.toString().includes(this.search.toLowerCase())
+        )
       })
     },
     paginatedData(){
