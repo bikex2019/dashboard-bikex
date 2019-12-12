@@ -401,7 +401,6 @@
 
             <div class="form row mt-2 mb-3">
                 <div class="col-md-3 mb-4">
-                  {{rc_start}}
                   <input type="date" v-model="rc_start" class="inputText form-control" required/>
                  <span class="floating-label">RC Start</span>
                 </div>
@@ -565,7 +564,7 @@ export default {
               hypothecation:this.hypothecation,
               regn_no:this.regn_no,
               chassis_no:this.chassis_no,
-              rc_start:this.this.rc_start,
+              rc_start:this.rc_start,
               rc_end:this.rc_end,
               insurance_start:this.insurance_start,
               insurance_end:this.insurance_end,

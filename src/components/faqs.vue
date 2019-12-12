@@ -149,7 +149,7 @@ export default {
         },
         addfaqs: function(){
             this.loading=true
-            this.$http.post('https://backend-bikex.herokuapp.com/api/faq/',{
+            this.$http.post('https://backend-bikex.herokuapp.com/api/faq',{
             question: this.question,
             answer: this.answer
             }).
