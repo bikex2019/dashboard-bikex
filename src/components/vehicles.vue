@@ -1,6 +1,6 @@
 <template>
 <div class="centres">
-    <div class="col-md-11 ml-4 mb-2">
+    <div class="col-md-11 ml-4 mb-2 col-12 mobile">
             <div class="row">
                 <div class="col-md-6 p-0 m-0 text-left pt-1 d-flex">
                     <p class="p-0 m-0">Showing {{paginatedData.length}} out of {{procured_vehicels.length}}</p>
@@ -281,7 +281,7 @@
             <div>
             <form>     
         <div>
-            <h4 class="mb-4 mt-2" style="font-weight:bold">Add Vehicle!</h4>
+            <h4 class="mb-4 mt-2" style="font-weight:bold">Edit Vehicle!</h4>
               <div class="error">
               <p>{{message}}</p>
             </div>
@@ -438,10 +438,9 @@
               </div> 
               <hr>
             </div>             
-                    <button type="submit" v-on:click="updateForm()" class="button1 btn btn-primary">Update</button>
-                    <button type="submit" v-on:click="chop()" class="button1 btn btn-danger ml-2">Delete</button>
                 </form>
-                    
+                     <button type="submit" v-on:click="updateForm()" class="button1 btn btn-primary">Update</button>
+                    <button type="submit" v-on:click="chop()" class="button1 btn btn-danger ml-2">Delete</button>
             </div>
         </div>
     </div>
@@ -449,6 +448,7 @@
 </div>
 </template>
 <script>
+import * as moment from 'moment';
 // import moment from 'moment'
 // import * as _ from 'lodash';
 export default {
@@ -463,7 +463,7 @@ export default {
               modals:[],
               search:'',
               pageNumber: 0,
-              itemperpage:10,
+              itemperpage:20,
               addModal:false,
               editModal:false,
               vehicle_number:'',
@@ -498,6 +498,7 @@ export default {
               statusModel:'',
               editStatusid:'',
               loading:false,
+              modaltable_response:[],
               loadonadd:false,
               selectedFiles:null
         }
@@ -588,12 +589,14 @@ export default {
             },
             updateForm: function(){
               this.loadonadd= true
-              this.$http.put('https://backend-bikex.herokuapp.com/api/procurements/'+ this.idtoedit,{
+              this.$http.put('http://localhost:3000/api/procurements/'+ this.idtoedit,{
               vehicle_number:this.vehicle_number,
               model_id:this.model,
+              type:this.type,
               manufacture_year:this.mfg_year,
               color:this.color,
               fines:this.fines,
+              insurance_policy_number:this.insurance_policy_number,
               source:this.source,
               city:this.city,
               pincode:this.pincode,
@@ -603,7 +606,6 @@ export default {
               insurance:this.insurance,
               b_extract:this.b_extract,
               hypothecation:this.hypothecation,
-              insurance_policy_number:this.insurance_policy_number,
               regn_no:this.regn_no,
               chassis_no:this.chassis_no,
               rc_start:this.rc_start,
@@ -625,14 +627,14 @@ export default {
                     window.location.reload()
             },2000)
             }).catch(error => { 
-                    this.message = error.body.msg
-                    this.loadonadd = false
+              this.message = error.body.msg
+              this.loadonadd = false
             })   
             },
             chop: function(){
-              this.loadonadd = true
+            this.loadonadd = true
             this.$http.delete('https://backend-bikex.herokuapp.com/api/procurements/' + this.idtoedit)
-            . then(response=>{
+            .then(response=>{
             this.editModal = false;
             this.loadonadd = false
             this.$swal('Vehicle Deleted');
@@ -647,11 +649,19 @@ export default {
             })   
             },
             editModals: function(vehicleToEdit){
+               window.console.log(vehicleToEdit)
+            this.$http.get('https://backend-bikex.herokuapp.com/api/models/'+vehicleToEdit.model_id).then(response=>{
+                this.modaltable_response = response.body
+                this.make =  this.modaltable_response[0].make
+                this.model = this.modaltable_response[0]._id
+                // window.console.log(this.modaltable_response[0].modal_name)
+            }).catch((err)=>{
+              window.console.log(err.body)
+            })
             this.editModal = true;
             this.idtoedit = vehicleToEdit._id
             this.vehicle_number = vehicleToEdit.vehicle_number
-            this.model = vehicleToEdit.model_id
-            this.mfg_year = vehicleToEdit.manufacture_year
+            this.mfg_year = moment(vehicleToEdit.manufacture_year).format("YYYY-MM-DD")
             this.color = vehicleToEdit.color
             this.type = vehicleToEdit.type  
             this.fines = vehicleToEdit.fines
@@ -663,15 +673,16 @@ export default {
             this.insurance = vehicleToEdit.insurance
             this.rc_card = vehicleToEdit.rc_card
             this.b_extract = vehicleToEdit.b_extract
+            this.insurance_policy_number=vehicleToEdit.insurance_policy_number,
             this.hypothecation = vehicleToEdit.hypothecation
             this.regn_no = vehicleToEdit.regn_no
             this.chassis_no = vehicleToEdit.chassis_no
-            this.rc_start = vehicleToEdit.rc_start
-            this.rc_end = vehicleToEdit.rc_end
-            this.insurance_start = vehicleToEdit.insurance_start
-            this.insurance_end = vehicleToEdit.insurance_end
+            this.rc_start = moment(vehicleToEdit.rc_start).format("YYYY-MM-DD");
+            this.rc_end =  moment(vehicleToEdit.rc_end).format("YYYY-MM-DD");
+            this.insurance_start = moment(vehicleToEdit.insurance_start).format("YYYY-MM-DD");
+            this.insurance_end = moment(vehicleToEdit.insurance_end).format("YYYY-MM-DD");
             this.remarks = vehicleToEdit.remarks
-            this.procured_date = vehicleToEdit.procured_date
+            this.procured_date = moment(vehicleToEdit.procured_date).format("YYYY-MM-DD");
             this.procured_price = vehicleToEdit.procured_price
             this.selling_price = vehicleToEdit.selling_price
         },
@@ -971,5 +982,15 @@ input[type="checkbox"]:checked + label:before {
   from {transform: rotate(-45deg);}
   to {transform: rotate(45deg);}
 }
+
+@media only screen and (max-width: 600px) {
+ .table{
+   overflow: scroll;
+ }
+ .mobile{
+   overflow: hidden
+ }
+}
+
 
 </style>
