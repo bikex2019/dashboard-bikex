@@ -3,9 +3,7 @@
   <div class="col-md-12 m-0 p-0">
     <div class="row">
       <div class="col-md-3 text-left pl-4">
-       <router-link to="/vehicles">
-       <button class="backbutton"><i class="fa fa-long-arrow-left" aria-hidden="true"></i></button>
-       </router-link>
+       <button @click="$router.go(-1)" class="backbutton"><i class="fa fa-long-arrow-left" aria-hidden="true"></i></button>
       </div>
       <div class="col-md-9 text-left">
         <p>You're viewing Vehicle {{id}}</p>

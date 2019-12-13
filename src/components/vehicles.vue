@@ -4,7 +4,7 @@
             <div class="row">
                 <div class="col-md-6 p-0 m-0 text-left pt-1 d-flex">
                     <p class="p-0 m-0">Showing {{paginatedData.length}} out of {{procured_vehicels.length}}</p>
-                    <span class="ml-3"> Page No. {{pageNumber + 1}}</span>
+                    <span class="ml-3"> Page No. {{pageNumber}}</span>
                 </div>
                 <div class="col-md-2 pt-1">
                     <input type="text" v-model="search" placeholder="search vehicle number">
@@ -72,8 +72,8 @@
      <div class="col-md-12">
                 <div class="row">
                     <div class="col-md-12 text-center" v-if="filteredList.length != 0">
-                        <button class="btn mr-2" v-on:click="prevPage" :disabled="pageNumber==0"><i class="fa fa-angle-double-left" aria-hidden="true"> prev</i></button>
-                         <button class="btn ml-2" v-on:click="nextPage" :disabled="pageNumber == pageCount - 1">next <i class="fa fa-angle-double-right" aria-hidden="true"></i></button>
+                        <button class="btn mr-2" v-on:click="prevPage" :disabled="pageNumber==1"><i class="fa fa-angle-double-left" aria-hidden="true"> prev</i></button>
+                         <button class="btn ml-2" v-on:click="nextPage" :disabled="pageNumber == pageCount">next <i class="fa fa-angle-double-right" aria-hidden="true"></i></button>
                     </div>
                 </div>
       </div>
@@ -518,6 +518,7 @@ export default {
           .then(response=>{
            this.modals = response.body
          })
+          this.pageNumber=this.$route.query.page || 1
     },
     methods:{
       goToUpload(id){
@@ -527,10 +528,12 @@ export default {
             this.selectedFiles = event.target.files[0]
             },
             nextPage(){
-             this.pageNumber++;
+            let x = this.pageNumber++
+             this.$router.push({query: { page:  x + 1 }})
             },
             prevPage(){
-                this.pageNumber--;
+                 let x = this.pageNumber--
+               this.$router.push({query: { page: x - 1}})
             },
             openModal: function(){
             this.addModal = true;
@@ -762,7 +765,7 @@ export default {
       })
     },
     paginatedData(){
-    const start = this.pageNumber * this.perpage,
+    const start = (this.pageNumber - 1) * this.perpage,
           end = start + this.perpage;
      return this.filteredList.slice(start, end);
         },
