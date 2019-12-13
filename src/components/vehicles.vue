@@ -509,14 +509,14 @@ export default {
     },
     created(){
       this.loading = true
+          this.$http.get('https://backend-bikex.herokuapp.com/api/models')
+          .then(response=>{
+           this.modals = response.body
+         })
           this.$http.get('https://backend-bikex.herokuapp.com/api/procurements')
           .then(response=>{
           this.procured_vehicels = response.body
           this.loading = false
-         })
-          this.$http.get('https://backend-bikex.herokuapp.com/api/models')
-          .then(response=>{
-           this.modals = response.body
          })
           this.pageNumber=this.$route.query.page || 1
     },
@@ -663,7 +663,7 @@ export default {
               window.console.log(err.body)
             })
             this.editModal = true;
-            this.idtoedit = vehicleToEdit._id
+            this.idtoedit = vehicleToEdit.vehicle_id
             this.vehicle_number = vehicleToEdit.vehicle_number
             this.mfg_year = moment(vehicleToEdit.manufacture_year).format("YYYY-MM-DD")
             this.color = vehicleToEdit.color
@@ -690,12 +690,13 @@ export default {
             this.procured_price = vehicleToEdit.procured_price
             this.selling_price = vehicleToEdit.selling_price
         },
-         editStatus: function(vehicleToEdit){
-             this.editStatusid = vehicleToEdit._id
+         editStatus: function(vehicleEdit){
+           window.console.log(vehicleEdit)
+             this.editStatusid = vehicleEdit.vehicle_id
              this.openEditStatusModel= true
-             this.status = vehicleToEdit.status
-             this.statusModel=vehicleToEdit.vehicle_number
-         },
+             this.status = vehicleEdit.status
+             this.statusModel=vehicleEdit.vehicle_number
+         }, 
          changeStatus(){
                 this.$http.put('https://backend-bikex.herokuapp.com/api/procurestatus/'+ this.editStatusid,{
                 status:this.status,
