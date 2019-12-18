@@ -501,7 +501,9 @@ export default {
               loading:false,
               modaltable_response:[],
               loadonadd:false,
-              selectedFiles:null
+              selectedFiles:null,
+              update_loader:false,
+              delete_loader:false
         }
     },
     components:{
@@ -592,7 +594,7 @@ export default {
             })   
             },
             updateForm: function(){
-              this.loadonadd= true
+              this.update_loader= true
               this.$http.put('https://backend-bikex.herokuapp.com/api/procurements/'+ this.idtoedit,{
               vehicle_number:this.vehicle_number,
               model_id:this.model,
@@ -624,7 +626,7 @@ export default {
             }).
             then(response=>{
             this.editModal = false;
-            this.loadonadd = false
+            this.update_loader = false
             this.$swal('Tada! Vehicle Updated');
             this.data = response.body;
             setTimeout(()=>{
@@ -632,15 +634,15 @@ export default {
             },2000)
             }).catch(error => { 
               this.message = error.body.msg
-              this.loadonadd = false
+              this.update_loader = false
             })   
             },
             chop: function(){
-            this.loadonadd = true
+            this.delete_loader = true
             this.$http.delete('https://backend-bikex.herokuapp.com/api/procurements/' + this.idtoedit)
             .then(response=>{
             this.editModal = false;
-            this.loadonadd = false
+            this.delete_loader = false
             this.$swal('Vehicle Deleted');
             this.data = response.body;
             setTimeout(()=>{
@@ -649,7 +651,7 @@ export default {
             },2000)
             }).catch(error => { 
                     this.message = error.body.msg
-                    this.loadonadd=false
+                    this.delete_loader=false
             })   
             },
             editModals: function(vehicleToEdit){

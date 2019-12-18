@@ -115,6 +115,12 @@
       </li>
     </ul>
   </div>
+          <div id="overlay" class="loading text-center mb-4" style="min-height:200px" v-if="upload_load">
+            <div id="text" class="spinner-border" role="status">
+            <span class="sr-only">Loading...</span>
+            </div>
+        </div>
+
 </div>
 </template>
 
@@ -133,7 +139,8 @@ export default {
       uploadidtoedit:'',
       loading:false,
       displayedit:false,
-      vehicles:[]
+      vehicles:[],
+      upload_load:false
     }
   },
   created(){
@@ -180,21 +187,26 @@ export default {
         window.console.log(this.images)
     },
     uploadDisplay(){
+    this.upload_load = true
     const fd = new FormData
     fd.append('vehicle_id', this.id)
     fd.append('Image', this.image)
      this.$http.post('https://backend-bikex.herokuapp.com/api/upload-display/',fd).
-            then(response=>{
-
-               this.$http.put('https://backend-bikex.herokuapp.com/api/uploadstatus/'+ this.id, {"status":1})
+      then(response=>{
+        this.$http.put('https://backend-bikex.herokuapp.com/api/uploadstatus/'+ this.id, {"status":1})
+          .then(()=>{
             this.$swal('Tada uploaded!', response);
-
             setTimeout(()=>{
-                    window.location.reload()
+              window.location.reload()
             },2000)
-            }).catch(error => { 
-                    this.message = error.body.msg
-            })   
+            }).catch(()=>{
+            this.message = 'Some Error Occured'
+            this.upload_load = false
+        })
+      }).catch(error => { 
+            this.message = error.body.msg
+            this.upload_load = false
+          })   
       },
     edituploadDisplay(){
     const fd = new FormData
@@ -230,12 +242,13 @@ export default {
 
                   setTimeout(()=>{
                           window.location.reload()
-                  },2000)
+                  },1500)
                   }).catch(error => { 
                           this.message = error.body.msg
                   }) 
       },
       uploadmultDisplay(){
+        this.upload_load = true
           const fd = new FormData
           for( var i = 0; i < this.images.length; i++ ){
                 let file = this.images[i];
@@ -243,21 +256,22 @@ export default {
                 fd.append('Image',file)
           }
           fd.append('vehicle_id', this.id)
-          this.$http.post('https://backend-bikex.herokuapp.com/api/uploads',fd,
-              {
-              headers: {
-                  'Content-Type': 'multipart/form-data'
-              }
-            }).then(response=>{
+          this.$http.post('https://backend-bikex.herokuapp.com/api/uploads',fd
+          ).then(response=>{
                 this.$http.put('https://backend-bikex.herokuapp.com/api/uploadstatus/'+ this.id, {"status":2})
-                  this.$swal('Tada!', response);
-
+                .then(()=>{
+                  this.$swal('Tada upload successful!', response);
                   setTimeout(()=>{
                           window.location.reload()
-                  },2000)
-                  }).catch(error => { 
-                          this.message = error.body.msg
-                  })   
+                  },1500)
+                }).catch(()=>{
+                  this.message = 'Some error Occured'
+                  this.upload_load = false
+                }) 
+              }).catch(error => { 
+                this.message = error.body.msg
+                this.upload_load = false
+              })   
             },
   },
 
@@ -351,5 +365,23 @@ p{
 }
 .progressBar .active:after {
     background-color: #ffb52f;
+}
+#overlay {
+  position: fixed;
+  width: 100%;
+  height: 100%;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(233, 227, 227, 0.3);
+  z-index: 2;
+  cursor: pointer;
+}
+
+#text{
+  position: absolute;
+  top: 50%;
+  left: 50%;
 }
 </style>

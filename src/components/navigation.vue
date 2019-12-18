@@ -7,9 +7,9 @@
 
       </div>
       <div class="col-md-6 col-8 text-right pr-4">
-        <i class="fa fa-sign-out mr-3" style='font-size:20px;' aria-hidden="true"></i>
+        <i class="fa fa-sign-out mr-3" style='font-size:20px;color:#001232' aria-hidden="true"></i>
         <div class="dropdown mr-4">
-          <i class='fa fa-bell-o mt-2 dropbtn' style='font-size:20px;'></i><span class="badge badge-light" style="color:red">3</span>
+          <i class='fa fa-bell-o mt-2 dropbtn' style='font-size:20px;color:#001232'></i><span class="badge badge-light" style="color:red">3</span>
           <div class="dropdown-content">
             <a href="#">Link 1</a>
             <a href="#">Link 2</a>
@@ -21,31 +21,31 @@
     <div id="mySidenav" class="sidenav" v-bind:class="{showclass: !toggle}">          
       <div class="col-md-12 text-center border-bottom p-0" v-if="toggle">
         <p class="p-0 m-0"><router-link to="/" exact-active-class="active" v-on:click="homes"
-        class="bikex-header mb-0 p-0 logo" style="color:red">X</router-link></p>
+        class="bikex-header mb-0 p-0 logo" style="color:#ffb52f">X</router-link></p>
       </div>
 
       <div class="col-md-12 text-left border-bottom pb-0 mb-0 p-0 m-0 d-flex" v-else>
-      <p class="p-0 m-0"><router-link to="/" exact-active-class="active" class="bikex-header mb-0 p-0 pl-3 logo">BIKE<span style="color:red"> X</span></router-link></p>
+      <p class="p-0 m-0"><router-link to="/" exact-active-class="active" class="bikex-header mb-0 p-0 pl-3 logo">BIKE<span style="color:#ffb52f"> X</span></router-link></p>
       </div>
 
       <div class="col-md-12 margin-right text-center border-bottom p-0" v-if="!toggle">
         <router-link to="/vehicles" exact-active-class="active" class="d-flex navigate-padding">
-          <i class='fa fa-bicycle pl-3 pt-1 pr-2' style='font-size:20px;'> </i>
-          <p class="p-0 m-0">Vehicles</p>
+          <i class='fa fa-bicycle pl-3 pt-1 pr-2' style='font-size:20px;color:#001232'> </i>
+          <p class="p-1 m-0 nav">Vehicles</p>
         </router-link>
       </div>
 
       <div class="col-md-12 margin-right navigate m-0 mr-3 p-0 text-left border-bottom" v-else>
         <p class="p-0 m-0">
         <router-link to="/vehicles" exact-active-class="active"
-          class="bikex-header mb-0 p-0"><i class='fa fa-bicycle pl-3' style='font-size:20px;'></i>
+          class="bikex-header mb-0 p-0"><i class='fa fa-bicycle pl-3' style='font-size:20px;color:#001232'></i>
         </router-link>
         </p>
       </div>
 
       <!-- <div class="col-md-12 margin-right text-center border-bottom p-0" v-if="!toggle">
         <router-link to="/procurement" exact-active-class="active" class="d-flex navigate-padding">
-          <i class='fa fa-hdd-o pl-3 pt-1 pr-2' style='font-size:20px;'> </i>
+          <i class='fa fa-hdd-o pl-3 pt-1 pr-2' style='font-size:20px;color:#001232'> </i>
           <p class="p-0 m-0">Add Vehicle</p>
         </router-link>
       </div>
@@ -53,22 +53,22 @@
       <div class="col-md-12 margin-right navigate m-0 mr-3 p-0 text-left border-bottom" v-else>
         <p class="p-0 m-0">
         <router-link to="/procurement" exact-active-class="active"
-          class="bikex-header mb-0 p-0"><i class='fa fa-hdd-o pl-3' style='font-size:20px;'></i>
+          class="bikex-header mb-0 p-0"><i class='fa fa-hdd-o pl-3' style='font-size:20px;color:#001232'></i>
         </router-link>
         </p>
       </div> -->
 
        <div class="col-md-12 margin-right text-center border-bottom p-0" v-if="!toggle">
         <router-link to="/procured-vehicle" exact-active-class="active" class="d-flex navigate-padding">
-          <i class='fa fa-anchor pl-3 pt-1 pr-2' style='font-size:20px;'> </i>
-          <p class="p-0 m-0">Procured</p>
+          <i class='fa fa-anchor pl-3 pt-1 pr-2' style='font-size:20px;color:#001232'> </i>
+          <p class="p-1 m-0">Procured</p>
         </router-link>
       </div>
 
       <div class="col-md-12 margin-right navigate m-0 mr-3 p-0 text-left border-bottom" v-else>
         <p class="p-0 m-0">
         <router-link to="/procured-vehicle" exact-active-class="active"
-          class="bikex-header mb-0 p-0"><i class='fa fa-anchor pl-3' style='font-size:20px;'></i>
+          class="bikex-header mb-0 p-0"><i class='fa fa-anchor pl-3' style='font-size:20px;color:#001232'></i>
         </router-link>
         </p>
       </div>
@@ -76,15 +76,15 @@
 
             <div class="col-md-12 margin-right text-center border-bottom p-0" v-if="!toggle">
         <router-link to="/under-refurbishment" exact-active-class="active" class="d-flex navigate-padding">
-          <i class='fa fa-cogs pl-3 pt-1 pr-2' style='font-size:20px;'> </i>
-          <p class="p-0 m-0">Under Refurb</p>
+          <i class='fa fa-cogs pl-3 pt-1 pr-2' style='font-size:20px;color:#001232'> </i>
+          <p class="p-1 m-0">Under Refurb</p>
         </router-link>
       </div>
 
       <div class="col-md-12 margin-right navigate m-0 mr-3 p-0 text-left border-bottom" v-else>
         <p class="p-0 m-0">
         <router-link to="/under-refurbishment" exact-active-class="active"
-          class="bikex-header mb-0 p-0"><i class='fa fa-cogs pl-3' style='font-size:20px;'></i>
+          class="bikex-header mb-0 p-0"><i class='fa fa-cogs pl-3' style='font-size:20px;color:#001232'></i>
         </router-link>
         </p>
       </div>
@@ -93,7 +93,7 @@
 
       <!-- <div class="col-md-12 margin-right text-center border-bottom p-0" v-if="!toggle">
         <router-link to="/refurbishment" exact-active-class="active" class="d-flex navigate-padding">
-          <i class='fa fa-wrench pl-3 pt-1 pr-2' style='font-size:20px;'> </i>
+          <i class='fa fa-wrench pl-3 pt-1 pr-2' style='font-size:20px;color:#001232'> </i>
           <p class="p-0 m-0">Refurbishment</p>
         </router-link>
       </div>
@@ -101,82 +101,82 @@
       <div class="col-md-12 margin-right navigate m-0 mr-3 p-0 text-left border-bottom" v-else>
         <p class="p-0 m-0">
         <router-link to="/refurbishment" exact-active-class="active"
-          class="bikex-header mb-0 p-0"><i class='fa fa-wrench pl-3' style='font-size:20px;'></i>
+          class="bikex-header mb-0 p-0"><i class='fa fa-wrench pl-3' style='font-size:20px;color:#001232'></i>
         </router-link>
         </p>
       </div> -->
 
         <div class="col-md-12 margin-right text-center border-bottom p-0" v-if="!toggle">
         <router-link to="/instock" exact-active-class="active" class="d-flex navigate-padding">
-          <i class='fa fa-briefcase pl-3 pt-1 pr-2' style='font-size:20px;'> </i>
-          <p class="p-0 m-0">In Stock</p>
+          <i class='fa fa-briefcase pl-3 pt-1 pr-2' style='font-size:20px;color:#001232'> </i>
+          <p class="p-1 m-0">In Stock</p>
         </router-link>
       </div>
 
       <div class="col-md-12 margin-right navigate m-0 mr-3 p-0 text-left border-bottom" v-else>
         <p class="p-0 m-0">
         <router-link to="/instock" exact-active-class="active"
-          class="bikex-header mb-0 p-0"><i class='fa fa-briefcase pl-3' style='font-size:20px;'></i>
+          class="bikex-header mb-0 p-0"><i class='fa fa-briefcase pl-3' style='font-size:20px;color:#001232'></i>
         </router-link>
         </p>
       </div>
 
          <div class="col-md-12 margin-right text-center border-bottom p-0" v-if="!toggle">
         <router-link to="/live" exact-active-class="active" class="d-flex navigate-padding">
-          <i class='fa fa-level-up pl-3 pt-1 pr-2' style='font-size:20px;'> </i>
-          <p class="p-0 m-0">Live Vehicles</p>
+          <i class='fa fa-level-up pl-3 pt-1 pr-2' style='font-size:20px;color:#001232'> </i>
+          <p class="p-1 m-0">Live Vehicles</p>
         </router-link>
       </div>
 
       <div class="col-md-12 margin-right navigate m-0 mr-3 p-0 text-left border-bottom" v-else>
         <p class="p-0 m-0">
         <router-link to="/live" exact-active-class="active"
-          class="bikex-header mb-0 p-0"><i class='fa fa-level-up pl-3' style='font-size:20px;'></i>
+          class="bikex-header mb-0 p-0"><i class='fa fa-level-up pl-3' style='font-size:20px;color:#001232'></i>
         </router-link>
         </p>
       </div>
 
       <div class="col-md-12 margin-right text-center border-bottom p-0" v-if="!toggle">
         <router-link to="/models" exact-active-class="active" class="d-flex navigate-padding">
-          <i class='fa fa-motorcycle pl-3 pt-1 pr-2' style='font-size:20px;'> </i>
-          <p class="p-0 m-0">Models</p>
+          <i class='fa fa-motorcycle pl-3 pt-1 pr-2' style='font-size:20px;color:#001232'> </i>
+          <p class="p-1 m-0">Models</p>
         </router-link>
       </div>
 
       <div class="col-md-12 margin-right navigate m-0 mr-3 p-0 text-left border-bottom" v-else>
         <p class="p-0 m-0">
         <router-link to="/models" exact-active-class="active"
-          class="bikex-header mb-0 p-0"><i class='fa fa-motorcycle pl-3' style='font-size:20px;'></i>
+          class="bikex-header mb-0 p-0"><i class='fa fa-motorcycle pl-3' style='font-size:20px;color:#001232'></i>
         </router-link>
         </p>
       </div>
 
       <div class="col-md-12 margin-right text-center border-bottom p-0" v-if="!toggle">
         <router-link to="/centres" exact-active-class="active" class="d-flex navigate-padding">
-          <i class='fa fa-users pl-3 pt-1 pr-2' style='font-size:20px;'> </i>
-          <p class="p-0 m-0">Centres</p>
+          <i class='fa fa-users pl-3 pt-1 pr-2' style='font-size:20px;color:#001232'> </i>
+          <p class="p-1 m-0">Centres</p>
         </router-link>
       </div>
 
       <div class="col-md-12 margin-right navigate m-0 mr-3 p-0 text-left border-bottom" v-else>
         <p class="p-0 m-0">
         <router-link to="/centres" exact-active-class="active"
-          class="bikex-header mb-0 p-0"><i class='fa fa-users pl-3' style='font-size:20px;'></i>
+          class="bikex-header mb-0 p-0"><i class='fa fa-users pl-3' style='font-size:20px;color:#001232'></i>
         </router-link>
         </p>
       </div>
 
       <div class="col-md-12 margin-right text-center border-bottom p-0" v-if="!toggle">
         <router-link to="/faqs" exact-active-class="active" class="d-flex navigate-padding">
-          <i class='fa fa-quora pl-3 pt-1 pr-2' style='font-size:20px;'> </i>
-          <p class="p-0 m-0">Manage FAQ'S</p>
+          <i class='fa fa-quora pl-3 pt-1 pr-2' style='font-size:20px;color:#001232'> </i>
+          <p class="p-1 m-0">Manage FAQ'S</p>
         </router-link>
       </div>
 
       <div class="col-md-12 margin-right navigate m-0 mr-3 p-0 text-left border-bottom" v-else>
         <p class="p-0 m-0">
         <router-link to="/faqs" exact-active-class="active"
-          class="bikex-header mb-0 p-0"><i class='fa fa-quora pl-3' style='font-size:20px;'></i>
+          class="bikex-header mb-0 p-0"><i class='fa fa-quora pl-3' style='font-size:20px;color:#001232'></i>
         </router-link>
         </p>
       </div>
@@ -184,15 +184,15 @@
       
       <div class="col-md-12 margin-right text-center border-bottom p-0" v-if="!toggle">
         <router-link to="/pending-upload" exact-active-class="active" class="d-flex navigate-padding">
-          <i class='fa fa-camera-retro pl-3 pt-1 pr-2' style='font-size:20px;'> </i>
-          <p class="p-0 m-0">Uploads</p>
+          <i class='fa fa-camera-retro pl-3 pt-1 pr-2' style='font-size:20px;color:#001232'> </i>
+          <p class="p-1 m-0">Uploads</p>
         </router-link>
       </div>
 
       <div class="col-md-12 margin-right navigate m-0 mr-3 p-0 text-left border-bottom" v-else>
         <p class="p-0 m-0">
         <router-link to="/pending-upload" exact-active-class="active"
-          class="bikex-header mb-0 p-0"><i class='fa fa-camera-retro pl-3' style='font-size:20px;'></i>
+          class="bikex-header mb-0 p-0"><i class='fa fa-camera-retro pl-3' style='font-size:20px;color:#001232'></i>
         </router-link>
         </p>
       </div>
@@ -230,7 +230,6 @@ export default {
 }
 </script>
 <style scoped>
-@import url('https://fonts.googleapis.com/css?family=Montserrat&display=swap');
 @import url('https://fonts.googleapis.com/css?family=Coda:800&display=swap');
 /* .navigate:hover{
    -webkit-box-shadow: inset 0.1575rem 0 0 red;
@@ -239,18 +238,22 @@ export default {
     color: #007bff;
 } */
 .active{
-    -webkit-box-shadow: inset 0.1875rem 0 0 red;
-    box-shadow: inset 0.1875rem 0 0 red;
+    -webkit-box-shadow: inset 0.1875rem 0 0 #ffb52f;
+    box-shadow: inset 0.1875rem 0 0 #ffb52f;
     background-color: #fbfbfb;
-    color: #007bff;
+    color: #ffb52f;
 }
 .logo{
   color: black;
 }
 .navigate-padding{
   padding:5.6px 0px 5.6px 0px;
+  color: black;
+  font-size: 15px;
 }
-
+.navigate-padding:hover{
+   color: #ffb52f;
+}
 .logo:hover{
   color: black
 }
@@ -258,7 +261,6 @@ export default {
   margin-right: 10px;
 }
 .navigation{
-  font-family: 'Montserrat', sans-serif;
   cursor: pointer;
 }
 .bikex-header{
@@ -266,6 +268,9 @@ export default {
   font-family: 'Coda', cursive;
   padding-top: 5px;
   padding-bottom: 1px
+}
+.bikex-header i:hover{
+   color: rgb(255, 181, 47) !important;
 }
 .border-bottom{
 border-bottom: 1px solid gray
@@ -304,6 +309,7 @@ border-bottom: 1px solid gray
     box-shadow: #818181
 }
 .sidenav {
+  background-color: #ffb52f;
   height: 100%;
   position: fixed;
   z-index: 9999999;
