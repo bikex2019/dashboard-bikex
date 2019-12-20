@@ -7,7 +7,7 @@
 
       </div>
       <div class="col-md-6 col-8 text-right pr-4">
-        <i class="fa fa-sign-out mr-3" style='font-size:20px;color:#001232' aria-hidden="true"></i>
+        <i class="fa fa-sign-out mr-3"  v-on:click="logout" style='font-size:20px;color:#001232' aria-hidden="true"></i>
         <div class="dropdown mr-4">
           <i class='fa fa-bell-o mt-2 dropbtn' style='font-size:20px;color:#001232'></i><span class="badge badge-light" style="color:red">3</span>
           <div class="dropdown-content">
@@ -221,9 +221,20 @@ export default {
         },
         homes:function(){
           this.activenow = 'home'
-        }
+        },
+          logout(){
+        localStorage.removeItem('token')
+        localStorage.removeItem('temp')
+        window.location.reload()
+        this.navigation = false
+      },
     },
     mounted(){
+      let auth = localStorage.getItem('token')
+        this.id = localStorage.getItem('temp')
+        if(!auth){
+            this.$router.push('/login')
+        }
       this.activenow = 'home'
     }
     
@@ -253,6 +264,9 @@ export default {
 }
 .navigate-padding:hover{
    color: #ffb52f;
+}
+.fa-sign-out:hover{
+     color: #ffb52f;
 }
 .logo:hover{
   color: black

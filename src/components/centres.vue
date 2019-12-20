@@ -114,6 +114,13 @@ export default {
         }
     },
     beforeMount(){
+        let auth = localStorage.getItem('token')
+        this.id = localStorage.getItem('temp')
+        if(!auth){
+            this.$swal('Please Log in.');
+            this.$router.push('/login')
+        }
+
         this.$http.get('https://backend-bikex.herokuapp.com/api/centres')
         .then(response=>{
 		this.centreData= response.body;

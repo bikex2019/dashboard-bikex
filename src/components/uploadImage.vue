@@ -171,6 +171,12 @@ export default {
          })
   },
   mounted(){
+    let auth = localStorage.getItem('token')
+        this.id = localStorage.getItem('temp')
+        if(!auth){
+            this.$swal('Please Log in.');
+            this.$router.push('/login')
+        }
    
   },
   methods:{

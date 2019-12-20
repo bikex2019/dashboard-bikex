@@ -44,6 +44,11 @@ export default {
     },
   },
   mounted() {
+    let auth = localStorage.getItem('token')
+        this.id = localStorage.getItem('temp')
+        if(!auth){
+            this.$router.push('/login')
+        }
     setInterval(this.generateData);
   },
   computed:{

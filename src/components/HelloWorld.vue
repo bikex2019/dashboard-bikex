@@ -58,6 +58,14 @@ export default {
             test:''   
         }
     },
+    beforeCreate(){
+        let auth = localStorage.getItem('token')
+        this.id = localStorage.getItem('temp')
+        if(!auth){
+            this.$swal('Please Log in.');
+            this.$router.push('/login')
+        }
+    },
     methods:{
         addrow: function(){
             if(this.input.length == 0){

@@ -46,6 +46,13 @@ export default {
     length: function(){
       return 2
     }
+  },
+  beforeCreate(){
+    let auth = localStorage.getItem('token')
+        this.id = localStorage.getItem('temp')
+        if(!auth){
+            this.$router.push('/login')
+        }
   }
 };
 </script>

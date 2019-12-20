@@ -1,6 +1,6 @@
 <template>
   <div id="app">
-    <navigation></navigation>
+    <navigation v-if="show"></navigation>
        <div class="custom">
          <router-view></router-view>
        </div>
@@ -14,11 +14,19 @@ export default {
   name: 'app',
   data(){
     return{
-      toggle: navigationStore.data.toggler
+      toggle: navigationStore.data.toggler,
+      show:true
     }
   },
   components: {
     navigation
+  },
+  mounted(){
+    let auth = localStorage.getItem('token')
+        this.id = localStorage.getItem('temp')
+       if(!auth){
+         this.show = false
+       }
   }
 }
 </script>

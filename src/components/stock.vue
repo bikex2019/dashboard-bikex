@@ -286,6 +286,12 @@ export default {
      
     },
     created(){
+      let auth = localStorage.getItem('token')
+        this.id = localStorage.getItem('temp')
+        if(!auth){
+            this.$swal('Please Log in.');
+            this.$router.push('/login')
+        }
       this.loading = true
           this.$http.get('https://backend-bikex.herokuapp.com/api/fetch/instock-vehicle')
           .then(response=>{

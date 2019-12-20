@@ -23,6 +23,13 @@ export default {
         runningBikes,
         soldBikes
     },
+    beforeCreate(){
+        let auth = localStorage.getItem('token')
+        this.id = localStorage.getItem('temp')
+        if(!auth){
+            this.$router.push('/login')
+        }
+    },
     data(){
         return{
             data1:1,

@@ -13,6 +13,12 @@
 <script>
 export default {
         mounted(){
+            let auth = localStorage.getItem('token')
+        this.id = localStorage.getItem('temp')
+        if(!auth){
+            this.$swal('Please Log in.');
+            this.$router.push('/login')
+        }
         window.scrollTo({
                 top: 0,
                 left: 0,

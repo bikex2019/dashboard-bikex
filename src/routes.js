@@ -14,6 +14,7 @@ import uploads from './components/uploadImage'
 import pendingUpload from './components/pending-upload'
 import notfound from './components/404page'
 import fines from './components/fines'
+import login from './components/login'
 
 export default[
     {path:'/', component:homepage},
@@ -27,6 +28,7 @@ export default[
     {path:'/under-refurbishment', component:underRefurbish},
     {path:'/instock', component:inStock},
     {path:'/live', component:live},
+    {path:'/login', component:login},
     {path:'/uploads/:id', component:uploads},
     {path:'/pending-upload', component:pendingUpload},
     {path:'/fines', component:fines},
