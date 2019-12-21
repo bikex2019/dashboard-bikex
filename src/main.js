@@ -15,6 +15,9 @@ Vue.use(VueRouter);
 Vue.use(axios);
 Vue.use(VueResource)
 
+Vue.filter('currency', function (value) {
+  return '₹' + parseFloat(value).toLocaleString();
+});
 const router = new VueRouter({
   routes:Routes,
   mode: "history"

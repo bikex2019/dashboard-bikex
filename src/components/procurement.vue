@@ -30,7 +30,7 @@
         </tr>
         </thead>
         <tbody>
-            <tr v-for="(faq, index) in paginatedData" :key="index">
+            <tr v-for="(faq, index) in paginatedData" :key="index" v-on:click="see_vehicle(faq.vehicle_number)">
                 <td class="py-1">{{faq._id}}</td>
                 <td class="py-1">{{faq.vehicle_number}}</td>
                 <td class="py-1">{{faq.source}}</td>
@@ -453,6 +453,9 @@ export default {
          })
     },
     methods:{
+      see_vehicle(identity){
+        this.$router.push('/vehicles/'+ identity)
+      },
             nextPage(){
              this.pageNumber++;
             },

@@ -34,14 +34,14 @@
                 <p>Vehicel without Image is not shown in live!</p>
               </div>
               <div class="modal-footer">
-                <button type="btn custom" class="btn btn-default" data-dismiss="modal" v-on:click="deletedisplay">Delete</button>
+                <button type="action-button" class="btn btn-default" data-dismiss="modal" v-on:click="deletedisplay">Delete</button>
               </div>
             </div>    
           </div>
         </div>
         <div class="content mt-3" v-if="displayedit">
           <input type="file" ref="file" @change="onSelect" class="mt-3">
-          <button class="btn mt-3" v-on:click="edituploadDisplay">Update</button>
+          <button class="action-button mt-3" v-on:click="edituploadDisplay">Update</button>
         </div>
       </div>
       <div v-show="loading == false && display.length == 0">
@@ -49,7 +49,7 @@
         <p>Please Upload one.</p>
         <input type="file" ref="file" @change="onSelect">
         <div class="button mt-3">
-          <button class="btn" v-on:click="uploadDisplay">Upload</button>
+          <button class="action-button" v-on:click="uploadDisplay">Upload</button>
         </div>
       </div>
       <div v-show="loading"  class="loading text-center mb-4 mt-5" style="min-height:200px" >
@@ -66,7 +66,7 @@
           <img :src="image" width="auto" height="100px">
         </div>
         <div class="container" v-show="loading == false && uploadedImage.length >0">
-          <button type="button" class="btn mt-2 mb-2 custom" v-on:click="deleteuploads"><i class="fa fa-trash-o" aria-hidden="true"></i></button>
+          <button type="button" class="action-button mt-2 mb-2 custom" v-on:click="deleteuploads"><i class="fa fa-trash-o" aria-hidden="true"></i></button>
         </div>
       </div>
       <div v-show="loading == false && uploadedImage.length == 0">
@@ -75,7 +75,7 @@
         <p class="mb-4" style="color:red">Please Upload !</p>
         <input type="file" id="files" ref="files" multiple v-on:change="handleFilesUpload()">
         <div class="button mt-3">
-          <button class="btn" v-on:click="uploadmultDisplay">Upload</button>
+          <button class="action-button" v-on:click="uploadmultDisplay">Upload</button>
         </div>
       </div>
 
@@ -295,7 +295,7 @@ export default {
   cursor: pointer;
   border: none
 }
-.custom{
+/* .custom{
   border-radius: 50%;
   background-color: aliceblue;
   color: blue;
@@ -303,18 +303,18 @@ export default {
     box-shadow: none;
 
 
-}
+} */
 .no-wrap{
   flex-wrap: wrap
 }
-.custom:hover{
+/* .custom:hover{
   background-color: #ffb52f;
   color: black
 }
 .custom:focus{
   outline: none;
   box-shadow: none;
-}
+} */
 .wrapper-progressBar {
     width: 100%
 }
@@ -322,7 +322,20 @@ export default {
 .progressBar {
   margin-top: 80px;
 }
-
+.action-button{
+    border: 1.5px solid #ffb52f;
+    background-color: white;
+    color: #000a1b;
+    cursor: pointer;
+    font-size: 14px;
+    font-weight: 600;
+    height: inherit;
+    letter-spacing: 1px;
+    padding: 10px 20px;
+    text-transform: uppercase;
+    transition: all 0.3s ease 0s;
+    width: 40%;
+}
 .progressBar li {
     list-style-type: none;
     float: left;

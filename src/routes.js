@@ -15,14 +15,22 @@ import pendingUpload from './components/pending-upload'
 import notfound from './components/404page'
 import fines from './components/fines'
 import login from './components/login'
+import finance from './components/finance'
+import sell from './components/sell'
+import vehicledetail from './components/vehicleDetail'
+import modeldetail from './components/modelDetail'
+import purchase from './components/purchase'
+
 
 export default[
     {path:'/', component:homepage},
     {path:'/vehicles', component:vehicles},
+    {path:'/vehicles/:id', component:vehicledetail},
     {path:'/faqs', component:faqs},
     {path:'/centres', component:centres},
     {path:'/procurement', component:procurement},
     {path:'/models', component:models},
+    {path:'/models/:id', component:modeldetail},
     {path:'/test', component:helloworld},
     {path:'/refurbishment', component:refurbishment},
     {path:'/under-refurbishment', component:underRefurbish},
@@ -32,6 +40,9 @@ export default[
     {path:'/uploads/:id', component:uploads},
     {path:'/pending-upload', component:pendingUpload},
     {path:'/fines', component:fines},
+    {path:'/finance', component:finance},
+    {path:'/purchase', component:purchase},
+    {path:'/sell', component:sell},
     {path:'/procured-vehicle', component:procuredVehicle},
     {path:'*', component:notfound}
     ]

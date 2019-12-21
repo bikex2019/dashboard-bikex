@@ -4,16 +4,20 @@
       <div class="col-md-6 col-4 text-left pl-4">
         <span style="font-size:25px;cursor:pointer" v-if="toggle" v-on:click="toggle =!toggle">&#9776;</span>
                 <span class="phone" style="font-size:25px;cursor:pointer" v-if="!toggle" v-on:click="toggle =!toggle">&times;</span>
-
       </div>
       <div class="col-md-6 col-8 text-right pr-4">
+        <span class="mr-3" v-on:click="refresh()"><i class="fa fa-refresh" style="color:red"></i></span>
+        <span class="mr-3" v-on:click="go('purchase')">Purchase<span class="badge badge-light" style="color:red">{{purchases.total}}</span></span>
+        <!-- <span class="mr-3">Booking<span class="badge badge-light" style="color:red">2</span></span> -->
+        <span class="mr-3" v-on:click="go('sell')">Sell<span class="badge badge-light" style="color:red">{{sell.total}}</span></span>
+       <span class="mr-3" v-on:click="go('finance')">Finance<span class="badge badge-light" style="color:red">{{finance.total}}</span></span>
         <i class="fa fa-sign-out mr-3"  v-on:click="logout" style='font-size:20px;color:#001232' aria-hidden="true"></i>
-        <div class="dropdown mr-4">
-          <i class='fa fa-bell-o mt-2 dropbtn' style='font-size:20px;color:#001232'></i><span class="badge badge-light" style="color:red">3</span>
+        <div class="dropdown mr-1">
+          <i class='fa fa-link mt-2 dropbtn' style='font-size:17px;color:#001232'></i>
           <div class="dropdown-content">
-            <a href="#">Link 1</a>
-            <a href="#">Link 2</a>
-            <a href="#">Link 3</a>
+            <a  v-on:click="go('live')">Live Vehicle</a>
+            <a  v-on:click="go('models')">Models</a>
+            <a  v-on:click="go('faqs')">FAQ'S</a>
           </div>
         </div>
       </div>
@@ -207,7 +211,10 @@ export default {
     data(){
         return {
             toggle: true,
-            activenow : ''
+            activenow : '',
+            finance:'',
+            sell:'',
+            purchases:''
         }
     },
     methods:{
@@ -228,6 +235,12 @@ export default {
         window.location.reload()
         this.navigation = false
       },
+      go(url){
+        this.$router.push('/'+ url)
+      },
+      refresh(){
+        window.location.reload()
+      }
     },
     mounted(){
       let auth = localStorage.getItem('token')
@@ -236,6 +249,22 @@ export default {
             this.$router.push('/login')
         }
       this.activenow = 'home'
+
+       this.$http.get('https://backend-bikex.herokuapp.com/api/finance/notseen')
+          .then(response=>{
+           this.finance = response.body
+         })
+        
+         this.$http.get('https://backend-bikex.herokuapp.com/api/sell/notseen')
+          .then(response=>{
+           this.sell = response.body
+         })
+
+          this.$http.get('https://backend-bikex.herokuapp.com/api/purchases/get/notseen')
+          .then(response=>{
+           this.purchases = response.body
+         })
+
     }
     
 }

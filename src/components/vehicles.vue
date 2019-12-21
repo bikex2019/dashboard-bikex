@@ -32,23 +32,23 @@
         </tr>
         </thead>
         <tbody>
-            <tr v-for="(data, index) in paginatedData" :key="index">
-                <td class="py-1">{{data.vehicle_id}}</td>
-                <td class="py-1">{{data.vehicle_number}}</td>
-                <td class="py-1">{{data.modal_name}}</td>
-                <td class="py-1">{{data.make}}</td>
-                <td class="py-1">{{data.chassis_no}}</td>
-                <td class="py-1" v-if="data.status == 0"><span style="color:green">Procured</span></td>
-                <td class="py-1" v-if="data.status == 1"><span style="color:brown">Under-Refurbish</span></td>
-                <td class="py-1" v-if="data.status == 2"><span style="color:purple">In Stock</span></td>
-                <td class="py-1" v-if="data.status == 3"><span style="color:red">Live!</span></td>
-                <td class="py-1" v-if="data.status == 4"><span style="color:red">Booked!</span></td>
-                <td class="py-1" v-if="data.status == 5"><span style="color:red">Sold!</span></td>
-                <td class="py-1">{{data.vehicle_type}}</td>
-                <td class="py-1" v-if="data.imageUpload == 0"><span style="color:red"><i class="fa fa-times" aria-hidden="true"></i></span></td>
-                <td class="py-1" v-if="data.imageUpload == 1"><span style="color:red"><i class="fa fa-clock-o" aria-hidden="true"></i></span></td>
-                <td class="py-1" v-if="data.imageUpload == 2"><span><i class="fa fa-check" aria-hidden="true"></i></span></td>
-                <td class="py-1"  v-if="data.imageUpload == null"><span>-</span></td>
+            <tr v-for="(data, index) in paginatedData" :key="index" class="hand">
+                <td v-on:click="see_vehicle(data.vehicle_id)" class="py-1">{{data.vehicle_id}}</td>
+                <td v-on:click="see_vehicle(data.vehicle_id)" class="py-1">{{data.vehicle_number}}</td>
+                <td v-on:click="see_model(data.model_id)" class="py-1 under">{{data.modal_name}}</td>
+                <td v-on:click="see_model(data.model_id)" class="py-1 under">{{data.make}}</td>
+                <td v-on:click="see_vehicle(data.vehicle_id)" class="py-1">{{data.chassis_no}}</td>
+                <td v-on:click="see_vehicle(data.vehicle_id)" class="py-1" v-if="data.status == 0"><span style="color:green">Procured</span></td>
+                <td v-on:click="see_vehicle(data.vehicle_id)" class="py-1" v-if="data.status == 1"><span style="color:brown">Under-Refurbish</span></td>
+                <td v-on:click="see_vehicle(data.vehicle_id)" class="py-1" v-if="data.status == 2"><span style="color:purple">In Stock</span></td>
+                <td v-on:click="see_vehicle(data.vehicle_id)" class="py-1" v-if="data.status == 3"><span style="color:red">Live!</span></td>
+                <td v-on:click="see_vehicle(data.vehicle_id)" class="py-1" v-if="data.status == 4"><span style="color:red">Booked!</span></td>
+                <td v-on:click="see_vehicle(data.vehicle_id)" class="py-1" v-if="data.status == 5"><span style="color:red">Sold!</span></td>
+                <td v-on:click="see_vehicle(data.vehicle_id)" class="py-1">{{data.vehicle_type}}</td>
+                <td v-on:click="see_vehicle(data.vehicle_id)" class="py-1" v-if="data.imageUpload == 0"><span style="color:red"><i class="fa fa-times" aria-hidden="true"></i></span></td>
+                <td v-on:click="see_vehicle(data.vehicle_id)" class="py-1" v-if="data.imageUpload == 1"><span style="color:red"><i class="fa fa-clock-o" aria-hidden="true"></i></span></td>
+                <td v-on:click="see_vehicle(data.vehicle_id)" class="py-1" v-if="data.imageUpload == 2"><span><i class="fa fa-check" aria-hidden="true"></i></span></td>
+                <td v-on:click="see_vehicle(data.vehicle_id)" class="py-1"  v-if="data.imageUpload == null"><span>-</span></td>
                 <td class="py-1"><button class="button btn btn-primary m-0 p-0 custom-button" v-on:click="editModals(data)"><i class="fa fa-pencil px-1" aria-hidden="true"></i></button>
                 <button class="button btn btn-primary m-0 p-0  custom-button" v-on:click="editStatus(data)"><i class="fa fa-bicycle px-1" aria-hidden="true"></i></button>
                <button class="button btn btn-primary m-0 p-0  custom-button" v-on:click="goToUpload(data.vehicle_id)"><i class="fa fa-eye px-1" aria-hidden="true"></i></button>
@@ -529,6 +529,13 @@ export default {
           this.pageNumber=this.$route.query.page || 1
     },
     methods:{
+       see_vehicle(identity){
+         window.console.log('working')
+        this.$router.push('/vehicles/'+ identity)
+      },
+      see_model(identy){
+        this.$router.push('/models/'+ identy)
+      },
       goToUpload(id){
            this.$router.push({path:'/uploads/'+ id})
       },
@@ -802,7 +809,12 @@ export default {
     background-color: transparent;
     border-color: transparent;
 }
-
+.hand{
+  cursor: pointer
+}
+.under:hover{
+  text-decoration: underline
+}
 input[type=date]:required:invalid::-webkit-datetime-edit {
     color: transparent;
 }
