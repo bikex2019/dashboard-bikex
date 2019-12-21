@@ -18,7 +18,7 @@
             <tr v-for="(purchase, index) in purchase" :key="index" v-bind:class="{strong: purchase.seen == 0}">
                 <td  class="py-1">{{purchase._id}}</td> 
                 <td class="py-1">{{purchase.customer_id}}</td>
-                <td class="py-1">{{purchase.vehicle_id}}</td>
+                <td v-on:click="see_vehicle(purchase.vehicle_id)" class="under py-1">{{purchase.vehicle_id}}</td>
                 <td class="py-1">{{purchase.firstname}} {{purchase.lastname}}</td>
                 <td  class="py-1">{{purchase.phone}}</td>
                 <td  class="py-1">{{purchase.email}}</td>
@@ -44,21 +44,28 @@
     <span class="close" v-on:click="close()">&times;</span>
     
     <div class="content">
-            <div class="row col-md-10 text-left" style="margin:0 auto" v-for="(views, index) in view" :key="index">
+            <div class="row col-md-12 text-left" style="margin:0 auto" v-for="(views, index) in view" :key="index">
                 <div class="col-md-6">
-                    <p><label>ID:</label> {{views._id}}</p>
-                    <p><label>Vehicle No:</label> {{views.vehicle_no}}</p>
-                    <p><label>Name:</label> {{views.name}}</p>
-                    <p><label>Phone:</label> {{views.mobile}}</p>
-                     <p><label>City:</label> {{views.city}}</p>
-                      <p><label>State:</label> {{views.state}}</p>
+                    <p><label>Order ID:</label> {{views._id}}</p>
+                    <p><label>Customer ID:</label> {{views.customer_id}}</p>
+                    <p  v-on:click="see_vehicle(purchase.vehicle_id)" class="under"><label>Vehicle ID:</label> {{views.vehicle_id}}</p>
+                    <p><label>First Name:</label> {{views.firstname}}</p>
+                    <p><label>Last Name:</label> {{views.lastname}}</p>
+                    <p><label>Phone:</label> {{views.phone}}</p>
+                    <p><label>Email:</label> {{views.email}}</p>
+                    <p><label>Amount:</label> {{views.amount}}</p>
+                    <p><label>Address 1:</label> {{views.address1}}</p>
+                    <p><label>Address 2:</label> {{views.address2}}</p>
                 </div>
                 <div class="col-md-6">
-                    <p><label>Km Run:</label> {{views.km_run}}</p>
-                    <p><label>Make:</label> {{views.make}}</p>
                     <p><label>Model:</label> {{views.model}}</p>
-                    <p><label>Engine:</label> {{views.engine_cc}}</p>
-                     <p><label>Manufacture Year:</label> {{views.manufacture_year}}</p>
+                    <p><label>State:</label> {{views.state}}</p>
+                    <p><label>Postal Code:</label> {{views.postalcode}}</p>
+                    <h5 class="m-3 ml-0 p-0">Payment Information</h5>
+                    <p><label>Razorpay Order ID:</label> {{views.razorpay_order_id}}</p>
+                    <p><label>Razorpay Payment ID:</label> {{views.razorpay_payment_id}}</p>
+                    <p><label>Razorpay Signature:</label> {{views.razorpay_signature}}</p>
+
                     <p><label>Date</label> {{views.date| moment("MMMM Do YYYY")}}</p>
                 </div>
             </div>
@@ -93,6 +100,10 @@ export default {
          })
     },
     methods:{
+          see_vehicle(identity){
+         window.console.log('working')
+        this.$router.push('/vehicles/'+ identity)
+      },
         read(id){
             window.console.log(id)
             this.loading = true
@@ -144,7 +155,12 @@ label{
   background-color: rgb(0,0,0); /* Fallback color */
   background-color: rgba(0,0,0,0.4); /* Black w/ opacity */
 }
-
+.under{
+    cursor: pointer;
+}
+.under:hover{
+    text-decoration: underline
+}
 /* Modals Content */
 .modals-content {
   background-color: #fefefe;
