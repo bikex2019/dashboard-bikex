@@ -20,6 +20,8 @@ import sell from './components/sell'
 import vehicledetail from './components/vehicleDetail'
 import modeldetail from './components/modelDetail'
 import purchase from './components/purchase'
+import purchased_vehicle from './components/purchasedVehicle'
+
 
 
 export default[
@@ -36,6 +38,7 @@ export default[
     {path:'/under-refurbishment', component:underRefurbish},
     {path:'/instock', component:inStock},
     {path:'/live', component:live},
+    {path:'/all-purchase', component:purchased_vehicle},
     {path:'/login', component:login},
     {path:'/uploads/:id', component:uploads},
     {path:'/pending-upload', component:pendingUpload},

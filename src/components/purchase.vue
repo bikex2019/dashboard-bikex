@@ -1,6 +1,24 @@
 <template>
     <div class="notification">
-         <table class="table table-striped table-bordered col-md-11 ml-4">
+        <div class="col-md-11 ml-4 mb-2">
+            <div class="row">
+                <div class="col-md-4 p-0 m-0 text-left pt-1 d-flex">
+                    <p class="p-0 m-0">Showing {{paginatedData.length}} out of {{purchase.length}}
+                      <span>Page No. {{pageNumber}}</span>
+                    </p>
+                </div>
+                 <div class="col-md-4 pt-1 d-inline">
+                   <span class="link px-3" v-bind:class="{active: filter === 'all'}"  v-on:click="filterkey('all')">All</span>
+                   <span class="link px-3" v-bind:class="{active: filter === 'failed'}" v-on:click="filterkey('failed')">Failed</span>
+                   <span class="link px-3" v-bind:class="{active: filter === 'sucess'}" v-on:click="filterkey('sucess')">Success</span>
+                </div>
+                <div class="col-md-4 pt-1 text-right m-0 p-0">
+                    <input type="text" class="w-100 px-3" v-model="search" placeholder="search customer ID, order ID" width="100%">
+                </div>
+            </div>
+    </div>
+
+         <table class="table table-bordered col-md-11 ml-4">
         <thead>
         <tr>
             <th>Order ID</th>
@@ -15,7 +33,7 @@
         </tr>
         </thead>
         <tbody>
-            <tr v-for="(purchase, index) in purchase" :key="index" v-bind:class="{strong: purchase.seen == 0}">
+            <tr v-for="(purchase, index) in paginatedData" :key="index" v-bind:class="{strong: purchase.seen == 0,failed:purchase.payment_status==0,sucess:purchase.payment_status==1}">
                 <td  class="py-1">{{purchase._id}}</td> 
                 <td class="py-1">{{purchase.customer_id}}</td>
                 <td v-on:click="see_vehicle(purchase.vehicle_id)" class="under py-1">{{purchase.vehicle_id}}</td>
@@ -73,7 +91,18 @@
   </div>
 
 </div>
-
+<div class="col-md-12">
+                <div class="row">
+                    <div class="col-md-12 text-center" v-if="filteredList.length != 0">
+                        <button class="btn mr-2" v-on:click="prevPage" :disabled="pageNumber==1"><i class="fa fa-angle-double-left" aria-hidden="true"></i> prev</button>|
+                        <button class="btn ml-2" v-on:click="nextPage" :disabled="pageNumber == pageCount">next <i class="fa fa-angle-double-right" aria-hidden="true"></i></button>
+                    </div>
+                </div>
+      </div>
+    <div class="container" style="margin-top:80px" v-if="!loading && filteredList.length == 0">
+      <p>Sorry :(</p>
+      <p>No results Found</p>
+    </div>
 <div id="overlay" class="loading text-center mb-4" style="min-height:200px" v-if="loading">
             <div id="text" class="spinner-border" role="status">
             <span class="sr-only">Loading...</span>
@@ -89,8 +118,15 @@ export default {
             purchase:[],
             view:[],
             loading:true,
-            openmodal:false
+            openmodal:false,
+            pageNumber: 1,
+            itemperpage:5,
+            search:'',
+            filter:'all'
         }
+    },
+    created(){
+        this.pageNumber=this.$route.query.page || 1
     },
     mounted(){
         this.$http.get('https://backend-bikex.herokuapp.com/api/purchases')
@@ -100,10 +136,18 @@ export default {
          })
     },
     methods:{
-          see_vehicle(identity){
-         window.console.log('working')
+        filterkey(id){
+            this.filter = id
+            this.loading = false
+             window.scrollTo({
+                top: 0,
+                left: 0,
+            })
+        },
+        see_vehicle(identity){
+        window.console.log('working')
         this.$router.push('/vehicles/'+ identity)
-      },
+        },
         read(id){
             window.console.log(id)
             this.loading = true
@@ -122,11 +166,72 @@ export default {
         },
         close(){
             this.openmodal = false
-        }
+        },
+        nextPage(){
+            let x = this.pageNumber++
+             this.$router.push({query: { page:  x + 1 }})
+        },
+        prevPage(){
+                 let x = this.pageNumber--
+               this.$router.push({query: { page: x - 1}})
+        },
+    },
+    computed:{
+    // perpage(){
+    //       return this.itemperpage
+    //   },
+    //   getdata(){
+    //       return this.purchase
+    //   },
+    filtereddata(){
+        const filterparams = this.filter
+        if(filterparams === "all") {
+                    return this.purchase;
+                } else if(filterparams === "failed") {
+                    return this.purchase.filter(function(x) {
+                        return x.payment_status === 0;
+                    }); 
+                }else{
+                     return this.purchase.filter(function(x) {
+                        return x.payment_status === 1;
+                    }); 
+                }
+        },
+      filteredList() {
+        return this.filtereddata.filter(post => {
+        return post._id.toLowerCase().includes(this.search.toLowerCase()) || post.customer_id.toLowerCase().includes(this.search.toLowerCase())
+      })
+    },
+    paginatedData(){
+    const start = (this.pageNumber - 1) * this.itemperpage,
+          end = start + this.itemperpage;
+     return this.filteredList.slice(start, end);
+        },
+    pageCount(){
+      let l = this.filteredList.length,
+          s = this.itemperpage;
+      return Math.ceil(l/s);
+    }
     }
 }
 </script>
 <style scoped>
+.active{
+    text-decoration: underline;
+    color: red;
+}
+.failed{
+    background-color: rgba(247, 108, 108, 0.1) 
+}
+.sucess{
+      background-color: rgba(240, 226, 34, 0.5)   
+}
+.link:hover{
+    text-decoration: underline
+}
+.link{
+    cursor: pointer;
+}
 .notification{
         font-family: 'Montserrat', sans-serif;
     font-size: 12px;

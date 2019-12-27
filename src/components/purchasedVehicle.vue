@@ -1,17 +1,22 @@
-<template>
+ <template>
 <div class="centres">
     <div class="col-md-11 ml-4 mb-2 col-12 mobile">
             <div class="row">
-                <div class="col-md-6 p-0 m-0 text-left pt-1 d-flex">
+                <div class="col-md-4 p-0 m-0 text-left pt-1 d-flex">
                     <p class="p-0 m-0">Showing {{paginatedData.length}} out of {{procured_vehicels.length}}</p>
                     <span class="ml-3"> Page No. {{pageNumber}}</span>
                 </div>
-                <div class="col-md-2 pt-1">
-                    <input type="text" v-model="search" placeholder="search vehicle number">
+                <div class="col-md-4 pt-1 d-inline">
+                   <span class="link px-3" v-bind:class="{active: filter === 'all'}"  v-on:click="filterkey('all')">All</span>
+                   <span class="link px-3" v-bind:class="{active: filter === 'booked'}" v-on:click="filterkey('booked')">Booked</span>
+                   <span class="link px-3" v-bind:class="{active: filter === 'sold'}" v-on:click="filterkey('sold')">Sold</span>
                 </div>
-                <div class="col-md-4 p-0 m-0 text-right">
+                <div class="col-md-4 m-0 p-0 pt-1 text-right">
+                    <input type="text" class="search_placeholder" v-model="search" placeholder="Vehicle number or Vehicle ID" style="width:100%">
+                </div>
+                <!-- <div class="col-md-4 p-0 m-0 text-right">
                     <button class="btn btn-danger rounded" v-on:click="openModal">Add Vehicle +</button>
-                </div>
+                </div> -->
             </div>
     </div>
     <table class="table table-striped table-bordered col-md-11 ml-4">
@@ -32,23 +37,23 @@
         </tr>
         </thead>
         <tbody>
-            <tr v-for="(data, index) in paginatedData" :key="index" class="hand">
-                <td v-on:click="see_vehicle(data.vehicle_id)" class="py-1">{{data.vehicle_id}}</td>
-                <td v-on:click="see_vehicle(data.vehicle_id)" class="py-1">{{data.vehicle_number}}</td>
-                <td v-on:click="see_model(data.model_id)" class="py-1 under">{{data.modal_name}}</td>
-                <td v-on:click="see_model(data.model_id)" class="py-1 under">{{data.make}}</td>
-                <td v-on:click="see_vehicle(data.vehicle_id)" class="py-1">{{data.chassis_no}}</td>
-                <td v-on:click="see_vehicle(data.vehicle_id)" class="py-1" v-if="data.status == 0"><span style="color:green">Procured</span></td>
-                <td v-on:click="see_vehicle(data.vehicle_id)" class="py-1" v-if="data.status == 1"><span style="color:brown">Under-Refurbish</span></td>
-                <td v-on:click="see_vehicle(data.vehicle_id)" class="py-1" v-if="data.status == 2"><span style="color:purple">In Stock</span></td>
-                <td v-on:click="see_vehicle(data.vehicle_id)" class="py-1" v-if="data.status == 3"><span style="color:red">Live!</span></td>
-                <td v-on:click="see_vehicle(data.vehicle_id)" class="py-1" v-if="data.status == 4"><span style="color:red">Booked!</span></td>
-                <td v-on:click="see_vehicle(data.vehicle_id)" class="py-1" v-if="data.status == 5"><span style="color:red">Sold!</span></td>
-                <td v-on:click="see_vehicle(data.vehicle_id)" class="py-1">{{data.vehicle_type}}</td>
-                <td v-on:click="see_vehicle(data.vehicle_id)" class="py-1" v-if="data.imageUpload == 0"><span style="color:red"><i class="fa fa-times" aria-hidden="true"></i></span></td>
-                <td v-on:click="see_vehicle(data.vehicle_id)" class="py-1" v-if="data.imageUpload == 1"><span style="color:red"><i class="fa fa-clock-o" aria-hidden="true"></i></span></td>
-                <td v-on:click="see_vehicle(data.vehicle_id)" class="py-1" v-if="data.imageUpload == 2"><span><i class="fa fa-check" aria-hidden="true"></i></span></td>
-                <td v-on:click="see_vehicle(data.vehicle_id)" class="py-1"  v-if="data.imageUpload == null"><span>-</span></td>
+            <tr v-for="(data, index) in paginatedData" :key="index">
+                <td class="py-1">{{data.vehicle_id}}</td>
+                <td class="py-1">{{data.vehicle_number}}</td>
+                <td class="py-1">{{data.modal_name}}</td>
+                <td class="py-1">{{data.make}}</td>
+                <td class="py-1">{{data.chassis_no}}</td>
+                <td class="py-1" v-if="data.status == 0"><span style="color:green">Procured</span></td>
+                <td class="py-1" v-if="data.status == 1"><span style="color:brown">Under-Refurbish</span></td>
+                <td class="py-1" v-if="data.status == 2"><span style="color:purple">In Stock</span></td>
+                <td class="py-1" v-if="data.status == 3"><span style="color:red">Live!</span></td>
+                <td class="py-1" v-if="data.status == 4"><span style="color:red">Booked!</span></td>
+                <td class="py-1" v-if="data.status == 5"><span style="color:red">Sold!</span></td>
+                <td class="py-1">{{data.vehicle_type}}</td>
+                <td class="py-1" v-if="data.imageUpload == 0"><span style="color:red"><i class="fa fa-times" aria-hidden="true"></i></span></td>
+                <td class="py-1" v-if="data.imageUpload == 1"><span style="color:red"><i class="fa fa-clock-o" aria-hidden="true"></i></span></td>
+                <td class="py-1" v-if="data.imageUpload == 2"><span><i class="fa fa-check" aria-hidden="true"></i></span></td>
+                <td class="py-1"  v-if="data.imageUpload == null"><span>-</span></td>
                 <td class="py-1"><button class="button btn btn-primary m-0 p-0 custom-button" v-on:click="editModals(data)"><i class="fa fa-pencil px-1" aria-hidden="true"></i></button>
                 <button class="button btn btn-primary m-0 p-0  custom-button" v-on:click="editStatus(data)"><i class="fa fa-bicycle px-1" aria-hidden="true"></i></button>
                <button class="button btn btn-primary m-0 p-0  custom-button" v-on:click="goToUpload(data.vehicle_id)"><i class="fa fa-eye px-1" aria-hidden="true"></i></button>
@@ -60,7 +65,7 @@
        <div id="text">Loading...</div>
     </div> -->
     </table>
-       <div class="loader mt-5" style="min-height:200px;" v-if="loading && modals.length == 0">
+       <div class="loader mt-5" style="min-height:200px;" v-if="loading">
             <h5 class="pt-4">Fetching all Vehicles's.....</h5>
             <div class="spinner-grow text-success mt-4"></div>
         </div>
@@ -68,11 +73,11 @@
     <div class="container" style="margin-top:80px" v-if="!loading && filteredList.length == 0">
       <p>Sorry :(</p>
       <p>No results Found</p>
-    </div>
+    </div> 
      <div class="col-md-12">
                 <div class="row">
                     <div class="col-md-12 text-center" v-if="filteredList.length != 0">
-                        <button class="btn mr-2" v-on:click="prevPage" :disabled="pageNumber==1"><i class="fa fa-angle-double-left" aria-hidden="true"></i> prev</button>|
+                        <button class="btn mr-2" v-on:click="prevPage" :disabled="pageNumber==1"><i class="fa fa-angle-double-left" aria-hidden="true"></i>prev</button>|
                          <button class="btn ml-2" v-on:click="nextPage" :disabled="pageNumber == pageCount">next <i class="fa fa-angle-double-right" aria-hidden="true"></i></button>
                     </div>
                 </div>
@@ -455,11 +460,14 @@ import * as moment from 'moment';
 export default {
     data(){
         return{
+            filter:'all',
               data:[],
               type:'',
               message:'',
+              procured_vehicels:[],
               show:true,
               filtered:[],
+              modals:[],
               search:'',
               pageNumber: 0,
               itemperpage:20,
@@ -496,13 +504,14 @@ export default {
               status:0,
               statusModel:'',
               editStatusid:'',
+              loading:false,
               modaltable_response:[],
               loadonadd:false,
               selectedFiles:null,
               update_loader:false,
               delete_loader:false
         }
-    },
+    }, 
     components:{
      
     },
@@ -513,19 +522,19 @@ export default {
             this.$swal('Please Log in.');
             this.$router.push('/login')
         }
-       this.$store.dispatch('total_vehicle_procured');
-        this.$store.dispatch('load_models');
-
+      this.loading = true
+          this.$http.get('https://backend-bikex.herokuapp.com/api/models')
+          .then(response=>{
+           this.modals = response.body
+         })
+          this.$http.get('https://backend-bikex.herokuapp.com/api/fetch/all-purchase')
+          .then(response=>{
+          this.procured_vehicels = response.body
+          this.loading = false
+         })
           this.pageNumber=this.$route.query.page || 1
-    },
+    }, 
     methods:{
-       see_vehicle(identity){
-         window.console.log('working')
-        this.$router.push('/vehicles/'+ identity)
-      },
-      see_model(identy){
-        this.$router.push('/models/'+ identy)
-      },
       goToUpload(id){
            this.$router.push({path:'/uploads/'+ id})
       },
@@ -717,18 +726,17 @@ export default {
             }).catch(error => { 
                     this.message = error.body.msg
             })   
-         }
+         },
+            filterkey(id){
+            this.filter = id
+            this.loading = false
+             window.scrollTo({
+                top: 0,
+                left: 0,
+            })
+        },
     },
     computed:{
-      loading(){
-        return this.$store.state.loading
-      },
-      procured_vehicels(){
-         return this.$store.state.procured_vehicles;
-      },
-      modals(){
-         return this.$store.state.models;
-      },
       displayData(){
         const temp = []
         this.procured_vehicels.forEach(x => {
@@ -771,8 +779,22 @@ export default {
       getdata(){
           return this.d
       },
+      filtereddata(){
+        const filterparams = this.filter
+        if(filterparams === "all") {
+                    return this.p;
+                } else if(filterparams === "booked") {
+                    return this.p.filter(function(x) {
+                        return x.status === 4;
+                    }); 
+                }else{
+                     return this.p.filter(function(x) {
+                        return x.status === 5;
+                    }); 
+                }
+        },
       filteredList() {
-        return this.p.filter(post => {
+        return this.filtereddata.filter(post => {
         return (post.vehicle_number.toLowerCase().includes(this.search.toLowerCase()) 
         ||
         post.vehicle_id.toString().includes(this.search.toLowerCase())
@@ -794,7 +816,11 @@ export default {
 </script>
 <style scoped>
 @import url('https://fonts.googleapis.com/css?family=Montserrat&display=swap');
-
+.search_placeholder{
+  font-size: 12px;
+  text-align: center;
+  font-family: 'Montserrat', sans-serif;
+}
 .fa, .fas {
     cursor: pointer;
 }
@@ -808,15 +834,7 @@ export default {
     background-color: transparent;
     border-color: transparent;
 }
-.hand{
-  cursor: pointer
-}
-.hand:hover{
-  background-color: rgba(75, 240, 34, 0.3)   
-}
-.under:hover{
-  text-decoration: underline
-}
+
 input[type=date]:required:invalid::-webkit-datetime-edit {
     color: transparent;
 }
@@ -861,6 +879,16 @@ label{
 }
 .displayModal{
     display: block !important
+}
+.active{
+    text-decoration: underline;
+    color: red;
+}
+.link:hover{
+    text-decoration: underline
+}
+.link{
+    cursor: pointer;
 }
 /* modals Content */
 .modals-content {
@@ -1029,6 +1057,47 @@ input[type="checkbox"]:checked + label:before {
    overflow: hidden
  }
 }
+input[type="checkbox"] { display: none; }
 
+input[type="checkbox"] + label {
+  display: block;
+  position: relative;
+  padding-left: 35px;
+  margin-bottom: 20px;
+  font: 14px/20px 'Open Sans', Arial, sans-serif;
+  cursor: pointer;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+}
+
+input[type="checkbox"] + label:last-child { margin-bottom: 0; }
+
+input[type="checkbox"] + label:before {
+  content: '';
+  display: block;
+  width: 20px;
+  height: 20px;
+  color:red;
+  border: 1px solid #FFB52F;
+  position: absolute;
+  left: 0;
+  top: 0;
+  opacity: .6;
+  -webkit-transition: all .12s, border-color .08s;
+  transition: all .12s, border-color .08s;
+}
+
+input[type="checkbox"]:checked + label:before {
+  width: 10px;
+  top: -5px;
+  left: 5px;
+  border-radius: 0;
+  opacity: 1;
+  border-top-color: transparent;
+  border-left-color: transparent;
+  -webkit-transform: rotate(45deg);
+  transform: rotate(45deg);
+}
 
 </style>

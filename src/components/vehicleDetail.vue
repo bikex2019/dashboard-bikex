@@ -27,7 +27,7 @@
           <p><label>City:</label> {{vehicledetail.city}}</p>
           <p><label>PIN Code:</label> {{vehicledetail.pincode}}</p>
           <p><label>Remarks:</label> {{vehicledetail.remarks}}</p>
-          <p><label>PIN Code:</label> {{vehicledetail.procured_price | currency}}</p>
+          <p><label>Procured Price:</label> {{vehicledetail.procured_price | currency}}</p>
           <p><label>Last Updated:</label> {{vehicledetail.updated| moment("MMMM Do YYYY")}}</p>
       </div>
 

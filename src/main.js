@@ -5,6 +5,8 @@ import Routes from './routes'
 import VueResource from 'vue-resource';
 import axios from 'axios'
 import VueSweetalert2 from 'vue-sweetalert2';
+import store from "./store";
+
  
 import 'sweetalert2/dist/sweetalert2.min.css';
 
@@ -25,5 +27,6 @@ const router = new VueRouter({
 
 new Vue({
   render: h => h(App),
-  router:router
+  router:router,
+  store
 }).$mount('#app')
