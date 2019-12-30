@@ -769,7 +769,7 @@ export default {
           return this.itemperpage
       },
       getdata(){
-          return this.d
+          return this.d 
       },
       filteredList() {
         return this.p.filter(post => {
