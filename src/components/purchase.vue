@@ -1,24 +1,39 @@
 <template>
     <div class="notification">
-        <div class="col-md-11 ml-4 mb-2">
+        <div class="col-md-12 p-4 mb-2 mt-4 col-12 mobile top-content">
             <div class="row">
-                <div class="col-md-4 p-0 m-0 text-left pt-1 d-flex">
-                    <p class="p-0 m-0">Showing {{paginatedData.length}} out of {{purchase.length}}
-                      <span>Page No. {{pageNumber}}</span>
-                    </p>
+                <div class="col-md-3 p-0 m-0 pl-4 text-left d-flex">
+                  <h5 class="header"><strong>
+                      <span style="text-transform:uppercase">{{filter }} PURCHASE</span>
+                      </strong></h5>
                 </div>
-                 <div class="col-md-4 pt-1 d-inline">
+                 <div class="col-md-3 pt-1 d-inline">
                    <span class="link px-3" v-bind:class="{active: filter === 'all'}"  v-on:click="filterkey('all')">All</span>
                    <span class="link px-3" v-bind:class="{active: filter === 'failed'}" v-on:click="filterkey('failed')">Failed</span>
                    <span class="link px-3" v-bind:class="{active: filter === 'sucess'}" v-on:click="filterkey('sucess')">Success</span>
                 </div>
-                <div class="col-md-4 pt-1 text-right m-0 p-0">
-                    <input type="text" class="w-100 px-3" v-model="search" placeholder="search customer ID, order ID" width="100%">
+
+                <div class="col-md-3 pt-1 mr-3 d-flex justify-content-between">
+                  <p class="p-0 m-0 pt-1">{{start }} - {{end}} <span class="mx-1"> of </span> {{paginatedData.length}} 
+                  <span>entries.</span></p>
+                  <span class="ml-3 mr-3 pt-1"> Page No. {{pageNumber}}</span>
+                   <div>
+                     <button class="btn mr-2 m-0 p-0" v-on:click="prevPage" :disabled="pageNumber==1">
+                     <i class="fa fa-chevron-left" style="font-size:13px" aria-hidden="true"></i>
+                   </button>
+                  <button class="btn ml-2 m-0 p-0" v-on:click="nextPage" :disabled="pageNumber == pageCount">
+                    <i class="fa fa-chevron-right" style="font-size:13px" aria-hidden="true"></i>
+                  </button>
+                   </div>
+                </div>
+
+                <div class="col-md-2 pt-1 text-right m-0 p-0">
+                    <input type="text" v-model="search" placeholder="search customer ID, order ID" class="search">
                 </div>
             </div>
     </div>
 
-         <table class="table table-bordered col-md-11 ml-4">
+         <table class="table col-md-11 ml-5">
         <thead>
         <tr>
             <th>Order ID</th>
@@ -91,14 +106,6 @@
   </div>
 
 </div>
-<div class="col-md-12">
-                <div class="row">
-                    <div class="col-md-12 text-center" v-if="filteredList.length != 0">
-                        <button class="btn mr-2" v-on:click="prevPage" :disabled="pageNumber==1"><i class="fa fa-angle-double-left" aria-hidden="true"></i> prev</button>|
-                        <button class="btn ml-2" v-on:click="nextPage" :disabled="pageNumber == pageCount">next <i class="fa fa-angle-double-right" aria-hidden="true"></i></button>
-                    </div>
-                </div>
-      </div>
     <div class="container" style="margin-top:80px" v-if="!loading && filteredList.length == 0">
       <p>Sorry :(</p>
       <p>No results Found</p>
@@ -202,10 +209,15 @@ export default {
         return post._id.toLowerCase().includes(this.search.toLowerCase()) || post.customer_id.toLowerCase().includes(this.search.toLowerCase())
       })
     },
+    start(){
+        return (this.pageNumber - 1) * this.itemperpage
+    },
+     end(){
+        return this.start + this.itemperpage
+    },
     paginatedData(){
-    const start = (this.pageNumber - 1) * this.itemperpage,
-          end = start + this.itemperpage;
-     return this.filteredList.slice(start, end);
+
+     return this.filteredList.slice(this.start, this.end);
         },
     pageCount(){
       let l = this.filteredList.length,
@@ -218,7 +230,7 @@ export default {
 <style scoped>
 .active{
     text-decoration: underline;
-    color: red;
+    color: #FFB52F;
 }
 .failed{
     background-color: rgba(247, 108, 108, 0.1) 
@@ -306,5 +318,33 @@ label{
   position: absolute;
   top: 50%;
   left: 50%;
+}
+.table td, .table th{
+  border: none;
+  padding: 1.35rem;
+}
+.table tr{
+  background-color: white;
+  border-radius: 10px;
+}
+.top-content{
+  background-color: white
+}
+.header{
+    font-size: 1.25rem;
+    border-left: 4px solid #ffb52f;
+    padding-left: 7px;
+    padding-top: 3px;
+    font-family: 'Montserrat', sans-serif;
+}
+table{
+  border-collapse: separate;
+    border-spacing: 0 1em;
+}
+.search{
+  border-radius: 10px;
+  border: 1px solid #ffb52f;
+  padding: 5px;
+  width: 100%
 }
 </style>

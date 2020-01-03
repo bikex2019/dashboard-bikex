@@ -21,6 +21,10 @@ export default {
   components: {
     navigation
   },
+  created(){
+    this.$store.dispatch('total_vehicle_procured');
+    this.$store.dispatch('load_models');
+  },
   mounted(){
     let auth = localStorage.getItem('token')
         this.id = localStorage.getItem('temp')
@@ -32,10 +36,17 @@ export default {
 </script>
 
 <style scoped>
-
+#app {
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    text-align: center;
+    color: #2c3e50;
+    margin-top: 39px;
+}
 .custom{
-  padding-left: 70px;
-  padding-top: 0px
+  padding-left: 59px;
+  padding-top: 0px;
+  background-color: rgba(219, 248, 164, 0.5)
 }
 
 @media only screen and (max-width: 768px) {

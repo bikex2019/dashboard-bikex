@@ -1,17 +1,31 @@
  <template>
 <div class="centres">
-    <div class="col-md-11 ml-4 mb-2 col-12 mobile">
+    <div class="col-md-12 p-4 mb-2 mt-4 col-12 mobile top-content">
             <div class="row">
-                <div class="col-md-4 p-0 m-0 text-left pt-1 d-flex">
-                    <p class="p-0 m-0">Showing {{paginatedData.length}} out of {{procured_vehicels.length}}</p>
-                    <span class="ml-3"> Page No. {{pageNumber}}</span>
+                <div class="col-md-3 p-0 m-0 pl-4 text-left d-flex">
+                  <h5 class="header"><strong>
+                      <span style="text-transform:uppercase">{{filter }} VEHICLES</span>
+                      </strong></h5>
                 </div>
-                <div class="col-md-4 pt-1 d-inline">
+                <div class="col-md-3 pt-1 d-inline">
                    <span class="link px-3" v-bind:class="{active: filter === 'all'}"  v-on:click="filterkey('all')">All</span>
                    <span class="link px-3" v-bind:class="{active: filter === 'booked'}" v-on:click="filterkey('booked')">Booked</span>
                    <span class="link px-3" v-bind:class="{active: filter === 'sold'}" v-on:click="filterkey('sold')">Sold</span>
                 </div>
-                <div class="col-md-4 m-0 p-0 pt-1 text-right">
+                <div class="col-md-3 pt-1 mr-3 d-flex justify-content-between">
+                  <p class="p-0 m-0 pt-1">{{start }} - {{end}} <span class="mx-1"> of </span> {{paginatedData.length}} 
+                  <span>entries.</span></p>
+                  <span class="ml-3 mr-3 pt-1"> Page No. {{pageNumber}}</span>
+                   <div>
+                     <button class="btn mr-2 m-0 p-0" v-on:click="prevPage" :disabled="pageNumber==1">
+                     <i class="fa fa-chevron-left" style="font-size:13px" aria-hidden="true"></i>
+                   </button>
+                  <button class="btn ml-2 m-0 p-0" v-on:click="nextPage" :disabled="pageNumber == pageCount">
+                    <i class="fa fa-chevron-right" style="font-size:13px" aria-hidden="true"></i>
+                  </button>
+                   </div>
+                </div>
+                <div class="col-md-2 m-0 p-0 pt-1 text-right">
                     <input type="text" class="search_placeholder" v-model="search" placeholder="Vehicle number or Vehicle ID" style="width:100%">
                 </div>
                 <!-- <div class="col-md-4 p-0 m-0 text-right">
@@ -19,41 +33,41 @@
                 </div> -->
             </div>
     </div>
-    <table class="table table-striped table-bordered col-md-11 ml-4">
+    <table class="table col-md-11 ml-5">
         <thead>
             <tr>
-            <th>Vehicle_ID</th>
-            <th>Vehicle Number 
+            <th>ID</th>
+            <th>VEHICLE NO 
             <!-- <i class="fa fa-sort-amount-asc ml-3 sorter" aria-hidden="true" v-on:click="asc" v-if="show"></i>
             <i class="fa fa-sort-amount-desc ml-3 sorter" aria-hidden="true" v-on:click="desc" v-else></i> -->
             </th>
-            <th>Model</th>
-            <th>Make</th>
-            <th>Chasis No.</th>
+            <th>MODEL</th>
+            <th>MAKE</th>
+            <th>CHASIS</th>
             <th>STATUS</th>
-            <th>Type</th>
+            <th>TYPE</th>
             <th>UPLOAD</th>
-            <th>Action</th>
+            <th>ACTION</th>
         </tr>
         </thead>
         <tbody>
-            <tr v-for="(data, index) in paginatedData" :key="index">
-                <td class="py-1">{{data.vehicle_id}}</td>
-                <td class="py-1">{{data.vehicle_number}}</td>
-                <td class="py-1">{{data.modal_name}}</td>
-                <td class="py-1">{{data.make}}</td>
-                <td class="py-1">{{data.chassis_no}}</td>
-                <td class="py-1" v-if="data.status == 0"><span style="color:green">Procured</span></td>
-                <td class="py-1" v-if="data.status == 1"><span style="color:brown">Under-Refurbish</span></td>
-                <td class="py-1" v-if="data.status == 2"><span style="color:purple">In Stock</span></td>
-                <td class="py-1" v-if="data.status == 3"><span style="color:red">Live!</span></td>
-                <td class="py-1" v-if="data.status == 4"><span style="color:red">Booked!</span></td>
-                <td class="py-1" v-if="data.status == 5"><span style="color:red">Sold!</span></td>
-                <td class="py-1">{{data.vehicle_type}}</td>
-                <td class="py-1" v-if="data.imageUpload == 0"><span style="color:red"><i class="fa fa-times" aria-hidden="true"></i></span></td>
-                <td class="py-1" v-if="data.imageUpload == 1"><span style="color:red"><i class="fa fa-clock-o" aria-hidden="true"></i></span></td>
-                <td class="py-1" v-if="data.imageUpload == 2"><span><i class="fa fa-check" aria-hidden="true"></i></span></td>
-                <td class="py-1"  v-if="data.imageUpload == null"><span>-</span></td>
+            <tr v-for="(data, index) in paginatedData" :key="index" class="hand p-3">
+                <td v-on:click="see_vehicle(data.vehicle_id)" class="py-1">{{data.vehicle_id}}</td>
+                <td v-on:click="see_vehicle(data.vehicle_id)" class="py-1">{{data.vehicle_number}}</td>
+                <td v-on:click="see_model(data.model_id)" class="py-1 under">{{data.modal_name}}</td>
+                <td v-on:click="see_model(data.model_id)" class="py-1 under">{{data.make}}</td>
+                <td v-on:click="see_vehicle(data.vehicle_id)" class="py-1">{{data.procured_date | moment("MMMM Do YYYY")}}</td>
+                <td v-on:click="see_vehicle(data.vehicle_id)" class="py-1" v-if="data.status == 0"><span style="color:green">Procured</span></td>
+                <td v-on:click="see_vehicle(data.vehicle_id)" class="py-1" v-if="data.status == 1"><span style="color:brown">Under-Refurbish</span></td>
+                <td v-on:click="see_vehicle(data.vehicle_id)" class="py-1" v-if="data.status == 2"><span style="color:purple">In Stock</span></td>
+                <td v-on:click="see_vehicle(data.vehicle_id)" class="py-1" v-if="data.status == 3"><span style="color:#FFB52F">Live!</span></td>
+                <td v-on:click="see_vehicle(data.vehicle_id)" class="py-1" v-if="data.status == 4"><span style="color:#FFB52F">Booked!</span></td>
+                <td v-on:click="see_vehicle(data.vehicle_id)" class="py-1" v-if="data.status == 5"><span style="color:#FFB52F">Sold!</span></td>
+                <td v-on:click="see_vehicle(data.vehicle_id)" class="py-1">{{data.vehicle_type}}</td>
+                <td v-on:click="see_vehicle(data.vehicle_id)" class="py-1" v-if="data.imageUpload == 0"><span style="color:#FFB52F"><i class="fa fa-times" aria-hidden="true"></i></span></td>
+                <td v-on:click="see_vehicle(data.vehicle_id)" class="py-1" v-if="data.imageUpload == 1"><span style="color:#FFB52F"><i class="fa fa-clock-o" aria-hidden="true"></i></span></td>
+                <td v-on:click="see_vehicle(data.vehicle_id)" class="py-1" v-if="data.imageUpload == 2"><span><i class="fa fa-check" aria-hidden="true"></i></span></td>
+                <td v-on:click="see_vehicle(data.vehicle_id)" class="py-1"  v-if="data.imageUpload == null"><span>-</span></td>
                 <td class="py-1"><button class="button btn btn-primary m-0 p-0 custom-button" v-on:click="editModals(data)"><i class="fa fa-pencil px-1" aria-hidden="true"></i></button>
                 <button class="button btn btn-primary m-0 p-0  custom-button" v-on:click="editStatus(data)"><i class="fa fa-bicycle px-1" aria-hidden="true"></i></button>
                <button class="button btn btn-primary m-0 p-0  custom-button" v-on:click="goToUpload(data.vehicle_id)"><i class="fa fa-eye px-1" aria-hidden="true"></i></button>
@@ -74,14 +88,6 @@
       <p>Sorry :(</p>
       <p>No results Found</p>
     </div> 
-     <div class="col-md-12">
-                <div class="row">
-                    <div class="col-md-12 text-center" v-if="filteredList.length != 0">
-                        <button class="btn mr-2" v-on:click="prevPage" :disabled="pageNumber==1"><i class="fa fa-angle-double-left" aria-hidden="true"></i>prev</button>|
-                         <button class="btn ml-2" v-on:click="nextPage" :disabled="pageNumber == pageCount">next <i class="fa fa-angle-double-right" aria-hidden="true"></i></button>
-                    </div>
-                </div>
-      </div>
 
         <div id="mymodals" class="modals" v-bind:class="{'displayModal':openEditStatusModel}">
     <!-- modals content -->
@@ -538,6 +544,13 @@ export default {
       goToUpload(id){
            this.$router.push({path:'/uploads/'+ id})
       },
+        see_vehicle(identity){
+         window.console.log('working')
+        this.$router.push('/vehicles/'+ identity)
+      },
+      see_model(identy){
+        this.$router.push('/models/'+ identy)
+      },
             processFile(event) {
             this.selectedFiles = event.target.files[0]
             },
@@ -801,10 +814,15 @@ export default {
         )
       })
     },
+      start(){
+        return (this.pageNumber - 1) * this.perpage
+    },
+     end(){
+        return this.start + this.perpage
+    },
+
     paginatedData(){
-    const start = (this.pageNumber - 1) * this.perpage,
-          end = start + this.perpage;
-     return this.filteredList.slice(start, end);
+     return this.filteredList.slice(this.start, this.end);
         },
     pageCount(){
       let l = this.filteredList.length,
@@ -882,7 +900,7 @@ label{
 }
 .active{
     text-decoration: underline;
-    color: red;
+    color: #ffb52f;
 }
 .link:hover{
     text-decoration: underline
@@ -1098,6 +1116,45 @@ input[type="checkbox"]:checked + label:before {
   border-left-color: transparent;
   -webkit-transform: rotate(45deg);
   transform: rotate(45deg);
+}
+.table td, .table th{
+  border: none;
+  padding: 1.35rem;
+}
+.table tr{
+  background-color: white;
+  border-radius: 10px;
+}
+.top-content{
+  background-color: white
+}
+.header{
+    font-size: 1.25rem;
+    border-left: 4px solid #ffb52f;
+    padding-left: 7px;
+    padding-top: 3px;
+    font-family: 'Montserrat', sans-serif;
+}
+table{
+  border-collapse: separate;
+    border-spacing: 0 1em;
+}
+.search{
+  border-radius: 10px;
+  border: 1px solid #ffb52f;
+  padding: 5px;
+  width: 100%
+}
+.hand{
+  cursor: pointer;
+  border: none
+}
+
+.hand:hover{
+  background-color: rgba(75, 240, 34, 0.3)   
+}
+.under:hover{
+  text-decoration: underline
 }
 
 </style>

@@ -1,33 +1,42 @@
 <template>
-<div class="centres">
-    <div class="col-md-11 ml-4 mb-2 col-12 mobile">
+<div class="centres mt-4 pb-4">
+    <div class="col-md-12 p-4 mb-2 mt-4 col-12 mobile top-content">
             <div class="row">
-                <div class="col-md-6 p-0 m-0 text-left pt-1 d-flex">
-                    <p class="p-0 m-0">Showing {{paginatedData.length}} out of {{procured_vehicels.length}}</p>
-                    <span class="ml-3"> Page No. {{pageNumber}}</span>
+                <div class="col-md-6 p-0 m-0 pl-4 text-left d-flex">
+                  <h5 class="header"><strong>LIVE VEHICLES</strong></h5>
                 </div>
-                <div class="col-md-2 text-right m-0 p-0 pt-2 pr-1">
-                  <p><strong>Search:</strong></p>
+                <div class="col-md-3 pt-1 mr-3 d-flex justify-content-between">
+                  <p class="p-0 m-0 pt-1">{{start }} - {{end}} <span class="mx-1"> of </span> {{procured_vehicels.length}} 
+                  <span>entries.</span></p>
+                  <span class="ml-3 mr-3 pt-1"> Page No. {{pageNumber}}</span>
+                   <div>
+                     <button class="btn mr-2 m-0 p-0" v-on:click="prevPage" :disabled="pageNumber==1">
+                     <i class="fa fa-chevron-left" style="font-size:13px" aria-hidden="true"></i>
+                   </button>
+                  <button class="btn ml-2 m-0 p-0" v-on:click="nextPage" :disabled="pageNumber == pageCount">
+                    <i class="fa fa-chevron-right" style="font-size:13px" aria-hidden="true"></i>
+                  </button>
+                   </div>
                 </div>
-                <div class="col-md-4 m-0 p-0 pt-1 text-right">
-                    <input type="text" class="search_placeholder" v-model="search" placeholder="Vehicle number or Vehicle ID" style="width:100%">
+                <div class="col-md-2 p-0 m-0 text-right d-flex justify-content-between">
+                    <input type="text" v-model="search" placeholder="search here.." class="search">
+                    <!-- <button class="btn round" v-on:click="openModal">
+                      <i class="fa fa-plus" aria-hidden="true"></i>
+                    </button> -->
                 </div>
-                <!-- <div class="col-md-4 p-0 m-0 text-right">
-                    <button class="btn btn-danger rounded" v-on:click="openModal">Add Vehicle +</button>
-                </div> -->
             </div>
     </div>
-    <table class="table table-striped table-bordered col-md-11 ml-4">
+    <table class="table col-md-11 ml-5">
         <thead>
             <tr>
-            <th>Vehicle_ID</th>
-            <th>Vehicle Number 
+            <th>ID</th>
+            <th>VEHICLE NO 
             <!-- <i class="fa fa-sort-amount-asc ml-3 sorter" aria-hidden="true" v-on:click="asc" v-if="show"></i>
             <i class="fa fa-sort-amount-desc ml-3 sorter" aria-hidden="true" v-on:click="desc" v-else></i> -->
             </th>
-            <th>Model</th>
-            <th>Make</th>
-            <th>Chasis No.</th>
+            <th>MODEL</th>
+            <th>MAKE</th>
+            <th>LIVE ON</th>
             <th>STATUS</th>
             <th>Type</th>
             <th>UPLOAD</th>
@@ -35,23 +44,23 @@
         </tr>
         </thead>
         <tbody>
-            <tr v-for="(data, index) in paginatedData" :key="index">
-                <td class="py-1">{{data.vehicle_id}}</td>
-                <td class="py-1">{{data.vehicle_number}}</td>
-                <td class="py-1">{{data.modal_name}}</td>
-                <td class="py-1">{{data.make}}</td>
-                <td class="py-1">{{data.chassis_no}}</td>
-                <td class="py-1" v-if="data.status == 0"><span style="color:green">Procured</span></td>
-                <td class="py-1" v-if="data.status == 1"><span style="color:brown">Under-Refurbish</span></td>
-                <td class="py-1" v-if="data.status == 2"><span style="color:purple">In Stock</span></td>
-                <td class="py-1" v-if="data.status == 3"><span style="color:red">Live!</span></td>
-                <td class="py-1" v-if="data.status == 4"><span style="color:red">Booked!</span></td>
-                <td class="py-1" v-if="data.status == 5"><span style="color:red">Sold!</span></td>
-                <td class="py-1">{{data.vehicle_type}}</td>
-                <td class="py-1" v-if="data.imageUpload == 0"><span style="color:red"><i class="fa fa-times" aria-hidden="true"></i></span></td>
-                <td class="py-1" v-if="data.imageUpload == 1"><span style="color:red"><i class="fa fa-clock-o" aria-hidden="true"></i></span></td>
-                <td class="py-1" v-if="data.imageUpload == 2"><span><i class="fa fa-check" aria-hidden="true"></i></span></td>
-                <td class="py-1"  v-if="data.imageUpload == null"><span>-</span></td>
+            <tr v-for="(data, index) in paginatedData" :key="index" class="hand p-3">
+                <td v-on:click="see_vehicle(data.vehicle_id)" class="py-1">{{data.vehicle_id}}</td>
+                <td v-on:click="see_vehicle(data.vehicle_id)" class="py-1">{{data.vehicle_number}}</td>
+                <td v-on:click="see_model(data.model_id)" class="py-1 under">{{data.modal_name}}</td>
+                <td v-on:click="see_model(data.model_id)" class="py-1 under">{{data.make}}</td>
+                <td v-on:click="see_vehicle(data.vehicle_id)" class="py-1">{{data.live_date | moment("MMMM Do YYYY")}}</td>
+                <td v-on:click="see_vehicle(data.vehicle_id)" class="py-1" v-if="data.status == 0"><span style="color:green">Procured</span></td>
+                <td v-on:click="see_vehicle(data.vehicle_id)" class="py-1" v-if="data.status == 1"><span style="color:brown">Under-Refurbish</span></td>
+                <td v-on:click="see_vehicle(data.vehicle_id)" class="py-1" v-if="data.status == 2"><span style="color:purple">In Stock</span></td>
+                <td v-on:click="see_vehicle(data.vehicle_id)" class="py-1" v-if="data.status == 3"><span style="color:#FFB52F">Live!</span></td>
+                <td v-on:click="see_vehicle(data.vehicle_id)" class="py-1" v-if="data.status == 4"><span style="color:#FFB52F">Booked!</span></td>
+                <td v-on:click="see_vehicle(data.vehicle_id)" class="py-1" v-if="data.status == 5"><span style="color:#FFB52F">Sold!</span></td>
+                <td v-on:click="see_vehicle(data.vehicle_id)" class="py-1">{{data.vehicle_type}}</td>
+                <td v-on:click="see_vehicle(data.vehicle_id)" class="py-1" v-if="data.imageUpload == 0"><span style="color:#FFB52F"><i class="fa fa-times" aria-hidden="true"></i></span></td>
+                <td v-on:click="see_vehicle(data.vehicle_id)" class="py-1" v-if="data.imageUpload == 1"><span style="color:#FFB52F"><i class="fa fa-clock-o" aria-hidden="true"></i></span></td>
+                <td v-on:click="see_vehicle(data.vehicle_id)" class="py-1" v-if="data.imageUpload == 2"><span><i class="fa fa-check" aria-hidden="true"></i></span></td>
+                <td v-on:click="see_vehicle(data.vehicle_id)" class="py-1"  v-if="data.imageUpload == null"><span>-</span></td>
                 <td class="py-1"><button class="button btn btn-primary m-0 p-0 custom-button" v-on:click="editModals(data)"><i class="fa fa-pencil px-1" aria-hidden="true"></i></button>
                 <button class="button btn btn-primary m-0 p-0  custom-button" v-on:click="editStatus(data)"><i class="fa fa-bicycle px-1" aria-hidden="true"></i></button>
                <button class="button btn btn-primary m-0 p-0  custom-button" v-on:click="goToUpload(data.vehicle_id)"><i class="fa fa-eye px-1" aria-hidden="true"></i></button>
@@ -63,7 +72,7 @@
        <div id="text">Loading...</div>
     </div> -->
     </table>
-       <div class="loader mt-5" style="min-height:200px;" v-if="loading">
+       <div class="loader mt-5" style="min-height:200px;" v-if="loading && modals.length == 0">
             <h5 class="pt-4">Fetching all Vehicles's.....</h5>
             <div class="spinner-grow text-success mt-4"></div>
         </div>
@@ -72,14 +81,14 @@
       <p>Sorry :(</p>
       <p>No results Found</p>
     </div>
-     <div class="col-md-12">
+     <!-- <div class="col-md-12">
                 <div class="row">
                     <div class="col-md-12 text-center" v-if="filteredList.length != 0">
-                        <button class="btn mr-2" v-on:click="prevPage" :disabled="pageNumber==1"><i class="fa fa-angle-double-left" aria-hidden="true"> prev</i></button>
+                        <button class="btn mr-2" v-on:click="prevPage" :disabled="pageNumber==1"><i class="fa fa-angle-double-left" aria-hidden="true"></i> prev</button>|
                          <button class="btn ml-2" v-on:click="nextPage" :disabled="pageNumber == pageCount">next <i class="fa fa-angle-double-right" aria-hidden="true"></i></button>
                     </div>
                 </div>
-      </div>
+      </div> -->
 
         <div id="mymodals" class="modals" v-bind:class="{'displayModal':openEditStatusModel}">
     <!-- modals content -->
@@ -105,178 +114,7 @@
         </div>
       </div>
 
-    <div id="mymodals" class="modals" v-bind:class="{'displayModal':addModal}">
-    <!-- modals content -->
-        <div class="modals-content" style="top:0">
-            <span class="close" v-on:click="closeModal">&times;</span>
-            <form>     
-            <div>
-            <h4 class="mb-4 mt-2" style="font-weight:bold">Add Vehicle!</h4>
-              <div class="error">
-              <p>{{message}}</p>
-              </div>
-            <h5 class="col-sm-4 mb-4 p-0 font-weight-bold text-left">Vehicle Details: </h5>
-            </div>
-            <div class="form row">         
-                <div class="col-md-4 mb-4">
-                  <input type="text" v-model="vehicle_number" class="inputText form-control" required />
-                  <span class="floating-label" >Vehicle No</span>
-                </div>
-                <div class="col-md-4 mb-4">
-                  <select class="inputText form-control" v-model="make" required>
-                    <option v-for="(model, index) in modals" :key="index">{{model.make}}</option>
-                  </select>
-                  <span class="floating-label">Make</span>
-                </div>
-                <div class="col-md-4 mb-4">
-                   <select class="inputText form-control" v-model="model" required>
-                      <option v-if="!make">Select Make First</option>
-                    <option :value="mod._id"  v-for="(mod, index) in filteredmodels" :key="index">{{mod.modal_name}}</option>
-                  </select>
-                  <span class="floating-label">Model Name</span>
-                </div>
-            </div>
-            <div class="form row">
-              <div class="col-md-4 mb-4">
-                <input type="text" v-model="mfg_year" class="inputText form-control" required/>
-                <span class="floating-label">Manufacture Year</span>
-              </div>
-              <div class="col-md-4 mb-4">
-                <input type="text" v-model="color" class="inputText form-control" required/>
-                <span class="floating-label">Color</span>
-              </div>
-                  <div class="col-md-4 mb-4">
-                <input type="number" v-model="fines" class="inputText form-control" required/>
-                <span class="floating-label">Fines (if any)</span>
-              </div>
-                 <div class="col-md-4 mb-4">
-                   <select type="text" class="inputText form-control" v-model="type" required>
-                    <option value="standard">Standard</option>
-                    <option value="premium">Premium</option>
-                  </select>
-                  <span class="floating-label">Type</span>
-                </div>
-            </div>
- 
-         <!--  -->
-          <hr>
-         <!--  -->
-          <div>
-            <h5 class="col-sm-4 mb-4 p-0 font-weight-bold text-left">Procurred Address:</h5>
-          </div>
-            <div class="row form">
-              <div class="col-md-4 mb-4">
-                <input type="text" v-model="source" class="inputText form-control" required/>
-                <span class="floating-label">Source</span>
-              </div>
-              <div class="col-md-4 mb-4">
-                <input type="text" v-model="city" class="inputText form-control" required/>
-                <span class="floating-label">city</span>
-              </div>
-               <div class="col-md-4 mb-4">
-                <input type="Number" v-model="pincode" class="inputText form-control" required/>
-                <span class="floating-label">Pincode</span>
-              </div>              
-            </div>
-
-            <div class="row form">
-              <div class="col-md-4 mb-4">
-                <input type="text" v-model="state" class="inputText form-control" required/>
-                <span class="floating-label">State*</span>
-              </div>
-             <div class="col-md-8 mb-4">
-                <textarea type="text" v-model="address" class="inputText form-control" required/>
-                <span class="floating-label">Complete Address</span>
-              </div>
-            </div>
-          <!--  -->
-            <hr>
-
-           <!--  -->
-            <div class="form row">                    
-              <div class="col-md-12 mb-4 text-left d-flex">
-                 <h5 class="col-sm-4 mb-4 p-0 font-weight-bold text-left">Documents Collected:</h5>
-
-                <input type="checkbox" v-model="rc_card" id="box-1">
-                <label for="box-1" class="mr-3">RC card</label>
-
-                 <input type="checkbox" v-model="insurance" id="box-2">
-                <label for="box-2" class="mr-3">Insurance</label>
-
-                 <input type="checkbox" v-model="b_extract" id="box-4">
-                <label for="box-4" class="mr-3">B Extract</label>
-
-                 <input type="checkbox" v-model="hypothecation" id="box-5">
-                <label for="box-5" class="mr-3">Hypothecation</label>
-              </div>
-              
-            </div>
-            <div class="row form">
-              <div class="col-md-4 mb-4">
-                <input type="text" v-model="regn_no" class="inputText form-control" required/>
-                <span class="floating-label">Registration No</span>
-              </div>
-              <div class="col-md-4 mb-4">
-                <input type="text" v-model="chassis_no" class="inputText form-control" required/>
-                <span class="floating-label">Chassis No</span>
-              </div>
-               <div class="col-md-4 mb-4">
-                <input type="text" v-model="insurance_policy_number" class="inputText form-control" required/>
-                <span class="floating-label">Insurance Policy Number</span>
-              </div>              
-            </div>
-
-
-            <div class="form row mt-2 mb-3">
-                <div class="col-md-3 mb-4">
-                  <input type="date" v-model="rc_start" class="inputText form-control" required/>
-                 <span class="floating-label">RC Start</span>
-                </div>
-                <div class="col-md-3 mb-4 border-right">
-                  <input type="date" v-model="rc_end" class="inputText form-control" required/>
-                 <span class="floating-label">RC End</span>
-                </div>
-                <div class="col-md-3 mb-4">
-                  <input type="date" v-model="insurance_start" class="inputText form-control" required/>
-                 <span class="floating-label">Insurance Start</span>
-                </div>
-                <div class="col-md-3 mb-4">
-                 <input type="date" v-model="insurance_end" class="inputText form-control" required/>
-                 <span class="floating-label">Insurance End*</span>
-                </div>
-            </div>
-               <div class="col-md-12 mb-4 ">
-                <textarea type="text" v-model="remarks" class="inputText form-control" required/>
-                 <span class="floating-label">Remarks</span>
-              </div> 
-              <hr>
-
-            <div class="form row">
-             
-              <div class="col-md-4 mb-4">
-                <input type="date" v-model="procured_date" class="inputText form-control" required/>
-                 <span class="floating-label">Procure date</span>
-              </div>   
-              <div class="col-md-4 mb-4">
-                <input type="number" v-model="procured_price" class="inputText form-control" required/>
-                <span class="floating-label">Procured Price</span>
-              </div> 
-               <div class="col-md-4 mb-4">
-                <input type="number" v-model="selling_price" class="inputText form-control" required/>
-                <span class="floating-label">Selling Price</span>
-              </div> 
-              <hr>
-
-           
-            </div>             
-         </form>
-         <button type="button bt" class="btn btn-danger px-5" v-on:click="procureVehicle">
-              <span >Add Vehicle</span>
-              <div v-if="loadonadd" class="spinner-border spinner-border-sm ml-2">
-              </div>
-              </button>  
-        </div>
-    </div>
+    
 
          <div id="mymodals" class="modals" v-bind:class="{'displayModal':editModal}">
     <!-- modals content -->
@@ -461,10 +299,8 @@ export default {
               data:[],
               type:'',
               message:'',
-              procured_vehicels:[],
               show:true,
               filtered:[],
-              modals:[],
               search:'',
               pageNumber: 0,
               itemperpage:20,
@@ -501,14 +337,14 @@ export default {
               status:0,
               statusModel:'',
               editStatusid:'',
-              loading:false,
               modaltable_response:[],
               loadonadd:false,
               selectedFiles:null,
               update_loader:false,
-              delete_loader:false
+              delete_loader:false,
+            
         }
-    }, 
+    },
     components:{
      
     },
@@ -519,19 +355,18 @@ export default {
             this.$swal('Please Log in.');
             this.$router.push('/login')
         }
-      this.loading = true
-          this.$http.get('https://backend-bikex.herokuapp.com/api/models')
-          .then(response=>{
-           this.modals = response.body
-         })
-          this.$http.get('https://backend-bikex.herokuapp.com/api/fetch/live-vehicle')
-          .then(response=>{
-          this.procured_vehicels = response.body
-          this.loading = false
-         })
+       this.$store.dispatch('load_live_Vehicles');
+        this.$store.dispatch('load_models');
           this.pageNumber=this.$route.query.page || 1
     },
     methods:{
+       see_vehicle(identity){
+         window.console.log('working')
+        this.$router.push('/vehicles/'+ identity)
+      },
+      see_model(identy){
+        this.$router.push('/models/'+ identy)
+      },
       goToUpload(id){
            this.$router.push({path:'/uploads/'+ id})
       },
@@ -726,6 +561,15 @@ export default {
          }
     },
     computed:{
+      loading(){
+        return this.$store.state.loading
+      },
+      procured_vehicels(){
+         return this.$store.getters.vehicle_status(3);
+      },
+      modals(){
+         return this.$store.state.models;
+      },
       displayData(){
         const temp = []
         this.procured_vehicels.forEach(x => {
@@ -766,7 +610,7 @@ export default {
           return this.itemperpage
       },
       getdata(){
-          return this.d
+          return this.d 
       },
       filteredList() {
         return this.p.filter(post => {
@@ -776,10 +620,14 @@ export default {
         )
       })
     },
+    start(){
+      return (this.pageNumber - 1) * this.perpage
+    },
+    end(){
+      return this.start + this.perpage
+    },
     paginatedData(){
-    const start = (this.pageNumber - 1) * this.perpage,
-          end = start + this.perpage;
-     return this.filteredList.slice(start, end);
+     return this.filteredList.slice(this.start, this.end);
         },
     pageCount(){
       let l = this.filteredList.length,
@@ -791,17 +639,14 @@ export default {
 </script>
 <style scoped>
 @import url('https://fonts.googleapis.com/css?family=Montserrat&display=swap');
-.search_placeholder{
-  font-size: 12px;
-  text-align: center;
-  font-family: 'Montserrat', sans-serif;
-}
+
 .fa, .fas {
     cursor: pointer;
 }
 .centres{
     font-family: 'Montserrat', sans-serif;
     font-size: 12px;
+padding-top: 0px;
 
 }
 .custom-button {
@@ -809,7 +654,24 @@ export default {
     background-color: transparent;
     border-color: transparent;
 }
-
+.hand{
+  cursor: pointer;
+  border: none
+}
+.table td, .table th{
+  border: none;
+  padding: 1.35rem;
+}
+.table tr{
+  background-color: white;
+  border-radius: 10px;
+}
+.hand:hover{
+  background-color: rgba(75, 240, 34, 0.3)   
+}
+.under:hover{
+  text-decoration: underline
+}
 input[type=date]:required:invalid::-webkit-datetime-edit {
     color: transparent;
 }
@@ -824,6 +686,16 @@ label{
 .custom-button:hover{
     background-color: rgb(172, 108, 108);
 
+}
+.top-content{
+  background-color: white
+}
+.header{
+    font-size: 1.25rem;
+    border-left: 4px solid #ffb52f;
+    padding-left: 7px;
+    padding-top: 3px;
+    font-family: 'Montserrat', sans-serif;
 }
 .custom-button:focus, .custom-button:active{
   outline: none;
@@ -878,7 +750,11 @@ label{
   text-decoration: none;
   cursor: pointer;
 }
-
+.round{
+  border-radius: 50%;
+  background-color: #ffb52f;
+  color: white
+}
 input:focus ~ .floating-label,
 input:not(:focus):valid ~ .floating-label{
   top: -7px;
@@ -1008,7 +884,10 @@ input[type="checkbox"]:checked + label:before {
   position: relative;
   animation: mymove 1s infinite;
 }
-
+table{
+  border-collapse: separate;
+    border-spacing: 0 1em;
+}
 @keyframes mymove {
   from {transform: rotate(-45deg);}
   to {transform: rotate(45deg);}
@@ -1022,47 +901,12 @@ input[type="checkbox"]:checked + label:before {
    overflow: hidden
  }
 }
-input[type="checkbox"] { display: none; }
-
-input[type="checkbox"] + label {
-  display: block;
-  position: relative;
-  padding-left: 35px;
-  margin-bottom: 20px;
-  font: 14px/20px 'Open Sans', Arial, sans-serif;
-  cursor: pointer;
-  -webkit-user-select: none;
-  -moz-user-select: none;
-  -ms-user-select: none;
+.search{
+  border-radius: 10px;
+  border: 1px solid #ffb52f;
+  padding: 5px;
+  width: 100%
 }
 
-input[type="checkbox"] + label:last-child { margin-bottom: 0; }
-
-input[type="checkbox"] + label:before {
-  content: '';
-  display: block;
-  width: 20px;
-  height: 20px;
-  color:red;
-  border: 1px solid #FFB52F;
-  position: absolute;
-  left: 0;
-  top: 0;
-  opacity: .6;
-  -webkit-transition: all .12s, border-color .08s;
-  transition: all .12s, border-color .08s;
-}
-
-input[type="checkbox"]:checked + label:before {
-  width: 10px;
-  top: -5px;
-  left: 5px;
-  border-radius: 0;
-  opacity: 1;
-  border-top-color: transparent;
-  border-left-color: transparent;
-  -webkit-transform: rotate(45deg);
-  transform: rotate(45deg);
-}
 
 </style>

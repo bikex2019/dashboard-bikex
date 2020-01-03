@@ -1,30 +1,42 @@
 <template>
-<div class="centres">
-    <div class="col-md-11 ml-4 mb-2 col-12 mobile">
+<div class="centres mt-4">
+    <div class="col-md-12 p-4 mb-2 mt-4 col-12 mobile top-content">
             <div class="row">
-                <div class="col-md-6 p-0 m-0 text-left pt-1 d-flex">
-                    <p class="p-0 m-0">Showing {{paginatedData.length}} out of {{procured_vehicels.length}}</p>
-                    <span class="ml-3"> Page No. {{pageNumber}}</span>
+                <div class="col-md-6 p-0 m-0 pl-4 text-left d-flex">
+                  <h5 class="header"><strong>VEHICLES</strong></h5>
                 </div>
-                <div class="col-md-2 pt-1">
-                    <input type="text" v-model="search" placeholder="search vehicle number">
+                <div class="col-md-3 pt-1 mr-3 d-flex justify-content-between">
+                  <p class="p-0 m-0 pt-1">{{start }} - {{end}} <span class="mx-1"> of </span> {{procured_vehicels.length}} 
+                  <span>entries.</span></p>
+                  <span class="ml-3 mr-3 pt-1"> Page No. {{pageNumber}}</span>
+                   <div>
+                     <button class="btn mr-2 m-0 p-0" v-on:click="prevPage" :disabled="pageNumber==1">
+                     <i class="fa fa-chevron-left" style="font-size:13px" aria-hidden="true"></i>
+                   </button>
+                  <button class="btn ml-2 m-0 p-0" v-on:click="nextPage" :disabled="pageNumber == pageCount">
+                    <i class="fa fa-chevron-right" style="font-size:13px" aria-hidden="true"></i>
+                  </button>
+                   </div>
                 </div>
-                <div class="col-md-4 p-0 m-0 text-right">
-                    <button class="btn btn-danger rounded" v-on:click="openModal">Add Vehicle +</button>
+                <div class="col-md-2 p-0 m-0 text-right d-flex justify-content-between">
+                    <input type="text" v-model="search" placeholder="search here.." class="search">
+                    <button class="btn round" v-on:click="openModal">
+                      <i class="fa fa-plus" aria-hidden="true"></i>
+                    </button>
                 </div>
             </div>
     </div>
-    <table class="table table-striped table-bordered col-md-11 ml-4">
+    <table class="table col-md-11 ml-5">
         <thead>
             <tr>
-            <th>Vehicle_ID</th>
-            <th>Vehicle Number 
+            <th>ID</th>
+            <th>VEHICLE NO 
             <!-- <i class="fa fa-sort-amount-asc ml-3 sorter" aria-hidden="true" v-on:click="asc" v-if="show"></i>
             <i class="fa fa-sort-amount-desc ml-3 sorter" aria-hidden="true" v-on:click="desc" v-else></i> -->
             </th>
-            <th>Model</th>
-            <th>Make</th>
-            <th>Chasis No.</th>
+            <th>MODEL</th>
+            <th>MAKE</th>
+            <th>CHASIS NO</th>
             <th>STATUS</th>
             <th>Type</th>
             <th>UPLOAD</th>
@@ -32,7 +44,7 @@
         </tr>
         </thead>
         <tbody>
-            <tr v-for="(data, index) in paginatedData" :key="index" class="hand">
+            <tr v-for="(data, index) in paginatedData" :key="index" class="hand p-3">
                 <td v-on:click="see_vehicle(data.vehicle_id)" class="py-1">{{data.vehicle_id}}</td>
                 <td v-on:click="see_vehicle(data.vehicle_id)" class="py-1">{{data.vehicle_number}}</td>
                 <td v-on:click="see_model(data.model_id)" class="py-1 under">{{data.modal_name}}</td>
@@ -41,12 +53,12 @@
                 <td v-on:click="see_vehicle(data.vehicle_id)" class="py-1" v-if="data.status == 0"><span style="color:green">Procured</span></td>
                 <td v-on:click="see_vehicle(data.vehicle_id)" class="py-1" v-if="data.status == 1"><span style="color:brown">Under-Refurbish</span></td>
                 <td v-on:click="see_vehicle(data.vehicle_id)" class="py-1" v-if="data.status == 2"><span style="color:purple">In Stock</span></td>
-                <td v-on:click="see_vehicle(data.vehicle_id)" class="py-1" v-if="data.status == 3"><span style="color:red">Live!</span></td>
-                <td v-on:click="see_vehicle(data.vehicle_id)" class="py-1" v-if="data.status == 4"><span style="color:red">Booked!</span></td>
-                <td v-on:click="see_vehicle(data.vehicle_id)" class="py-1" v-if="data.status == 5"><span style="color:red">Sold!</span></td>
+                <td v-on:click="see_vehicle(data.vehicle_id)" class="py-1" v-if="data.status == 3"><span style="color:#FFB52F">Live!</span></td>
+                <td v-on:click="see_vehicle(data.vehicle_id)" class="py-1" v-if="data.status == 4"><span style="color:#FFB52F">Booked!</span></td>
+                <td v-on:click="see_vehicle(data.vehicle_id)" class="py-1" v-if="data.status == 5"><span style="color:#FFB52F">Sold!</span></td>
                 <td v-on:click="see_vehicle(data.vehicle_id)" class="py-1">{{data.vehicle_type}}</td>
-                <td v-on:click="see_vehicle(data.vehicle_id)" class="py-1" v-if="data.imageUpload == 0"><span style="color:red"><i class="fa fa-times" aria-hidden="true"></i></span></td>
-                <td v-on:click="see_vehicle(data.vehicle_id)" class="py-1" v-if="data.imageUpload == 1"><span style="color:red"><i class="fa fa-clock-o" aria-hidden="true"></i></span></td>
+                <td v-on:click="see_vehicle(data.vehicle_id)" class="py-1" v-if="data.imageUpload == 0"><span style="color:#FFB52F"><i class="fa fa-times" aria-hidden="true"></i></span></td>
+                <td v-on:click="see_vehicle(data.vehicle_id)" class="py-1" v-if="data.imageUpload == 1"><span style="color:#FFB52F"><i class="fa fa-clock-o" aria-hidden="true"></i></span></td>
                 <td v-on:click="see_vehicle(data.vehicle_id)" class="py-1" v-if="data.imageUpload == 2"><span><i class="fa fa-check" aria-hidden="true"></i></span></td>
                 <td v-on:click="see_vehicle(data.vehicle_id)" class="py-1"  v-if="data.imageUpload == null"><span>-</span></td>
                 <td class="py-1"><button class="button btn btn-primary m-0 p-0 custom-button" v-on:click="editModals(data)"><i class="fa fa-pencil px-1" aria-hidden="true"></i></button>
@@ -69,14 +81,14 @@
       <p>Sorry :(</p>
       <p>No results Found</p>
     </div>
-     <div class="col-md-12">
+     <!-- <div class="col-md-12">
                 <div class="row">
                     <div class="col-md-12 text-center" v-if="filteredList.length != 0">
                         <button class="btn mr-2" v-on:click="prevPage" :disabled="pageNumber==1"><i class="fa fa-angle-double-left" aria-hidden="true"></i> prev</button>|
                          <button class="btn ml-2" v-on:click="nextPage" :disabled="pageNumber == pageCount">next <i class="fa fa-angle-double-right" aria-hidden="true"></i></button>
                     </div>
                 </div>
-      </div>
+      </div> -->
 
         <div id="mymodals" class="modals" v-bind:class="{'displayModal':openEditStatusModel}">
     <!-- modals content -->
@@ -500,7 +512,8 @@ export default {
               loadonadd:false,
               selectedFiles:null,
               update_loader:false,
-              delete_loader:false
+              delete_loader:false,
+            
         }
     },
     components:{
@@ -515,7 +528,6 @@ export default {
         }
        this.$store.dispatch('total_vehicle_procured');
         this.$store.dispatch('load_models');
-
           this.pageNumber=this.$route.query.page || 1
     },
     methods:{
@@ -779,10 +791,14 @@ export default {
         )
       })
     },
+    start(){
+      return (this.pageNumber - 1) * this.perpage
+    },
+    end(){
+      return this.start + this.perpage
+    },
     paginatedData(){
-    const start = (this.pageNumber - 1) * this.perpage,
-          end = start + this.perpage;
-     return this.filteredList.slice(start, end);
+     return this.filteredList.slice(this.start, this.end);
         },
     pageCount(){
       let l = this.filteredList.length,
@@ -801,6 +817,7 @@ export default {
 .centres{
     font-family: 'Montserrat', sans-serif;
     font-size: 12px;
+padding-top: 0px;
 
 }
 .custom-button {
@@ -809,7 +826,16 @@ export default {
     border-color: transparent;
 }
 .hand{
-  cursor: pointer
+  cursor: pointer;
+  border: none
+}
+.table td, .table th{
+  border: none;
+  padding: 1.35rem;
+}
+.table tr{
+  background-color: white;
+  border-radius: 10px;
 }
 .hand:hover{
   background-color: rgba(75, 240, 34, 0.3)   
@@ -831,6 +857,16 @@ label{
 .custom-button:hover{
     background-color: rgb(172, 108, 108);
 
+}
+.top-content{
+  background-color: white
+}
+.header{
+    font-size: 1.25rem;
+    border-left: 4px solid #ffb52f;
+    padding-left: 7px;
+    padding-top: 3px;
+    font-family: 'Montserrat', sans-serif;
 }
 .custom-button:focus, .custom-button:active{
   outline: none;
@@ -885,7 +921,11 @@ label{
   text-decoration: none;
   cursor: pointer;
 }
-
+.round{
+  border-radius: 50%;
+  background-color: #ffb52f;
+  color: white
+}
 input:focus ~ .floating-label,
 input:not(:focus):valid ~ .floating-label{
   top: -7px;
@@ -1015,7 +1055,10 @@ input[type="checkbox"]:checked + label:before {
   position: relative;
   animation: mymove 1s infinite;
 }
-
+table{
+  border-collapse: separate;
+    border-spacing: 0 1em;
+}
 @keyframes mymove {
   from {transform: rotate(-45deg);}
   to {transform: rotate(45deg);}
@@ -1028,6 +1071,11 @@ input[type="checkbox"]:checked + label:before {
  .mobile{
    overflow: hidden
  }
+}
+.search{
+  border-radius: 10px;
+  border: 1px solid #ffb52f;
+  padding: 5px;
 }
 
 

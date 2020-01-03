@@ -10,7 +10,7 @@ export default new Vuex.Store({
 state: {
   procured_vehicles:[],
   faqs: [],
-  vehicles:[],
+  live_vehicles:[],
   models:[],
   display_images:[],
   total_sold:[],
@@ -28,8 +28,8 @@ state: {
     FETCH_FAQ(state, faqs) {
       state.faqs = faqs;
     },
-    FETCH_VEHICLES(state, vehicles){
-        state.vehicles = vehicles
+    FETCH_LIVE_VEHICLES(state, live_vehicles){
+        state.live_vehicles = live_vehicles
     },
     FETCH_MODELS(state, models){
         state.models = models
@@ -73,7 +73,7 @@ state: {
     },
     load_live_Vehicles({commit}) {
         axios.get(url +'/fetch/live-vehicle').then(result => {
-          commit('FETCH_VEHICLES', result.data);
+          commit('FETCH_LIVE_VEHICLES', result.data);
         }).catch(error => {
           throw new Error(`API ${error}`);
         });
@@ -108,5 +108,30 @@ state: {
         throw new Error(`API ${error}`);
       });
     },
+    },
+    getters:{
+      baseUrl(){
+      return 'https://backend-bikex.herokuapp.com/api'
+      },
+      vehicle(state) {
+        return id => state.procured_vehicles.filter(item =>{
+          return item.vehicle_id === id
+        });
+      },
+      models(state) {
+        return id => state.models.filter(item =>{
+          return item.vehicle_id === id
+        });
+      },
+      display_image(state) {
+        return id => state.display_images.filter(item =>{
+          return item.vehicle_id === id
+        });
+      },
+      vehicle_status(state) {
+        return id => state.procured_vehicles.filter(item =>{
+          return item.status === id
+        });
+      },
     }
 });

@@ -5,12 +5,12 @@
         <span style="font-size:25px;cursor:pointer" v-if="toggle" v-on:click="toggle =!toggle">&#9776;</span>
                 <span class="phone" style="font-size:25px;cursor:pointer" v-if="!toggle" v-on:click="toggle =!toggle">&times;</span>
       </div>
-      <div class="col-md-6 col-8 text-right pr-4">
-        <span class="mr-3" v-on:click="refresh()"><i class="fa fa-refresh" style="color:red"></i></span>
-        <span class="mr-3" v-on:click="go('purchase')">Purchase<span class="badge badge-light" style="color:red">{{purchases.total}}</span></span>
-        <!-- <span class="mr-3">Booking<span class="badge badge-light" style="color:red">2</span></span> -->
-        <span class="mr-3" v-on:click="go('sell')">Sell<span class="badge badge-light" style="color:red">{{sell.total}}</span></span>
-       <span class="mr-3" v-on:click="go('finance')">Finance<span class="badge badge-light" style="color:red">{{finance.total}}</span></span>
+      <div class="col-md-6 col-8 text-right pr-4 monte">
+        <span class="mr-3" v-on:click="refresh()"><i class="fa fa-refresh" style="color:#FFB52F"></i></span>
+        <span class="mr-3 monte"  v-on:click="go('purchase')">Purchase<span class="badge badge-light" style="color:#FFB52F">{{purchases.total}}</span></span>
+        <!-- <span class="mr-3">Booking<span class="badge badge-light" style="color:#FFB52F">2</span></span> -->
+        <span class="mr-3 monte" v-on:click="go('sell')">Sell<span class="badge badge-light" style="color:#FFB52F">{{sell.total}}</span></span>
+       <span class="mr-3 monte" v-on:click="go('finance')">Finance<span class="badge badge-light" style="color:#FFB52F">{{finance.total}}</span></span>
         <i class="fa fa-sign-out mr-3"  v-on:click="logout" style='font-size:20px;color:#001232' aria-hidden="true"></i>
         <div class="dropdown mr-1">
           <i class='fa fa-link mt-2 dropbtn' style='font-size:17px;color:#001232'></i>
@@ -389,7 +389,10 @@ border-bottom: 1px solid gray
   display: block;
   transition: 0.3s;
 }
-
+.monte{
+      font-family: 'Montserrat', sans-serif;
+      font-size: 12px;
+}
 .dropbtn {
   font-size: 16px;
   border: none;
