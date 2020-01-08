@@ -1,75 +1,29 @@
 <template>
-    <div class="notification">
-        <div class="col-md-12 p-4 mb-2 mt-4 col-12 mobile top-content">
-            <div class="row">
-                <div class="col-md-3 p-0 m-0 pl-4 text-left d-flex">
-                  <h5 class="header"><strong>
-                      <span style="text-transform:uppercase">{{filter }} PURCHASE</span>
-                      </strong></h5>
-                </div>
-                 <div class="col-md-3 pt-1 d-inline">
-                   <span class="link px-3" v-bind:class="{active: filter === 'all'}"  v-on:click="filterkey('all')">All</span>
-                   <span class="link px-3" v-bind:class="{active: filter === 'failed'}" v-on:click="filterkey('failed')">Failed</span>
-                   <span class="link px-3" v-bind:class="{active: filter === 'sucess'}" v-on:click="filterkey('sucess')">Success</span>
-                </div>
-
-                <div class="col-md-3 pt-1 mr-3 d-flex justify-content-between">
-                  <p class="p-0 m-0 pt-1">{{start }} - {{end}} <span class="mx-1"> of </span> {{purchase.length}} 
-                  <span>entries.</span></p>
-                  <span class="ml-3 mr-3 pt-1"> Page No. {{pageNumber}}</span>
-                   <div>
-                     <button class="btn mr-2 m-0 p-0" v-on:click="prevPage" :disabled="pageNumber==1">
-                     <i class="fa fa-chevron-left" style="font-size:13px" aria-hidden="true"></i>
-                   </button>
-                  <button class="btn ml-2 m-0 p-0" v-on:click="nextPage" :disabled="pageNumber == pageCount">
-                    <i class="fa fa-chevron-right" style="font-size:13px" aria-hidden="true"></i>
-                  </button>
-                   </div>
-                </div>
-
-                <div class="col-md-2 pt-1 text-right m-0 p-0">
-                    <input type="text" v-model="search" placeholder="search customer ID, order ID" class="search">
-                </div>
-            </div>
-    </div>
-
-         <table class="table col-md-11 ml-5">
+    <div class="notification p-2 border">
+      <div class="text-right m-0 p-0">
+        <button class="btn custom-button p-1 px-2 m-0 mr-4" v-on:click="go('purchase')">VIEW ALL</button>
+      </div>
+         <table class="table col-md-12 m-0 p-0">
         <thead>
         <tr>
-            <th>Order ID</th>
-            <th>Customer ID</th>
-            <th>Vehicle ID</th>
-            <th>Name</th>
-            <th>Phone</th>
-            <th>Email</th>
-            <th>Model</th>
-            <th>Amount</th>
-            <th>Action</th>
+            <!-- <th>ID</th> -->
+            <th>NAME</th>
+            <th>PHONE</th>
+            <th>EMAIL</th> 
+            <th>MODEL</th>
         </tr>
         </thead>
         <tbody>
             <tr v-for="(purchase, index) in paginatedData" :key="index" v-bind:class="{strong: purchase.seen == 0,failed:purchase.payment_status==0,sucess:purchase.payment_status==1}">
-                <td  class="py-1">{{purchase._id}}</td> 
-                <td class="py-1">{{purchase.customer_id}}</td>
-                <td v-on:click="see_vehicle(purchase.vehicle_id)" class="under py-1">{{purchase.vehicle_id}}</td>
-                <td class="py-1">{{purchase.firstname}} {{purchase.lastname}}</td>
-                <td  class="py-1">{{purchase.phone}}</td>
-                <td  class="py-1">{{purchase.email}}</td>
-                <td  class="py-1">{{purchase.model}}</td>
-                <td  class="py-1">{{purchase.amount | currency}}</td>
-                <!-- <td  class="py-1">{{purchase.payment_status}}</td> -->
-                <td class="py-1">
-                <button class="m-0 py-1 custom-button" v-if="purchase.seen == 0" v-on:click="read(purchase._id)">
-                    <i class="fa fa-eye" aria-hidden="true"></i>
-                </button>
-                <button class="m-0 py-1 custom-button" v-else v-on:click="open(purchase._id)">
-                   <i class="fa fa-eye" aria-hidden="true"></i>
-                </button>
-                </td>
+                <!-- <td class="hand py-1" v-on:click="open(purchase._id)">{{purchase._id}}</td>  -->
+                <td class="hand py-1" v-on:click="open(purchase._id)">{{purchase.firstname}} {{purchase.lastname}}</td>
+                <td class="hand py-1" v-on:click="open(purchase._id)">{{purchase.phone}}</td>
+                <td class="hand py-1" v-on:click="open(purchase._id)">{{purchase.email}}</td>
+                <td class="hand py-1" v-on:click="open(purchase._id)">{{purchase.model}}</td>
             </tr>
         </tbody>
     </table>
-
+ 
     <div id="myModals" class="modals" v-if="openmodal">
 
   <!-- Modals content -->
@@ -106,9 +60,9 @@
   </div>
 
 </div>
-    <div class="container" style="margin-top:80px" v-if="!loading && filteredList.length == 0">
+    <div class="container text-center" style="margin-top:20px" v-if="!loading && filteredList.length == 0">
       <p>Sorry :(</p>
-      <p>No results Found</p>
+      <p>No records.</p>
     </div>
 <div id="overlay" class="loading text-center mb-4" style="min-height:200px" v-if="loading">
             <div id="text" class="spinner-border" role="status">
@@ -122,25 +76,27 @@
 export default {
     data(){
         return{
-            purchase:[],
+           
             view:[],
-            loading:true,
             openmodal:false,
             pageNumber: 1,
-            itemperpage:10,
+            itemperpage:5,
             search:'',
-            filter:'all'
+            filter:'all',
+            // statuscheck:1
         }
+    },
+    props:{
+      status:{
+        type:Number,
+        default:0
+      }
     },
     created(){
         this.pageNumber=this.$route.query.page || 1
     },
     mounted(){
-        this.$http.get('https://backend-bikex.herokuapp.com/api/purchases')
-          .then(response=>{
-           this.purchase = response.body
-           this.loading = false
-         })
+      this.$store.dispatch('purchases');
     },
     methods:{
         filterkey(id){
@@ -171,6 +127,9 @@ export default {
             const edit = this.purchase.filter(x=>x._id == id)
             this.view = edit
         },
+        go(id){
+          this.$router.push('/'+ id)
+        },
         close(){
             this.openmodal = false
         },
@@ -182,14 +141,14 @@ export default {
                  let x = this.pageNumber--
                this.$router.push({query: { page: x - 1}})
         },
-    },
+    }, 
     computed:{
-    // perpage(){
-    //       return this.itemperpage
-    //   },
-    //   getdata(){
-    //       return this.purchase
-    //   },
+    loading(){
+        return this.$store.state.loading
+    },
+    purchase(){
+        return this.$store.getters.newPurchases(this.status)
+    },
     filtereddata(){
         const filterparams = this.filter
         if(filterparams === "all") {
@@ -245,8 +204,11 @@ export default {
     cursor: pointer;
 }
 .notification{
-        font-family: 'Montserrat', sans-serif;
+    font-family: 'Montserrat', sans-serif;
     font-size: 12px;
+     width: 100%;
+  height: 200px;
+  overflow-x: hidden; overflow-y: auto;
 }
 .custom-button {
     color: black;
@@ -330,13 +292,13 @@ label{
 .top-content{
   background-color: white
 }
-.header{
+/* .header{
     font-size: 1.25rem;
     border-left: 4px solid #ffb52f;
     padding-left: 7px;
     padding-top: 3px;
     font-family: 'Montserrat', sans-serif;
-}
+} */
 table{
   border-collapse: separate;
     border-spacing: 0 1em;
@@ -346,5 +308,34 @@ table{
   border: 1px solid #ffb52f;
   padding: 5px;
   width: 100%
+}
+
+/* width */
+::-webkit-scrollbar {
+  width: 4px;
+}
+
+/* Track */
+::-webkit-scrollbar-track {
+  box-shadow: inset 0 0 1px grey;
+  border-radius: 2px;
+}
+
+/* Handle */
+::-webkit-scrollbar-thumb {
+  background: rgb(0,18,50);
+  border-radius: 2px;
+}
+.hand{
+  cursor: pointer;
+  border: none
+}
+.table tr:hover{
+  background-color: rgba(75, 240, 34, 0.3)   
+}
+.custom-button{
+font-size: 10px;
+background-color: rgb(0,18,50);
+color:white
 }
 </style>

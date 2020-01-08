@@ -4,7 +4,7 @@
             <div class="row">
                 <div class="col-md-3 p-0 m-0 pl-4 text-left d-flex">
                   <h5 class="header"><strong>
-                      <span style="text-transform:uppercase">{{filter }} VEHICLES</span>
+                      <span style="text-transform:uppercase">{{filter }} VEHICLE (ENGAGED)</span>
                       </strong></h5>
                 </div>
                 <div class="col-md-3 pt-1 d-inline">
@@ -43,7 +43,7 @@
             </th>
             <th>MODEL</th>
             <th>MAKE</th>
-            <th>CHASIS</th>
+            <th>DATE</th>
             <th>STATUS</th>
             <th>TYPE</th>
             <th>UPLOAD</th>

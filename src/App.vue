@@ -22,8 +22,13 @@ export default {
     navigation
   },
   created(){
-    this.$store.dispatch('total_vehicle_procured');
-    this.$store.dispatch('load_models');
+    // this.$store.dispatch('total_vehicle_procured');
+    // this.$store.dispatch('load_models');
+    this.$store.dispatch('total_sold');
+    this.$store.dispatch('total_booked');
+    this.$store.dispatch('total_vehicle');
+    this.$store.dispatch('total_customers');
+    this.$store.dispatch('new_bookings')
   },
   mounted(){
     let auth = localStorage.getItem('token')
@@ -46,7 +51,7 @@ export default {
 .custom{
   padding-left: 59px;
   padding-top: 0px;
-  background-color: rgba(219, 248, 164, 0.5)
+  /* background-color: rgba(219, 248, 164, 0.5) */
 }
 
 @media only screen and (max-width: 768px) {

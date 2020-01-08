@@ -3,25 +3,37 @@
         <overview></overview>
         <div class="col-md-12 mb-4">
             <div class="row">
-                <div class="col-md-3">
-                    <runningBikes></runningBikes>
+                <div class="col-md-6">
+                    <quickoverview></quickoverview>
                 </div>
-                <div class="col-md-3">
+                   <div class="col-md-6">
+                    <reminderTab></reminderTab>
+                </div>
+                <!-- <div class="col-md-3">
                     <soldBikes></soldBikes>
-                </div>
+                </div> -->
+                <!-- <div class="col-md-3">
+                    <purchasechart></purchasechart>
+                </div> -->
             </div>
         </div>
     </div>
 </template>
 <script>
 import overview from './overview';
-import runningBikes from './running-bikes'
-import soldBikes from './soldbikes'
+import quickoverview from './quick-overview'
+import reminderTab from './reminder-tab'
+// import soldBikes from './soldbikes'
+// import purchasechart from './purchase-graph'
 export default {
     components:{
         overview,
-        runningBikes,
-        soldBikes
+        quickoverview,
+        reminderTab
+        // failedvrssucess
+        // runningBikes,
+        // soldBikes,
+        // purchasechart
     },
     beforeCreate(){
         let auth = localStorage.getItem('token')
@@ -39,5 +51,7 @@ export default {
 }
 </script>
 <style scoped>
-
+.home{
+    background-color: #fff
+}
 </style>

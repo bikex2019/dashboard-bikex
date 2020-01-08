@@ -663,7 +663,7 @@ padding-top: 0px;
   padding: 1.35rem;
 }
 .table tr{
-  background-color: white;
+  background-color: rgba(248, 242, 242, 0.5);
   border-radius: 10px;
 }
 .hand:hover{

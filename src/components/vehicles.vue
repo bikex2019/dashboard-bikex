@@ -1,5 +1,6 @@
 <template>
 <div class="centres mt-4">
+  {{total}}
     <div class="col-md-12 p-4 mb-2 mt-4 col-12 mobile top-content">
             <div class="row">
                 <div class="col-md-6 p-0 m-0 pl-4 text-left d-flex">
@@ -34,8 +35,7 @@
             <!-- <i class="fa fa-sort-amount-asc ml-3 sorter" aria-hidden="true" v-on:click="asc" v-if="show"></i>
             <i class="fa fa-sort-amount-desc ml-3 sorter" aria-hidden="true" v-on:click="desc" v-else></i> -->
             </th>
-            <th>MODEL</th>
-            <th>MAKE</th>
+            <th>MAKE/MODEL</th>
             <th>CHASIS NO</th>
             <th>STATUS</th>
             <th>Type</th>
@@ -47,8 +47,7 @@
             <tr v-for="(data, index) in paginatedData" :key="index" class="hand p-3">
                 <td v-on:click="see_vehicle(data.vehicle_id)" class="py-1">{{data.vehicle_id}}</td>
                 <td v-on:click="see_vehicle(data.vehicle_id)" class="py-1">{{data.vehicle_number}}</td>
-                <td v-on:click="see_model(data.model_id)" class="py-1 under">{{data.modal_name}}</td>
-                <td v-on:click="see_model(data.model_id)" class="py-1 under">{{data.make}}</td>
+                <td v-on:click="see_model(data.model_id)" class="py-1 under">{{data.make}} {{data.modal_name}}</td>
                 <td v-on:click="see_vehicle(data.vehicle_id)" class="py-1">{{data.chassis_no}}</td>
                 <td v-on:click="see_vehicle(data.vehicle_id)" class="py-1" v-if="data.status == 0"><span style="color:green">Procured</span></td>
                 <td v-on:click="see_vehicle(data.vehicle_id)" class="py-1" v-if="data.status == 1"><span style="color:brown">Under-Refurbish</span></td>
@@ -217,6 +216,10 @@
 
                  <input type="checkbox" v-model="hypothecation" id="box-5">
                 <label for="box-5" class="mr-3">Hypothecation</label>
+
+                <input type="checkbox" v-model="noc" id="box-6">
+                <label for="box-6" class="mr-3">NOC</label>
+
               </div>
               
             </div>
@@ -392,6 +395,10 @@
 
                  <input type="checkbox" v-model="hypothecation" id="box-5">
                 <label for="box-5" class="mr-3">Hypothecation</label>
+
+                <input type="checkbox" v-model="noc" id="box-6">
+                <label for="box-6" class="mr-3">NOC</label>
+
               </div>
               
             </div>
@@ -492,6 +499,7 @@ export default {
               insurance:false,
               b_extract:false,
               hypothecation:false,
+              noc:false,
               regn_no:'',
               insurance_policy_number:'',
               chassis_no:'',
@@ -519,6 +527,7 @@ export default {
     components:{
      
     },
+
     created(){
       let auth = localStorage.getItem('token')
         this.id = localStorage.getItem('temp')
@@ -528,7 +537,9 @@ export default {
         }
        this.$store.dispatch('total_vehicle_procured');
         this.$store.dispatch('load_models');
-          this.pageNumber=this.$route.query.page || 1
+
+        this.pageNumber=this.$route.query.page || 1
+        this.search=this.$route.query.search || ''
     },
     methods:{
        see_vehicle(identity){
@@ -583,6 +594,7 @@ export default {
               insurance:this.insurance,
               b_extract:this.b_extract,
               hypothecation:this.hypothecation,
+              noc:this.noc,
               regn_no:this.regn_no,
               chassis_no:this.chassis_no,
               rc_start:this.rc_start,
@@ -627,6 +639,7 @@ export default {
               insurance:this.insurance,
               b_extract:this.b_extract,
               hypothecation:this.hypothecation,
+              noc:this.noc,
               regn_no:this.regn_no,
               chassis_no:this.chassis_no,
               rc_start:this.rc_start,
@@ -696,6 +709,7 @@ export default {
             this.b_extract = vehicleToEdit.b_extract
             this.insurance_policy_number=vehicleToEdit.insurance_policy_number,
             this.hypothecation = vehicleToEdit.hypothecation
+            this.noc = vehicleToEdit.noc
             this.regn_no = vehicleToEdit.regn_no
             this.chassis_no = vehicleToEdit.chassis_no
             this.rc_start = moment(vehicleToEdit.rc_start).format("YYYY-MM-DD");
@@ -834,7 +848,7 @@ padding-top: 0px;
   padding: 1.35rem;
 }
 .table tr{
-  background-color: white;
+  background-color: rgba(248, 242, 242, 0.5);
   border-radius: 10px;
 }
 .hand:hover{

@@ -16,7 +16,11 @@ state: {
   total_sold:[],
   total_booked:[],
   total_vehicle:[],
-  loading:true
+  total_customers:[],
+  new_bookings:[],
+  purchases:[],
+  customers:[],
+  loading:true,
   },
   mutations: {
     LOAD_STATUS(state, value) {
@@ -31,6 +35,9 @@ state: {
     FETCH_LIVE_VEHICLES(state, live_vehicles){
         state.live_vehicles = live_vehicles
     },
+    FETCH_PURCHASES(state, purchases){
+      state.purchases = purchases
+  },
     FETCH_MODELS(state, models){
         state.models = models
     },
@@ -45,6 +52,15 @@ state: {
     },
     FETCH_TOTAL_VEHICLE(state, total_vehicle){
         state.total_vehicle = total_vehicle
+    },
+    FETCH_TOTAL_CUSTOMERS(state, total_customers){
+      state.total_customers = total_customers
+    },
+    FETCH_CUSTOMERS(state, customers){
+      state.customers = customers
+    },
+    FETCH_NEW_BOOKINGS(state, new_bookings){
+      state.new_bookings = new_bookings
     }
   }, 
   actions: {
@@ -108,6 +124,34 @@ state: {
         throw new Error(`API ${error}`);
       });
     },
+    new_bookings({commit}) {
+      axios.get(url +'/purchases/get/notseen').then(result => {
+        commit('FETCH_NEW_BOOKINGS', result.data);
+      }).catch(error => {
+        throw new Error(`API ${error}`);
+      });
+    },
+    purchases({commit}) {
+      axios.get(url +'/purchases').then(result => {
+        commit('FETCH_PURCHASES', result.data);
+      }).catch(error => {
+        throw new Error(`API ${error}`);
+      });
+    },
+    customers({commit}) {
+      axios.get(url +'/customers').then(result => {
+        commit('FETCH_CUSTOMERS', result.data);
+      }).catch(error => {
+        throw new Error(`API ${error}`);
+      });
+    },
+    total_customers({commit}) {
+      axios.get(url +'/customers/fetch/total-customer-length').then(result => {
+        commit('FETCH_TOTAL_CUSTOMERS', result.data);
+      }).catch(error => {
+        throw new Error(`API ${error}`);
+      });
+    },
     },
     getters:{
       baseUrl(){
@@ -133,5 +177,53 @@ state: {
           return item.status === id
         });
       },
-    }
+      newPurchases:(state)=>(id)=>{
+        if(id == 3){
+          return state.purchases.filter(item=>{
+            return item.seen === 0
+          })
+        }else{
+          return state.purchases.filter(item=>{
+            return item.payment_status === id
+          })
+        }
+      },
+      getreminder:(state)=>(id)=>{
+        if(id === 1){
+          return state.procured_vehicles.filter(item=>{
+            return item.noc === false
+          })
+        }else if(id === 2){
+          return state.procured_vehicles.filter(item=>{
+              const date1 = new Date(item.insurance_end);
+              const date2 = new Date(Date.now());
+              const diffTime = Math.abs(date2 - date1);
+              const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24)); 
+              return diffDays < 20
+            })
+        }
+        else if(id === 3){
+          return state.procured_vehicles.filter(item=>{
+              const date1 = new Date(item.rc_end);
+              const date2 = new Date(Date.now());
+              const diffTime = Math.abs(date2 - date1);
+              const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24)); 
+              return diffDays < 20
+            })
+        }else{
+          return 0
+        }
+      },
+    },
+
+  //   total(){
+         
+  //     const date1 = new Date(this.procured_vehicels[1].date);
+  //     const date2 = new Date('12/15/2019');
+  //     const diffTime = Math.abs(date2 - date1);
+  //     const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24)); 
+  //    return diffDays
+  // },
+
+
 });

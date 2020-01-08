@@ -6,10 +6,10 @@ import VueResource from 'vue-resource';
 import axios from 'axios'
 import VueSweetalert2 from 'vue-sweetalert2';
 import store from "./store";
-
- 
 import 'sweetalert2/dist/sweetalert2.min.css';
-
+import VueGraph from 'vue-graph'
+ 
+Vue.use(VueGraph)
 Vue.use(require('vue-moment'))
 Vue.use(VueSweetalert2);
 Vue.config.productionTip = false

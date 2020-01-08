@@ -20,6 +20,8 @@ import sell from './components/sell'
 import vehicledetail from './components/vehicleDetail'
 import modeldetail from './components/modelDetail'
 import purchase from './components/purchase'
+import customers from './components/customers'
+import viewCustomer from './components/viewCustomer'
 import purchased_vehicle from './components/purchasedVehicle'
 
 
@@ -38,12 +40,14 @@ export default[
     {path:'/under-refurbishment', component:underRefurbish},
     {path:'/instock', component:inStock},
     {path:'/live', component:live},
+    {path:'/view-profile/:id', component:viewCustomer},
     {path:'/all-purchase', component:purchased_vehicle},
     {path:'/login', component:login},
     {path:'/uploads/:id', component:uploads},
     {path:'/pending-upload', component:pendingUpload},
     {path:'/fines', component:fines},
     {path:'/finance', component:finance},
+    {path:'/customers', component:customers},
     {path:'/purchase', component:purchase},
     {path:'/sell', component:sell},
     {path:'/procured-vehicle', component:procuredVehicle},

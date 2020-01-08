@@ -2,33 +2,95 @@
     <div class="overview">
         <div class="col-md-12">
            <div class="row">
-               <div class="col-md-4 text-center">
-                   <div class="card card-1" v-on:click="take_to('vehicles')">
-                       <p>Total Bikes</p>
-                       <p v-if="loading">Loading...</p>
-                       <p v-else class="bold">{{bikes.total}}</p>
+               <div class="col-md-6 m-0 pt-5">
+                   <div class="row">
+                    <div class="col-md-4 text-center">
+                    <div class="card" v-on:click="take_to('vehicles')">
+                      <div class="row p-2">
+                        <div class="col-md-5">
+                         <img class="p-0 m-0" src="../assets/total-bikes.svg" width="100%">
+                       </div>
+                       <div class="col-md-7 p-0 m-0 text-left">
+                        <p class="m-0 p-0 count" v-if="loading">Loading...</p>
+                        <p v-else class="m-0 p-0"><strong>{{bikes.total}}</strong></p>
+                        <p class="label">Total Bikes</p>
+                       </div>
+                      </div>
+                    </div>
+                    </div>
+                    <div class="col-md-4 text-center">
+                        <div class="card">
+                        <div class="row p-2">
+                            <div class="col-md-5">
+                            <img class="p-0 m-0" src="../assets/sold.svg" width="100%">
+                            </div>
+                            <div class="col-md-7 p-0 m-0 text-left">
+                                <p class="m-0 p-0 count" v-if="loading">Loading...</p>
+                                <p v-else class="m-0 p-0"><strong>{{soldBikes.total}}</strong></p>
+                                <p class="label">Sold Bikes</p>
+                            </div>
+                        </div>
+                        </div>
+                    </div>
+                    <div class="col-md-4 text-center">
+                    <div class="card" v-on:click="take_to('all-purchase')">
+                        <div class="row p-2">
+                            <div class="col-md-5">
+                            <img class="p-0 m-0" src="../assets/booked.svg" width="100%">
+                            </div>
+                            <div class="col-md-7 p-0 m-0 text-left">
+                                <p class="m-0 p-0 count" v-if="loading">Loading...</p>
+                                <p v-else class="m-0 p-0"><strong>{{booked.total}}</strong></p>
+                                <p class="label">Booked Bikes</p>
+                            </div>
+                        </div>
+                    </div>
+                    </div>
+
+                    <div class="col-md-4 mt-3 text-center">
+                    <div class="card" v-on:click="take_to('all-purchase')">
+                        <div class="row p-2">
+                            <div class="col-md-5">
+                            <img class="p-0 m-0" src="../assets/new-booking.svg" width="100%">
+                            </div>
+                            <div class="col-md-7 p-0 m-0 text-left">
+                                <p class="m-0 p-0 count" v-if="loading">Loading...</p>
+                                <p v-else class="m-0 p-0"><strong>{{newBookings.total}}</strong></p>
+                                <p class="label">New Bookings</p>
+                            </div>
+                        </div>
+                    </div>
+                    </div>
+
+                    <div class="col-md-4 mt-3 text-center">
+                    <div class="card" v-on:click="take_to('customers')">
+                        <div class="row p-2">
+                            <div class="col-md-5">
+                            <img class="p-0 m-0" src="../assets/customer.svg" width="100%">
+                            </div>
+                            <div class="col-md-7 p-0 m-0 text-left">
+                                <p class="m-0 p-0 count" v-if="loading">Loading...</p>
+                                <p v-else class="m-0 p-0"><strong>{{customers.total}}</strong></p>
+                                <p class="label">Customers</p>
+                            </div>
+                        </div>
+                    </div>
+                    </div>
+
+
                    </div>
-               </div>
-                <div class="col-md-4 text-center">
-                   <div class="card card-2" v-on:click="take_to('all-purchase')">
-                       <p>Total Bikes Sold</p>
-                       <p v-if="loading">Loading...</p>
-                       <p v-else class="bold">{{soldBikes.total}}</p>
-                   </div>
-               </div>
-                <div class="col-md-4 text-center">
-                   <div class="card card-3" v-on:click="take_to('all-purchase')">
-                       <p>Booked</p>
-                       <p v-if="loading">Loading...</p>
-                        <p v-else class="bold">{{booked.total}}</p>
-                   </div>
-               </div>
+                 </div>
+                <div class="col-md-6 m-0 p-0">
+                    <book></book>
+                </div>
+              
            </div>
         </div>
     </div>
 </template>
 <script>
 // import bikesStore from '../stores/bikesStore'
+import book from './booking-overview-chart.vue'
 export default {
     data(){
         return{
@@ -37,6 +99,9 @@ export default {
             // booked:'',
             // loading:true
         }
+    },
+    components:{
+        book
     },
     created(){
       let auth = localStorage.getItem('token')
@@ -59,9 +124,8 @@ export default {
         //   this.loading = false
         //  })
 
-         this.$store.dispatch('total_sold');
-         this.$store.dispatch('total_booked');
-         this.$store.dispatch('total_vehicle')
+         
+
     },
     methods:{
         take_to(id){
@@ -78,6 +142,13 @@ export default {
         bikes(){
             return this.$store.state.total_vehicle;
         },
+        customers(){
+            return this.$store.state.total_customers;
+        },
+        newBookings(){
+            return this.$store.state.new_bookings;
+
+        },
         loading(){
             return this.$store.state.loading
         }
@@ -89,17 +160,8 @@ export default {
 
 .card{
     cursor: pointer;
-}
-.card-1{
-       background-image: linear-gradient(to bottom, white , rgb(119, 194, 209));
-
-}
-.card-2{
-       background-image: linear-gradient(to bottom, white , rgb(119, 209, 149));
-
-}
-.card-3{
-       background-image: linear-gradient(to bottom, white , rgb(181, 119, 209));
+    background-color: rgb(239,243,246);
+    border: none;
 
 }
 .card p{
@@ -108,5 +170,12 @@ export default {
 }
 .bold{
     font-weight: bold
+}
+.count{
+    font-size: 15px
+}
+.label{
+    color:gray;
+    font-size: 12px;
 }
 </style>

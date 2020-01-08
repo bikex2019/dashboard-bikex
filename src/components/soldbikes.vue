@@ -2,7 +2,7 @@
   <div id="app">
     <div class="col-md-6">
       <div class="form-group text-left">
-        <label for="sel1">Bikes Sold Report</label>
+        <label for="sel1">Bikes Sold</label>
         <select v-model="Filters">
             <option disabled value="">Please select one</option>
             <option>Daily</option>
