@@ -22,7 +22,7 @@
          <table class="table col-md-11 m-0 p-0">
         <thead>
         <tr class="m-0 p-0">
-          <th>ID</th>
+          <th>Purchase ID</th>
           <th>Vehicle ID</th>
           <th>Amount</th>
           <th>Tefflos</th>
@@ -38,7 +38,13 @@
             <tr v-for="(purchase, index) in paginatedData" :key="index" v-bind:class="{strong: purchase.seen == 0,failed:purchase.payment_status==0,sucess:purchase.payment_status==1}">
                 <td class="hand py-1" v-on:click="open(_id)">{{purchase._id}}</td> 
                 <td class="hand py-1" v-on:click="open(purchase._id)">{{purchase.vehicle_id}}</td> 
-                <td></td>
+                <td class="hand py-1" >{{purchase.amount}}</td> 
+                <td class="hand py-1" >{{purchase.tefflon}}</td> 
+                <td class="hand py-1" >{{purchase.extended_w}}</td> 
+                <td class="hand py-1" >{{purchase.rsa}}</td> 
+                <td class="hand py-1" >{{purchase.comprehensive}}</td> 
+                <td class="hand py-1" >{{purchase.razorpay_order_id || '-'}}</td> 
+                <td class="hand py-1" >{{purchase.razorpay_payment_id}}</td> 
             </tr>
         </tbody>
     </table>

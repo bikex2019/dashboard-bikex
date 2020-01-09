@@ -182,6 +182,11 @@ state: {
           return item.customer_id === id
         });
       },
+      customer_by_id(state) {
+        return id => state.customers.filter(item =>{
+          return item._id === id
+        });
+      },
       newPurchases:(state)=>(id)=>{
         if(id == 3){
           return state.purchases.filter(item=>{

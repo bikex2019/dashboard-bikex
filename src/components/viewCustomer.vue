@@ -2,20 +2,20 @@
     <div>
         <div class="row" style="margin:0 auto">
             <div class="col-md-4 mt-4 p-3">
-                <div class="card p-3 text-left">
+                <div class="card p-3 text-left" v-for="(data, index) in customer" :key="index">
                     <div class="customerName col-md-12 m-0 p-0 d-flex justify-content-between">
-                        <h4 class="m-0 p-0">Abhishek Kumar</h4>
+                        <h4 class="m-0 p-0">{{data.firstname}} {{data.lastname}}</h4>
                         <!-- <img src="../assets/new.svg" width="10%"> -->
                         <img src="../assets/premium.svg" width="10%">
                     </div>
                     <div class="details mt-2 text-left d-flex justify-content-between">
                         <div>
                         <p class="m-0 p-0">Customer Number</p>
-                        <p class="label m-0 p-0">LVrNl6_L</p>
+                        <p class="label m-0 p-0">{{data._id}}</p>
                         </div>
                         <div>
                         <p class="m-0 p-0">Member Since</p>
-                        <p class="label m-0 p-0">27 Janunary, 2019</p>
+                        <p class="label m-0 p-0">{{data.date | moment("MMMM Do YYYY")}}</p>
                         </div>
                     </div>
                    <div class="col-md-12 mt-1 m-0 p-0 ">
@@ -26,11 +26,11 @@
                     <div class="contact mt- text-left d-flex justify-content-between">
                         <div>
                         <p class="m-0 p-0">Email</p>
-                        <p class="label m-0 p-0">abc@gmail.com</p>
+                        <p class="label m-0 p-0">{{data.email}}</p>
                         </div>
                         <div>
                         <p class="m-0 p-0">Phone</p>
-                        <p class="label m-0 p-0">1234567890</p>
+                        <p class="label m-0 p-0">{{data.phone}}</p>
                         </div>
                     </div>
 
@@ -164,14 +164,21 @@ import ctransaction from './cutomerTransaction'
 export default {
     data(){
         return {
-            rupees:201547
+            rupees:201547,
+            id:''
         }
     },
     created(){
-        
+        this.$store.dispatch('customers');
+        this.id = this.$route.params.id
     },
     components:{
         ctransaction
+    },
+    computed:{
+        customer(){
+            return this.$store.getters.customer_by_id(this.id)
+        }
     }
 }
 </script>
