@@ -1,6 +1,5 @@
 <template>
 <div class="centres mt-4">
-  {{total}}
     <div class="col-md-12 p-4 mb-2 mt-4 col-12 mobile top-content">
             <div class="row">
                 <div class="col-md-6 p-0 m-0 pl-4 text-left d-flex">
@@ -805,8 +804,11 @@ export default {
         )
       })
     },
+    page(){
+      return this.pageNumber
+    },
     start(){
-      return (this.pageNumber - 1) * this.perpage
+      return (this.page - 1) * this.perpage
     },
     end(){
       return this.start + this.perpage

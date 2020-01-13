@@ -9,6 +9,7 @@
             <th>DOB</th>
             <th>Income</th>
             <th>Looking</th>
+            <th>Date</th>
             <th>Mark Read</th>
         </tr>
         </thead>
@@ -20,6 +21,7 @@
                 <td  class="py-1">{{finance.dob| moment("MMMM Do YYYY")}}</td>
                 <td  class="py-1">{{finance.annual_income}}</td>
                 <td  class="py-1">{{finance.vehicle}}</td>
+                <td class="py-1">{{finance.date| moment("calendar")}}</td>
                 <td class="py-1">
                 <button class="m-0 py-1 custom-button" v-if="finance.seen == 0" v-on:click="read(finance._id)">
                     <i class="fa fa-eye" aria-hidden="true"></i>

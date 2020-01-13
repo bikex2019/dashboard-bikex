@@ -11,6 +11,7 @@
             <th>PHONE</th>
             <th>EMAIL</th> 
             <th>MODEL</th>
+            <th>DATE</th>
         </tr>
         </thead>
         <tbody>
@@ -20,6 +21,7 @@
                 <td class="hand py-1" v-on:click="open(purchase._id)">{{purchase.phone}}</td>
                 <td class="hand py-1" v-on:click="open(purchase._id)">{{purchase.email}}</td>
                 <td class="hand py-1" v-on:click="open(purchase._id)">{{purchase.model}}</td>
+                 <td class="hand py-1" v-on:click="open(purchase._id)">{{purchase.date | moment("calendar")}}</td>
             </tr>
         </tbody>
     </table>
@@ -40,7 +42,7 @@
                     <p><label>Last Name:</label> {{views.lastname}}</p>
                     <p><label>Phone:</label> {{views.phone}}</p>
                     <p><label>Email:</label> {{views.email}}</p>
-                    <p><label>Amount:</label> {{views.amount}}</p>
+                    <p><label>Amount:</label> {{views.amount | currrency}}</p>
                     <p><label>Address 1:</label> {{views.address1}}</p>
                     <p><label>Address 2:</label> {{views.address2}}</p>
                 </div>
@@ -209,6 +211,7 @@ export default {
      width: 100%;
   height: 200px;
   overflow-x: hidden; overflow-y: auto;
+  box-shadow: 0 2px 5px 0 rgba(0,0,0,0.16), 0 2px 10px 0 rgba(0,0,0,0.12);
 }
 .custom-button {
     color: black;

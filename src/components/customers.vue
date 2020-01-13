@@ -47,10 +47,17 @@
         <tbody>
             <tr v-for="(customer, index) in paginatedData" :key="index" v-bind:class="{strong: customer.seen == 0,failed:customer.payment_status==0,sucess:customer.payment_status==1}">
                 <td  class="py-1">{{customer._id}}</td> 
-                <td class="py-1">{{customer.firstname}} {{customer.lastname}}</td>
+                <td class="py-1">{{customer.firstname}} {{customer.lastname}}
+                  <span v-if="newUser(customer.date).status" class="badge badge-success">New</span>
+                </td>
+                <!-- <td class="py-1">
+                  <span>
+                     {{customer.date| moment("from", "now", true)}} ago
+                    </span>
+                </td> -->
                 <td  class="py-1">{{customer.phone}}</td>
                 <td  class="py-1">{{customer.email}}</td>
-                <td  class="py-1">{{customer.date | moment("MMMM Do YYYY")}}</td>
+                <td  class="py-1">{{customer.date | moment("calendar")}}</td>
                 <!-- <td  class="py-1">{{customer.payment_status}}</td> -->
                 <td class="py-1">
                 <!-- <button class="m-0 py-1 custom-button" v-if="customer.seen == 0" v-on:click="read(customer._id)">
@@ -113,6 +120,18 @@ export default {
         },
     },
     computed:{
+      newUser() {
+      return id => {
+        const x = id
+        const y = Math.ceil(Math.abs(new Date(Date.now()) -  new Date(x)) / (1000 * 60 * 60 * 24))
+        if(y < 2){
+          return {status:true, age:y}
+        }
+        else{
+          return {status:false, age:y}
+        }
+      }
+   },
     loading(){
         return this.$store.state.loading
     },

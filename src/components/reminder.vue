@@ -22,9 +22,9 @@
                 <td v-on:click="see_vehicle(reminderdata.vehicle_id)" class="py-1" v-if="reminderdata.status == 3"><span style="color:#FFB52F">Live!</span></td>
                 <td v-on:click="see_vehicle(reminderdata.vehicle_id)" class="py-1" v-if="reminderdata.status == 4"><span style="color:#FFB52F">Booked!</span></td>
                 <td v-on:click="see_vehicle(reminderdata.vehicle_id)" class="py-1" v-if="reminderdata.status == 5"><span style="color:#FFB52F">Sold!</span></td>
-                <td class="hand py-1" v-if="status == 3" v-on:click="open(reminderdata._id)">{{reminderdata.rc_end| moment("MMMM Do YYYY")}}</td>
-                <td class="hand py-1" v-if="status == 2" v-on:click="open(reminderdata._id)">{{reminderdata.insurance_end| moment("MMMM Do YYYY")}}</td>
-                <td class="hand py-1" v-if="status == 1" v-on:click="open(reminderdata._id)">{{reminderdata.date| moment("MMMM Do YYYY")}}</td>
+                <td class="hand py-1" v-if="status == 3" v-on:click="open(reminderdata._id)">{{reminderdata.rc_end| moment("calendar")}}</td>
+                <td class="hand py-1" v-if="status == 2" v-on:click="open(reminderdata._id)">{{reminderdata.insurance_end| moment("calendar")}}</td>
+                <td class="hand py-1" v-if="status == 1" v-on:click="open(reminderdata._id)">{{reminderdata.date| moment("calendar")}}</td>
             </tr>
         </tbody>
     </table>
@@ -139,6 +139,7 @@ export default {
      width: 100%;
   height: 200px;
   overflow-x: hidden; overflow-y: auto;
+  box-shadow: 0 2px 5px 0 rgba(0,0,0,0.16), 0 2px 10px 0 rgba(0,0,0,0.12);
 }
 .custom-button {
     color: black;

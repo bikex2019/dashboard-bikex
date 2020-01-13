@@ -77,7 +77,20 @@
                     </div>
                     </div>
 
-
+                    <div class="col-md-4 mt-3 text-center">
+                    <div class="card" v-on:click="take_to('customers')">
+                        <div class="row p-2">
+                            <div class="col-md-5">
+                            <img class="p-0 m-0" src="../assets/omnichannel-merchandising.svg" width="100%">
+                            </div>
+                            <div class="col-md-7 p-0 m-0 text-left">
+                                <p class="m-0 p-0 count" v-if="loading">Loading...</p>
+                                <p v-else class="m-0 p-0"><strong>{{joinedToday.length}}</strong></p>
+                                <p class="label">Joined Today</p>
+                            </div>
+                        </div>
+                    </div>
+                    </div>
                    </div>
                  </div>
                 <div class="col-md-6 m-0 p-0">
@@ -104,6 +117,7 @@ export default {
         book
     },
     created(){
+    this.$store.dispatch('customers');
       let auth = localStorage.getItem('token')
         this.id = localStorage.getItem('temp')
         if(!auth){
@@ -145,6 +159,9 @@ export default {
         customers(){
             return this.$store.state.total_customers;
         },
+        joinedToday(){
+            return this.$store.getters.joinedToday;   
+        },
         newBookings(){
             return this.$store.state.new_bookings;
 
@@ -162,6 +179,7 @@ export default {
     cursor: pointer;
     background-color: rgb(239,243,246);
     border: none;
+    box-shadow: 0 2px 5px 0 rgba(0,0,0,0.16);
 
 }
 .card p{

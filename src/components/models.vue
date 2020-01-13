@@ -35,7 +35,7 @@
           <td class="py-1">{{modals.engine_cc}}</td>
           <td class="py-1">{{modals.fuel_system}}</td>
           <td class="py-1">{{modals.mileage}}</td>
-          <td>{{modals.date| moment("MMMM Do YYYY")}}</td>
+          <td>{{modals.date| moment("calendar")}}</td>
           <td class="py-1"><button class="button btn btn-primary m-0 py-1 custom-button" v-on:click="editModals(modals)"><i class="fa fa-pencil" aria-hidden="true"></i></button></td>
         </tr>
       </tbody>

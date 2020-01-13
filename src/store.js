@@ -21,6 +21,11 @@ state: {
   purchases:[],
   customers:[],
   loading:true,
+  lastweek:[
+    [ 10, 0, 5, 5 ],
+    [ 40, 10, 10, 10 ],
+    [ 30, 25, 35, 30 ]
+]
   },
   mutations: {
     LOAD_STATUS(state, value) {
@@ -224,6 +229,15 @@ state: {
           return 0
         }
       },
+      joinedToday(state){
+        return state.customers.filter(item=>{
+          const date1 = new Date(item.date);
+          const date2 = new Date(Date.now());
+          const diffTime = Math.abs(date2 - date1);
+          const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24)); 
+          return diffDays < 1
+        })
+      }
     },
 
   //   total(){

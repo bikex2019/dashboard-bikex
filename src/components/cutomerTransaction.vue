@@ -145,7 +145,7 @@ export default {
     font-family: 'Montserrat', sans-serif;
     font-size: 12px;
      width: 100%;
-  height: 200px;
+  height: 400px;
   overflow-x: hidden; overflow-y: auto;
 }
 .custom-button {

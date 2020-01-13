@@ -11,6 +11,7 @@
             <th>Model</th>
             <th>Engine</th>
             <th>Mfr Year</th>
+            <th>Date</th>
             <th>Action</th>
         </tr>
         </thead>
@@ -24,6 +25,7 @@
                 <td  class="py-1">{{sell.model}}</td>
                 <td  class="py-1">{{sell.engine_cc}}</td>
                 <td  class="py-1">{{sell.manufacture_year}}</td>
+                <td class="py-1">{{sell.date| moment("calendar")}}</td>
                 <td class="py-1">
                 <button class="m-0 py-1 custom-button" v-if="sell.seen == 0" v-on:click="read(sell._id)">
                     <i class="fa fa-eye" aria-hidden="true"></i>

@@ -56,7 +56,7 @@
                 <td v-on:click="see_vehicle(data.vehicle_id)" class="py-1">{{data.vehicle_number}}</td>
                 <td v-on:click="see_model(data.model_id)" class="py-1 under">{{data.modal_name}}</td>
                 <td v-on:click="see_model(data.model_id)" class="py-1 under">{{data.make}}</td>
-                <td v-on:click="see_vehicle(data.vehicle_id)" class="py-1">{{data.procured_date | moment("MMMM Do YYYY")}}</td>
+                <td v-on:click="see_vehicle(data.vehicle_id)" class="py-1">{{data.procured_date | moment("calendar")}}</td>
                 <td v-on:click="see_vehicle(data.vehicle_id)" class="py-1" v-if="data.status == 0"><span style="color:green">Procured</span></td>
                 <td v-on:click="see_vehicle(data.vehicle_id)" class="py-1" v-if="data.status == 1"><span style="color:brown">Under-Refurbish</span></td>
                 <td v-on:click="see_vehicle(data.vehicle_id)" class="py-1" v-if="data.status == 2"><span style="color:purple">In Stock</span></td>

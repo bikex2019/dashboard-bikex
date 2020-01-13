@@ -44,6 +44,7 @@
             <th>Email</th>
             <th>Model</th>
             <th>Amount</th>
+            <th>Date
             <th>Action</th>
         </tr>
         </thead>
@@ -57,6 +58,7 @@
                 <td  class="py-1">{{purchase.email}}</td>
                 <td  class="py-1">{{purchase.model}}</td>
                 <td  class="py-1">{{purchase.amount | currency}}</td>
+                <td class="py-1">{{purchase.date| moment("calendar")}}</td>
                 <!-- <td  class="py-1">{{purchase.payment_status}}</td> -->
                 <td class="py-1">
                 <button class="m-0 py-1 custom-button" v-if="purchase.seen == 0" v-on:click="read(purchase._id)">
