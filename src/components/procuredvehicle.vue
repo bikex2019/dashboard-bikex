@@ -644,10 +644,9 @@ export default {
     cursor: pointer;
 }
 .centres{
-    font-family: 'Montserrat', sans-serif;
-    font-size: 12px;
-padding-top: 0px;
-
+  font-family: 'Montserrat', sans-serif;
+  font-size: 12px;
+  padding-top: 0px;
 }
 .custom-button {
     color: black;

@@ -1,5 +1,31 @@
 <template>
     <div class="notification">
+    <div class="col-md-12 p-4 mb-2 mt-4 col-12 mobile top-content">
+            <div class="row">
+                <div class="col-md-6 p-0 m-0 pl-4 text-left d-flex">
+                  <h5 class="header"><strong>SELL REQUEST</strong></h5>
+                </div>
+                <div class="col-md-3 pt-1 mr-3 d-flex justify-content-between">
+                  <p class="p-0 m-0 pt-1">{{start }} - {{end}} <span class="mx-1"> of </span> {{sell.length}} 
+                  <span>entries.</span></p>
+                  <span class="ml-3 mr-3 pt-1"> Page No. {{pageNumber}}</span>
+                   <div>
+                     <button class="btn mr-2 m-0 p-0" v-on:click="prevPage" :disabled="pageNumber==1">
+                     <i class="fa fa-chevron-left" style="font-size:13px" aria-hidden="true"></i>
+                   </button>
+                  <button class="btn ml-2 m-0 p-0" v-on:click="nextPage" :disabled="pageNumber == pageCount">
+                    <i class="fa fa-chevron-right" style="font-size:13px" aria-hidden="true"></i>
+                  </button>
+                   </div>
+                </div>
+                <div class="col-md-2 p-0 m-0 text-right d-flex justify-content-between">
+                    <input type="text" v-model="search" placeholder="search here.." class="search">
+                    <!-- <button class="btn round" v-on:click="openModal">
+                      <i class="fa fa-plus" aria-hidden="true"></i>
+                    </button> -->
+                </div>
+            </div>
+    </div>
          <table class="table table-striped table-bordered col-md-11 ml-4">
         <thead>
             <tr>
@@ -16,7 +42,7 @@
         </tr>
         </thead>
         <tbody>
-            <tr v-for="(sell, index) in sell" :key="index" v-bind:class="{strong: sell.seen == 0}">
+            <tr v-for="(sell, index) in paginatedData" :key="index" v-bind:class="{strong: sell.seen == 0}">
                 <td class="py-1">{{sell.name}} {{sell.last_name}}</td>
                 <td class="py-1">{{sell.mobile}}</td>
                 <td class="py-1">{{sell.city}}</td>
@@ -83,10 +109,14 @@ export default {
             sell:[],
             view:[],
             loading:true,
-            openmodal:false
+            openmodal:false,
+            search:'',
+            pageNumber: 1,
+            itemperpage:10,
         }
     },
     mounted(){
+         this.pageNumber=this.$route.query.page || 1
         this.$http.get('https://backend-bikex.herokuapp.com/api/sell')
           .then(response=>{
            this.sell = response.body
@@ -112,8 +142,46 @@ export default {
         },
         close(){
             this.openmodal = false
+        },
+            nextPage(){
+            let x = this.pageNumber++
+             this.$router.push({query: { page:  x + 1 }})
+            },
+            prevPage(){
+                 let x = this.pageNumber--
+               this.$router.push({query: { page: x - 1}})
+            }
+    },
+    computed: {
+      
+      filteredList() {
+        return this.sell.filter(post => {
+        return (post.name.toLowerCase().includes(this.search.toLowerCase()) 
+        ||
+        post.mobile.toString().includes(this.search.toLowerCase())
+         ||
+        post.vehicle_no.toString().includes(this.search.toLowerCase())
+        )
+      })
+        },
+        perpage(){
+        return this.itemperpage
+        },
+        start(){
+        return (this.pageNumber - 1) * this.perpage
+        },
+        end(){
+        return this.start + this.perpage
+        },
+        paginatedData(){
+        return this.filteredList.slice(this.start, this.end);
+            },
+        pageCount(){
+        let l = this.filteredList.length,
+            s = this.perpage;
+        return Math.ceil(l/s);
         }
-    }
+    },
 }
 </script>
 <style scoped>
@@ -186,5 +254,33 @@ label{
   position: absolute;
   top: 50%;
   left: 50%;
+}
+table{
+  border-collapse: separate;
+    border-spacing: 0 1em;
+}
+.table td, .table th{
+  border: none;
+  padding: 1.35rem;
+}
+.table tr{
+  background-color: rgba(248, 242, 242, 0.5);
+  border-radius: 10px;
+}
+.top-content{
+  background-color: white
+}
+.header{
+    font-size: 1.25rem;
+    border-left: 4px solid #ffb52f;
+    padding-left: 7px;
+    padding-top: 3px;
+    font-family: 'Montserrat', sans-serif;
+}
+.search{
+  border-radius: 10px;
+  border: 1px solid #ffb52f;
+  padding: 5px;
+  width: 100%
 }
 </style>

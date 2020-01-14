@@ -141,6 +141,7 @@ export default {
       filteredList() {
         return this.customer.filter(post => {
         return post._id.toLowerCase().includes(this.search.toLowerCase()) || post.phone.toString().includes(this.search.toLowerCase())
+        || post.firstname.toString().includes(this.search.toLowerCase())
       })
     },
     start(){

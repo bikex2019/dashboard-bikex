@@ -240,14 +240,5 @@ state: {
       }
     },
 
-  //   total(){
-         
-  //     const date1 = new Date(this.procured_vehicels[1].date);
-  //     const date2 = new Date('12/15/2019');
-  //     const diffTime = Math.abs(date2 - date1);
-  //     const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24)); 
-  //    return diffDays
-  // },
-
 
 });

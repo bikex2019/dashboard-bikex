@@ -1,24 +1,25 @@
 <template>
 <div id="app m-0 p-0">
-    {{days}}
-    <div class="filter d-flex justify-content-end pr-5 p-0 m-0">
+    <!-- <div class="filter d-flex justify-content-end pr-5 p-0 m-0">
         <p class="p-1 hand" v-bind:class="{active: totaldays == 7}" v-on:click="filter(7)">7D</p>
         <p class="p-1 hand" v-bind:class="{active: totaldays == 30}" v-on:click="filter(30)">30D</p>
         <p class="p-1 hand" v-bind:class="{active: totaldays == 90}" v-on:click="filter(90)">90D</p>
-    </div>
-    <graph-line-timerange
+    </div> -->
+   <graph-line
             :width="500"
             :height="300"
+            :shape="'normal'"
             :axis-min="0"
             :axis-max="50"
-            :axis-reverse="false"
-            :axis-format="'HH:mm'"
-            :axis-interval="1000 * 60 * 60 * 8"
-            :labels="labels"
+            :axis-full-mode="true"
+            :labels="this.dates"
             :names="names"
             :values="values">
-        <guideline :tooltip-x="true" :tooltip-y="true"></guideline>
-    </graph-line-timerange>
+        <!-- <note :text="'Line Chart'"></note> -->
+        <tooltip :names="names" :position="'right'"></tooltip>
+        <legends :names="names"></legends>
+        <guideline :tooltip-y="true"></guideline>
+    </graph-line>
     
 </div>
 </template>
@@ -28,20 +29,12 @@ const moment = require('moment');
 export default {
     data(){
         return{
-          names: [ 'Bookings'],
-          totaldays:7,
-     labels: [ new Date("2020-07-07 00:00:00"), new Date("2020-07-08 00:00:00") ],
+        totaldays:7,
+        names: [ 'Bookings' ],
         values: [
-            [ new Date("2020-07-07 00:00:00"), 10 ],
-            [ new Date("2020-07-07 12:42:33"), 10 ],
-            [ new Date("2020-07-07 15:11:12"), 15 ],
-            [ new Date("2020-07-10 19:12:00"), 25 ],
-            [ new Date("2020-07-11 22:55:55"), 40 ],
-            [ new Date("2020-07-12 22:55:55"), 40 ],
-            [ new Date("2020-07-13 22:55:55"), 40 ],
-            [ new Date("2020-07-14 22:55:55"), 40 ]
-        ]
-    }
+                    [ 10, 5, 5, 5, 10,30, 20 ],
+                ]
+        }
     },
     methods:{
         filter(id){
@@ -54,6 +47,15 @@ export default {
         },
         datenow(){
             return moment().format('YYYY-MM-DD HH:mm:ss')
+        },
+        dates(){
+            var dates = [];
+            var currDate = moment(this.days).startOf('day');
+            var lastDate = moment(this.datenow).startOf('day');
+            while(currDate.add(1, 'days').diff(lastDate) <= 0) {
+                dates.push(currDate.clone().format('MMM DD'));
+            }
+            return dates
         }
     }
 }

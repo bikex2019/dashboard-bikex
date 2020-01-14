@@ -1,6 +1,6 @@
 <template>
-<div class="centres">
-    <div class="col-md-11 ml-4 mb-2">
+<div class="centres mt-4">
+    <!-- <div class="col-md-11 ml-4 mb-2">
       <div class="row">
         <div class="col-md-6 p-0 m-0 text-left pt-1 d-flex">
           <p class="p-0 m-0">Showing {{paginatedData.length}} out of {{modals.length}}</p>
@@ -12,8 +12,36 @@
           <button class="btn btn-danger rounded" v-on:click="openModal">Add Modals +</button>
         </div>
       </div>
+    </div> -->
+
+    <div class="col-md-12 p-4 mb-2 mt-4 col-12 mobile top-content">
+            <div class="row">
+                <div class="col-md-6 p-0 m-0 pl-4 text-left d-flex">
+                  <h5 class="header"><strong>MODELS LIST</strong></h5>
+                </div>
+                <div class="col-md-3 pt-1 mr-3 d-flex justify-content-between">
+                  <p class="p-0 m-0 pt-1">{{start }} - {{end}} <span class="mx-1"> of </span> {{modals.length}} 
+                  <span>entries.</span></p>
+                  <span class="ml-3 mr-3 pt-1"> Page No. {{pageNumber}}</span>
+                   <div>
+                     <button class="btn mr-2 m-0 p-0" v-on:click="prevPage" :disabled="pageNumber==1">
+                     <i class="fa fa-chevron-left" style="font-size:13px" aria-hidden="true"></i>
+                   </button>
+                  <button class="btn ml-2 m-0 p-0" v-on:click="nextPage" :disabled="pageNumber == pageCount">
+                    <i class="fa fa-chevron-right" style="font-size:13px" aria-hidden="true"></i>
+                  </button>
+                   </div>
+                </div>
+                <div class="col-md-2 p-0 m-0 text-right d-flex justify-content-between">
+                    <input type="text" v-model="search" placeholder="search here.." class="search mr-3">
+                    <button class="btn round" v-on:click="openModal">
+                      <i class="fa fa-plus" aria-hidden="true"></i>
+                    </button>
+                </div>
+            </div>
     </div>
-    <table class="table table-striped table-bordered col-md-11 ml-4">
+
+    <table class="table col-md-11 ml-5">
       <thead>
       <tr>
         <th>ID</th>
@@ -53,14 +81,14 @@
       <p>No Models Found..</p>
     </div>
 
-    <div class="col-md-12">
+    <!-- <div class="col-md-12">
       <div class="row">
           <div class="col-md-12 text-center" v-if="filteredList.length != 0">
             <button class="btn mr-2" v-on:click="prevPage" :disabled="pageNumber==0"><i class="fa fa-angle-double-left" aria-hidden="true"> prev</i></button>
             <button class="btn ml-2" v-on:click="nextPage" :disabled="pageNumber == pageCount - 1">next <i class="fa fa-angle-double-right" aria-hidden="true"></i></button>
           </div>
       </div>
-    </div>
+    </div> -->
  
     <div id="mymodals" class="modals" v-bind:class="{'displayModal':addModal}">
     <!-- modals content -->
@@ -610,6 +638,7 @@ export default {
      
     },
     created(){
+      this.pageNumber=this.$route.query.page || 1
       let auth = localStorage.getItem('token')
         this.admin_id = localStorage.getItem('temp')
         if(!auth){
@@ -625,10 +654,12 @@ export default {
     },
     methods:{
             nextPage(){
-             this.pageNumber++;
+            let x = this.pageNumber++
+             this.$router.push({query: { page:  x + 1 }})
             },
             prevPage(){
-                this.pageNumber--;
+                let x = this.pageNumber--
+               this.$router.push({query: { page: x - 1}})
             },
             openModal: function(){
             this.addModal = true;
@@ -773,26 +804,50 @@ export default {
       p(){
           return this.modals
       },
-      perpage(){
-          return this.itemperpage
-      },
         getdata(){
             return this.d
         },
-        filteredList() {
-        return this.p
+    //     filteredList() {
+    //     return this.p
      
-    },
-    paginatedData(){
-    const start = this.pageNumber * this.perpage,
-          end = start + this.perpage;
-     return this.filteredList.slice(start, end);
+    // },
+    filteredList() {
+        return this.p.filter(post => {
+        return (post.date.toLowerCase().includes(this.search.toLowerCase()) 
+        // ||
+        // post.mobile.toString().includes(this.search.toLowerCase())
+        //  ||
+        // post.email.toString().includes(this.search.toLowerCase())
+        )
+         })
         },
-    pageCount(){
-      let l = this.filteredList.length,
-          s = this.itemperpage;
-      return Math.ceil(l/s);
-    }
+        perpage(){
+        return this.itemperpage
+        },
+        start(){
+        return (this.pageNumber - 1) * this.perpage
+        },
+        end(){
+        return this.start + this.perpage
+        },
+        paginatedData(){
+        return this.filteredList.slice(this.start, this.end);
+            },
+        pageCount(){
+        let l = this.filteredList.length,
+            s = this.perpage;
+        return Math.ceil(l/s);
+        }
+    // paginatedData(){
+    // const start = this.pageNumber * this.perpage,
+    //       end = start + this.perpage;
+    //  return this.filteredList.slice(start, end);
+    //     },
+    // pageCount(){
+    //   let l = this.filteredList.length,
+    //       s = this.itemperpage;
+    //   return Math.ceil(l/s);
+    // }
     } 
 }
 </script>
@@ -1008,58 +1063,6 @@ input[type="checkbox"]:checked + label:before {
   position: relative;
   animation: mymove 1s infinite;
 }
-
-/* @keyframes mymove {
-  from {transform: rotate(-45deg);}
-  to {transform: rotate(45deg);}
-}
-.loader,
-.loader:before,
-.loader:after {
-  border-radius: 50%;
-}
-.loader {
-  color: #ffffff;
-  font-size: 11px;
-  text-indent: -99999em;
-  margin: 55px auto;
-  position: relative;
-  width: 10em;
-  height: 10em;
-  box-shadow: inset 0 0 0 1em;
-  -webkit-transform: translateZ(0);
-  -ms-transform: translateZ(0);
-  transform: translateZ(0);
-}
-.loader:before,
-.loader:after {
-  position: absolute;
-  content: '';
-}
-.loader:before {
-  width: 5.2em;
-  height: 10.2em;
-  background: #0dc5c1;
-  border-radius: 10.2em 0 0 10.2em;
-  top: -0.1em;
-  left: -0.1em;
-  -webkit-transform-origin: 5.2em 5.1em;
-  transform-origin: 5.2em 5.1em;
-  -webkit-animation: load2 2s infinite ease 1.5s;
-  animation: load2 2s infinite ease 1.5s;
-}
-.loader:after {
-  width: 5.2em;
-  height: 10.2em;
-  background: #0dc5c1;
-  border-radius: 0 10.2em 10.2em 0;
-  top: -0.1em;
-  left: 5.1em;
-  -webkit-transform-origin: 0px 5.1em;
-  transform-origin: 0px 5.1em;
-  -webkit-animation: load2 2s infinite ease;
-  animation: load2 2s infinite ease;
-} */
 @-webkit-keyframes load2 {
   0% {
     -webkit-transform: rotate(0deg);
@@ -1080,5 +1083,40 @@ input[type="checkbox"]:checked + label:before {
     transform: rotate(360deg);
   }
 }
-
+.round{
+  border-radius: 50%;
+  background-color: #ffb52f;
+  color: white
+}
+table{
+  border-collapse: separate;
+    border-spacing: 0 1em;
+}
+.table th{
+  border: none;
+  padding: 1.35rem;
+}
+.table td{
+  border: none
+}
+.table tr{
+  background-color: rgba(248, 242, 242, 0.5);
+  border-radius: 10px;
+}
+.top-content{
+  background-color: white
+}
+.header{
+    font-size: 1.25rem;
+    border-left: 4px solid #ffb52f;
+    padding-left: 7px;
+    padding-top: 3px;
+    font-family: 'Montserrat', sans-serif;
+}
+.search{
+  border-radius: 10px;
+  border: 1px solid #ffb52f;
+  padding: 5px;
+  width: 100%
+}
 </style>
