@@ -237,6 +237,30 @@ state: {
           const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24)); 
           return diffDays < 1
         })
+      },
+      // getdatas:(state)=>(array)=>{
+      //   var datas = [];
+      //   for (var i in array){
+      //     var x = state.purchases.filter(item=>{
+      //      return new Date(item.date).toISOString().slice(0,10) == new Date(array[i]).toISOString().slice(0,10)
+      //     })
+      //     datas.push(x)
+      //   }
+      //   return array
+      // },
+      getdatas:(state)=>(datas)=>{
+        var x = []
+        for (var i in datas){
+          var y = state.purchases.filter(data=>{
+            return  new Date(data.date).toISOString().slice(0,10) == new Date(datas[i]).toISOString().slice(0,10)
+          })
+          x.push(y.length)
+        }
+        return x
+        // for (var i in state.purchases){
+        //   return new Date(state.purchases[i].date).toISOString().slice(0,10)
+        // }
+
       }
     },
 
