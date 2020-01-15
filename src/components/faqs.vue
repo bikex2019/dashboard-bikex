@@ -1,31 +1,41 @@
 <template>
     <div class="faqs ml-4">
-        <div class="col-md-12 mt-4">
-            <div class="row col-md-11 m-0 p-0">
-                <div class="col-6 text-left m-0 p-0">
-                    <div class="heading m-0 p-0">Manage all the Faqs. </div>
+
+        <div class="col-md-12 p-4 mb-0 mt-4 col-12 mobile top-content">
+            <div class="row">
+                <div class="col-md-5 p-0 m-0 pl-4 text-left d-flex">
+                  <h5 class="header"><strong>FAQS</strong></h5>
                 </div>
-                <div class="col-6 text-right m-0 p-0">
-                    <button class="button1 btn btn-primary m-0" v-on:click="openModal">Add +</button>
+                <div class="col-md-4 pt-1 mr-3 d-flex justify-content-between">
+                  <p class="p-0 m-0 pt-1 no-wrap">Showing {{filteredList.length}} of {{faqs.length}} entries.</p>
+                   <div>
+                    <input type="text" v-model="search" placeholder="search here.." class="search ml-4">
+                   </div>
+                </div>
+                <div class="col-md-2 p-0 m-0 text-right d-flex justify-content-end">
+                
+                    <button class="btn round" v-on:click="openModal">
+                        <i class="fa fa-plus" aria-hidden="true"></i>
+                    </button>
                 </div>
             </div>
-        </div>
-    <div class="col-md-11 mt-4">
-        <table  class="table table-bordered">
+    </div>
+    <div class="col-md-11 mt-0" style="margin:0 auto">
+        <table  class="table col-md-12">
             <tr>
                 <th>Index</th>
                 <th>Question</th>
                 <th>Answer</th>
                 <th>Action</th>
             </tr>
-            <tr v-for="(faq, index) in faqs" :key="index">
+            <tr v-for="(faq, index) in filteredList" :key="index">
                 <td>{{index + 1}}</td>
-                <td>{{faq.question}}</td>
+                <td class="no-wrap">{{faq.question}}</td>
                 <td>{{faq.answer}}</td>
-                <td>
+                <td class="no-wrap">
                     <div class="m-0 p-0">
-                    <button class="button btn btn-primary mr-2 m-0" v-on:click="chop(faq._id)"><i class="fa fa-trash-o" aria-hidden="true"></i></button>
-                    <button class="button btn btn-primary m-0" v-on:click="editModals(faq)"><i class="fa fa-pencil" aria-hidden="true"></i></button>
+                    <button class="button btn round mr-2 m-0" v-on:click="chop(faq._id)"><i class="fa fa-trash-o" aria-hidden="true"></i></button>
+                    <button class="button btn round m-0" v-on:click="editModals(faq)"><i class="fa fa-pencil" aria-hidden="true"></i></button>
                     </div>
                 </td>
             </tr>
@@ -121,7 +131,8 @@ export default {
             idtoedit:'',
             message:'',
             loadingData:true,
-            loading:false
+            loading:false,
+            search:''
         }
     },
     beforeMount(){
@@ -202,7 +213,15 @@ export default {
         computed:{
             faqs:function(){
                 return this.faqsData
-            }
+            },
+            filteredList() {
+                return this.faqs.filter(post => {
+                return (post.question.toLowerCase().includes(this.search.toLowerCase()) 
+                ||
+                post.answer.toString().includes(this.search.toLowerCase())
+                )
+            })
+            },
         }
 }
 </script>
@@ -286,5 +305,43 @@ export default {
   position: absolute;
   top: 50%;
   left: 50%;
+}
+.no-wrap{
+overflow: hidden;
+white-space: nowrap; /* Don't forget this one */
+text-overflow: ellipsis
+}
+table{
+  border-collapse: separate;
+    border-spacing: 0 1em;
+}
+.table td, .table th{
+  border: none;
+  padding: 1.35rem;
+}
+.table tr{
+  background-color: rgba(248, 242, 242, 0.5);
+  border-radius: 10px;
+}
+.top-content{
+  background-color: white
+}
+.header{
+    font-size: 1.25rem;
+    border-left: 4px solid #ffb52f;
+    padding-left: 7px;
+    padding-top: 3px;
+    font-family: 'Montserrat', sans-serif;
+}
+.search{
+  border-radius: 10px;
+  border: 1px solid #ffb52f;
+  padding: 5px;
+  width: 100%
+}
+.round{
+  border-radius: 50%;
+  background-color: #ffb52f;
+  color: white
 }
 </style>

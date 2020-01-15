@@ -201,7 +201,7 @@
       </div>
 
       
-      <div class="col-md-12 margin-right text-center border-bottom p-0" v-if="!toggle">
+      <!-- <div class="col-md-12 margin-right text-center border-bottom p-0" v-if="!toggle">
         <router-link to="/pending-upload" exact-active-class="active" class="d-flex navigate-padding">
           <i class='fa fa-camera-retro pl-3 pt-1 pr-2' style='font-size:20px;color:#001232'> </i>
           <p class="p-1 m-0">Uploads</p>
@@ -214,7 +214,7 @@
           class="bikex-header mb-0 p-0"><i class='fa fa-camera-retro pl-3' style='font-size:20px;color:#001232'></i>
         </router-link>
         </p>
-      </div>
+      </div> -->
 
     </div>
 </div>

@@ -1,11 +1,11 @@
 <template>
-<div class="upload">
-  <div class="col-md-12 m-0 p-0">
+<div class="upload mt-4">
+  <div class="col-md-12 m-0 p-0 mt-4">
     <div class="row">
-      <div class="col-md-3 text-left pl-4">
+      <div class="col-md-3 text-left pl-4 mt-4">
        <button @click="$router.go(-1)" class="backbutton"><i class="fa fa-long-arrow-left" aria-hidden="true"></i></button>
       </div>
-      <div class="col-md-9 text-left">
+      <div class="col-md-9 text-left mt-4">
         <p>You're viewing Model ID: {{id}}</p>
       </div>
     </div>
