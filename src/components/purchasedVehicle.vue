@@ -2,15 +2,25 @@
 <div class="centres">
     <div class="col-md-12 p-4 mb-2 mt-4 col-12 mobile top-content">
             <div class="row">
-                <div class="col-md-3 p-0 m-0 pl-4 text-left d-flex">
+                <div class="col-md-4 p-0 m-0 pl-4 text-left d-flex justify-content-between">
                   <h5 class="header"><strong>
                       <span style="text-transform:uppercase">{{filter }} VEHICLE (ENGAGED)</span>
                       </strong></h5>
+                      <vue-json-to-csv
+                    :json-data="filtereddata"
+                    :labels="label"
+                    :csv-title="'bikex_'+filter+'_engaged_vehicle_report'"
+                    >
+                    <button class="teal button__custom mt-1 p-2 mr-5 my-button">
+                      <img src="../assets/download.svg" width="20px">
+                      <b>EXPORT TO CSV</b>
+                    </button>
+                </vue-json-to-csv>
                 </div>
-                <div class="col-md-3 pt-1 d-inline">
-                   <span class="link px-3" v-bind:class="{active: filter === 'all'}"  v-on:click="filterkey('all')">All</span>
-                   <span class="link px-3" v-bind:class="{active: filter === 'booked'}" v-on:click="filterkey('booked')">Booked</span>
-                   <span class="link px-3" v-bind:class="{active: filter === 'sold'}" v-on:click="filterkey('sold')">Sold</span>
+                <div class="col-md-2 pt-1 d-inline">
+                   <span class="link px-2" v-bind:class="{active: filter === 'all'}"  v-on:click="filterkey('all')">All</span>
+                   <span class="link px-2" v-bind:class="{active: filter === 'booked'}" v-on:click="filterkey('booked')">Booked</span>
+                   <span class="link px-2" v-bind:class="{active: filter === 'sold'}" v-on:click="filterkey('sold')">Sold</span>
                 </div>
                 <div class="col-md-3 pt-1 mr-3 d-flex justify-content-between">
                   <p class="p-0 m-0 pt-1">{{start }} - {{end}} <span class="mx-1"> of </span> {{paginatedData.length}} 
@@ -461,6 +471,8 @@
 </template>
 <script>
 import * as moment from 'moment';
+import VueJsonToCsv from 'vue-json-to-csv'
+
 // import moment from 'moment'
 // import * as _ from 'lodash';
 export default {
@@ -515,11 +527,25 @@ export default {
               loadonadd:false,
               selectedFiles:null,
               update_loader:false,
-              delete_loader:false
+              delete_loader:false,
+              label:{ 
+              _id: {title: 'ID'} ,vehicle_id: { title: 'Vehicle ID' },
+              vehicle_number: { title: 'Vehicle Number' }, model_id: { title: 'Model ID' },
+              type: { title: 'Type'}, manufacture_year: { title: 'manufacture_year' },
+              color: { title: 'color' }, fines: { title: 'fines'}, source: { title: 'source' },
+              city: { title: 'city' }, pincode: { title: 'Pin Code' },
+              state: { title: 'state'}, rc_card: { title: 'rc_card' },
+              insurance: { title: 'insurance' }, b_extract: { title: 'b_extract'}, regn_no: { title: 'regn_no' },
+              chassis_no: { title: 'chassis_no' }, rc_start: { title: 'rc_start' },
+              rc_end: { title: 'rc_end'}, insurance_start: { title: 'insurance_start' },
+              insurance_end: { title: 'insurance_end' }, procured_date: { title: 'procured_date'}, procured_price: { title: 'procured_price' },
+              selling_price: { title: 'selling_price' }, noc: { title: 'noc_submitted' },
+              insurance_policy_number: { title: 'insurance_policy_number'}, refurbishment_received: { title: 'refurbishment_received' }
+            }
         }
-    }, 
+    },
     components:{
-     
+              VueJsonToCsv
     },
     created(){
       let auth = localStorage.getItem('token')
@@ -852,7 +878,11 @@ export default {
     background-color: transparent;
     border-color: transparent;
 }
-
+.my-button{
+  border: none;
+  background-color: rgb(255, 182, 46,0.7);
+  border-radius: 6px;
+}
 input[type=date]:required:invalid::-webkit-datetime-edit {
     color: transparent;
 }

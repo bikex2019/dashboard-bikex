@@ -8,6 +8,7 @@ import VueSweetalert2 from 'vue-sweetalert2';
 import store from "./store";
 import 'sweetalert2/dist/sweetalert2.min.css';
 import VueGraph from 'vue-graph'
+import VueJsonToCsv from 'vue-json-to-csv'
  
 Vue.use(VueGraph)
 Vue.use(require('vue-moment'))
@@ -15,7 +16,8 @@ Vue.use(VueSweetalert2);
 Vue.config.productionTip = false
 Vue.use(VueRouter);
 Vue.use(axios);
-Vue.use(VueResource)
+Vue.use(VueResource);
+Vue.use(VueJsonToCsv);
 
 Vue.filter('currency', function (value) {
   return '₹' + parseFloat(value).toLocaleString();

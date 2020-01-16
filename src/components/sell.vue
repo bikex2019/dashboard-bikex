@@ -2,8 +2,18 @@
     <div class="notification">
     <div class="col-md-12 p-4 mb-2 mt-4 col-12 mobile top-content">
             <div class="row">
-                <div class="col-md-6 p-0 m-0 pl-4 text-left d-flex">
+                <div class="col-md-6 p-0 m-0 pl-4 text-left d-flex justify-content-between">
                   <h5 class="header"><strong>SELL REQUEST</strong></h5>
+                  <vue-json-to-csv
+                    :json-data="sell"
+                    :labels="label"
+                    :csv-title="'bikex_sell_report'"
+                    >
+                    <button class="teal button__custom mt-1 p-2 mr-5 my-button">
+                      <img src="../assets/download.svg" width="20px">
+                      <b>Download CSV</b>
+                    </button>
+                </vue-json-to-csv>
                 </div>
                 <div class="col-md-3 pt-1 mr-3 d-flex justify-content-between">
                   <p class="p-0 m-0 pt-1">{{start }} - {{end}} <span class="mx-1"> of </span> {{sell.length}} 
@@ -103,6 +113,7 @@
     </div>
 </template>
 <script>
+import VueJsonToCsv from 'vue-json-to-csv'
 export default {
     data(){
         return{
@@ -113,7 +124,16 @@ export default {
             search:'',
             pageNumber: 1,
             itemperpage:10,
+            label:{ 
+              _id: {title: 'ID'} ,name: { title: 'First name' },
+              make: { title: 'make' }, model: { title: 'model' },
+              engine_cc: { title: 'Engine CC' }, manufacture_year: { title: 'MFD Year' },
+              km_run: { title: 'KM Run' }, mobile: { title: 'Contact' }
+            }
         }
+    },
+    components:{
+              VueJsonToCsv
     },
     mounted(){
          this.pageNumber=this.$route.query.page || 1
@@ -185,6 +205,11 @@ export default {
 }
 </script>
 <style scoped>
+.my-button{
+  border: none;
+  background-color: #ffb52f;
+  border-radius: 6px;
+}
 .notification{
         font-family: 'Montserrat', sans-serif;
     font-size: 12px;

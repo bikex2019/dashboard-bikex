@@ -1,5 +1,5 @@
 <template>
-    <div class="faqs ml-4">
+    <div class="faqs">
 
         <div class="col-md-12 p-4 mb-0 mt-4 col-12 mobile top-content">
             <div class="row">
@@ -23,10 +23,10 @@
     <div class="col-md-11 mt-0" style="margin:0 auto">
         <table  class="table col-md-12">
             <tr>
-                <th>Index</th>
-                <th>Question</th>
-                <th>Answer</th>
-                <th>Action</th>
+                <th>INDEX</th>
+                <th>QUESTION</th>
+                <th>ANSWER</th>
+                <th>ACTION</th>
             </tr>
             <tr v-for="(faq, index) in filteredList" :key="index">
                 <td>{{index + 1}}</td>

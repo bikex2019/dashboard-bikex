@@ -2,15 +2,25 @@
     <div class="notification">
         <div class="col-md-12 p-4 mb-2 mt-4 col-12 mobile top-content">
             <div class="row">
-                <div class="col-md-3 p-0 m-0 pl-4 text-left d-flex">
+                <div class="col-md-4 p-0 m-0 pl-4 text-left d-flex justify-content-between">
                   <h5 class="header"><strong>
                       <span style="text-transform:uppercase">{{filter }} PURCHASE</span>
-                      </strong></h5>
+                    </strong></h5>
+                    <vue-json-to-csv
+                    :json-data="filtereddata"
+                    :labels="label"
+                    :csv-title="'bikex_'+filter+'_purchase_report'"
+                    >
+                    <button class="teal button__custom mt-1 p-2 mr-5 my-button">
+                      <img src="../assets/download.svg" width="20px">
+                      <b>EXPORT TO CSV</b>
+                    </button>
+                </vue-json-to-csv>
                 </div>
-                 <div class="col-md-3 pt-1 d-inline">
-                   <span class="link px-3" v-bind:class="{active: filter === 'all'}"  v-on:click="filterkey('all')">All</span>
-                   <span class="link px-3" v-bind:class="{active: filter === 'failed'}" v-on:click="filterkey('failed')">Failed</span>
-                   <span class="link px-3" v-bind:class="{active: filter === 'sucess'}" v-on:click="filterkey('sucess')">Success</span>
+                 <div class="col-md-2 pt-2 d-inline">
+                   <span class="link px-2" v-bind:class="{active: filter === 'all'}"  v-on:click="filterkey('all')">All</span>
+                   <span class="link px-2" v-bind:class="{active: filter === 'failed'}" v-on:click="filterkey('failed')">Failed</span>
+                   <span class="link px-2" v-bind:class="{active: filter === 'sucess'}" v-on:click="filterkey('sucess')">Success</span>
                 </div>
 
                 <div class="col-md-3 pt-1 mr-3 d-flex justify-content-between">
@@ -120,7 +130,8 @@
 
     </div>
 </template>
-<script>
+<script>import VueJsonToCsv from 'vue-json-to-csv'
+
 export default {
     data(){
         return{
@@ -131,8 +142,22 @@ export default {
             pageNumber: 1,
             itemperpage:10,
             search:'',
-            filter:'all'
+            filter:'all',
+            label:{ 
+              _id: {title: 'ID'} ,customer_id: { title: 'customer_id' },
+              vehicle_id: { title: 'vehicle_id' }, firstname: { title: 'firstname' },
+              lastname: { title: 'lastname'}, amount: { title: 'amount' },
+              tefflon: { title: 'tefflon' }, extended_w: { title: 'extended_warranty'}, rsa: { title: 'road side assistance' },
+              comprehensive: { title: 'comprehensive' }, address1: { title: 'Address line 1' },
+              address2: { title: 'Address line 2'}, mode_of_payment: { title: 'mode_of_payment' },
+              model: { title: 'model' }, state: { title: 'state'}, postalcode: { title: 'postalcode' },
+              payment_status: { title: 'payment_status' }, phone: { title: 'phone' },
+              email: { title: 'email'}, date: { title: 'date' }
+            }
         }
+    },
+    components:{
+              VueJsonToCsv
     },
     created(){
         this.pageNumber=this.$route.query.page || 1
@@ -230,6 +255,11 @@ export default {
 }
 </script>
 <style scoped>
+.my-button{
+  border: none;
+  background-color: rgb(255, 182, 46,0.7);
+  border-radius: 6px;
+}
 .active{
     text-decoration: underline;
     color: #FFB52F;

@@ -2,8 +2,18 @@
     <div class="notification">
          <div class="col-md-12 p-4 mb-2 mt-4 col-12 mobile top-content">
             <div class="row">
-                <div class="col-md-6 p-0 m-0 pl-4 text-left d-flex">
+                <div class="col-md-6 p-0 m-0 pl-4 text-left d-flex justify-content-between">
                   <h5 class="header"><strong>FINANCE REQUEST</strong></h5>
+                  <vue-json-to-csv
+                    :json-data="finance"
+                    :labels="label"
+                    :csv-title="'bikex_finance_report'"
+                    >
+                    <button class="teal button__custom mt-1 p-2 mr-5 my-button">
+                      <img src="../assets/download.svg" width="20px">
+                      <b>EXPORT TO CSV</b>
+                    </button>
+                </vue-json-to-csv>
                 </div>
                 <div class="col-md-3 pt-1 mr-3 d-flex justify-content-between">
                   <p class="p-0 m-0 pt-1">{{start }} - {{end}} <span class="mx-1"> of </span> {{finance.length}} 
@@ -96,6 +106,7 @@
     </div>
 </template>
 <script>
+import VueJsonToCsv from 'vue-json-to-csv'
 export default {
     data(){
         return{
@@ -106,7 +117,16 @@ export default {
             search:'',
             pageNumber: 1,
             itemperpage:10,
+            label:{ 
+              _id: {title: 'ID'} ,first_name: { title: 'First Name' },
+              last_name: { title: 'Last Name' }, pincode: { title: 'PIN Code' },
+              dob: { title: 'Date of Birth'}, annual_income: { title: 'Annual Income' },
+              vehicle: { title: 'Vehicle' }, date: { title: 'Date'}, mobile: { title: 'Contact' }
+            }
         }
+    },
+    components:{
+              VueJsonToCsv
     },
     mounted(){
         this.pageNumber=this.$route.query.page || 1
@@ -177,6 +197,11 @@ export default {
 }
 </script>
 <style scoped>
+.my-button{
+  border: none;
+  background-color: rgb(255, 182, 46,0.7);
+  border-radius: 6px;
+}
 .notification{
         font-family: 'Montserrat', sans-serif;
     font-size: 12px;

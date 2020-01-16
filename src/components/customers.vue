@@ -2,10 +2,20 @@
     <div class="notification">
         <div class="col-md-12 p-4 mb-2 mt-4 col-12 mobile top-content">
             <div class="row">
-                <div class="col-md-6 p-0 m-0 pl-4 text-left d-flex">
+                <div class="col-md-6 p-0 m-0 pl-4 text-left d-flex justify-content-between">
                   <h5 class="header"><strong>
                       <span style="text-transform:uppercase">registered CUSTOMERS</span>
                       </strong></h5>
+                  <vue-json-to-csv
+                    :json-data="customer"
+                    :labels="label"
+                    :csv-title="'bikex_customers_report'"
+                    >
+                    <button class="teal button__custom mt-1 p-2 mr-5 my-button">
+                      <img src="../assets/download.svg" width="20px">
+                      <b>EXPORT TO CSV</b>
+                    </button>
+                </vue-json-to-csv>
                 </div>
                  <!-- <div class="col-md-3 pt-1 d-inline">
                    <span class="link px-3" v-bind:class="{active: filter === 'all'}"  v-on:click="filterkey('all')">All</span>
@@ -83,14 +93,23 @@
     </div>
 </template>
 <script>
+import VueJsonToCsv from 'vue-json-to-csv'
+
 export default {
     data(){
         return{
             pageNumber: 1,
             itemperpage:10,
             search:'',
-            filter:'all'
+            filter:'all',
+            label:{ 
+              _id: {title: 'ID'} ,firstname: { title: 'First Name' },
+              lastname: { title: 'Last Name' }, email:{title: 'Email'}, phone: { title: 'Contact' }, date: { title: 'Date'}
+            }
         }
+    },
+    components:{
+              VueJsonToCsv
     },
     created(){
         this.pageNumber=this.$route.query.page || 1
@@ -163,6 +182,11 @@ export default {
 }
 </script>
 <style scoped>
+.my-button{
+  border: none;
+  background-color: rgb(255, 182, 46,0.7);
+  border-radius: 6px;
+}
 .active{
     text-decoration: underline;
     color: #FFB52F;

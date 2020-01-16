@@ -65,8 +65,8 @@ export default {
       this.$store.dispatch('load_models');
     },
     methods:{
-        see_vehicle(identity){
-        this.$router.push({path:'/vehicles', query: { search:  identity }})
+        see_vehicle(){
+        this.$router.push({path:'/noc-pending'})
         },
     }, 
     computed:{

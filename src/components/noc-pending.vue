@@ -1,13 +1,13 @@
 <template>
-<div class="centres mt-4 pb-4">
+<div class="centres mt-4">
     <div class="col-md-12 p-4 mb-2 mt-4 col-12 mobile top-content">
             <div class="row">
                 <div class="col-md-6 p-0 m-0 pl-4 text-left d-flex justify-content-between">
-                  <h5 class="header"><strong>UNDER REFURBISH VEHICLES</strong></h5>
-                  <vue-json-to-csv
+                  <h5 class="header"><strong>NOC PENDING</strong></h5>
+                   <vue-json-to-csv
                     :json-data="procured_vehicels"
                     :labels="label"
-                    :csv-title="'bikex_under_refurbish_vehicle_report'"
+                    :csv-title="'bikex_noc_pending_report'"
                     >
                     <button class="teal button__custom mt-1 p-2 mr-5 my-button">
                       <img src="../assets/download.svg" width="20px">
@@ -46,7 +46,7 @@
             </th>
             <th>MODEL</th>
             <th>MAKE</th>
-            <th>REFURB ON</th>
+            <th>PROCURED ON</th>
             <th>STATUS</th>
             <th>Type</th>
             <th>UPLOAD</th>
@@ -59,7 +59,7 @@
                 <td v-on:click="see_vehicle(data.vehicle_id)" class="py-1">{{data.vehicle_number}}</td>
                 <td v-on:click="see_model(data.model_id)" class="py-1 under">{{data.modal_name}}</td>
                 <td v-on:click="see_model(data.model_id)" class="py-1 under">{{data.make}}</td>
-                <td v-on:click="see_vehicle(data.vehicle_id)" class="py-1">{{data.refurbishment_received | moment("MMMM Do YYYY")}}</td>
+                <td v-on:click="see_vehicle(data.vehicle_id)" class="py-1">{{data.procured_date | moment("calendar")}}</td>
                 <td v-on:click="see_vehicle(data.vehicle_id)" class="py-1" v-if="data.status == 0"><span style="color:green">Procured</span></td>
                 <td v-on:click="see_vehicle(data.vehicle_id)" class="py-1" v-if="data.status == 1"><span style="color:brown">Under-Refurbish</span></td>
                 <td v-on:click="see_vehicle(data.vehicle_id)" class="py-1" v-if="data.status == 2"><span style="color:purple">In Stock</span></td>
@@ -87,7 +87,7 @@
             <div class="spinner-grow text-success mt-4"></div>
         </div>
 
-    <div class="container mb-5" style="margin-top:80px;height:100%" v-if="!loading && filteredList.length == 0">
+    <div class="container" style="margin-top:80px" v-if="!loading && filteredList.length == 0">
       <p>Sorry :(</p>
       <p>No results Found</p>
     </div>
@@ -354,7 +354,7 @@ export default {
               selectedFiles:null,
               update_loader:false,
               delete_loader:false,
-              label:{ 
+               label:{ 
               _id: {title: 'ID'} ,vehicle_id: { title: 'Vehicle ID' },
               vehicle_number: { title: 'Vehicle Number' }, model_id: { title: 'Model ID' },
               type: { title: 'Type'}, manufacture_year: { title: 'manufacture_year' },
@@ -381,8 +381,8 @@ export default {
             this.$swal('Please Log in.');
             this.$router.push('/login')
         }
-       this.$store.dispatch('load_live_Vehicles');
-        this.$store.dispatch('load_models');
+        this.$store.dispatch('total_vehicle_procured');
+      this.$store.dispatch('load_models');
           this.pageNumber=this.$route.query.page || 1
     },
     methods:{
@@ -591,7 +591,7 @@ export default {
         return this.$store.state.loading
       },
       procured_vehicels(){
-         return this.$store.getters.vehicle_status(1);
+         return this.$store.getters.getreminder(1);
       },
       modals(){
          return this.$store.state.models;
@@ -665,21 +665,18 @@ export default {
 </script>
 <style scoped>
 @import url('https://fonts.googleapis.com/css?family=Montserrat&display=swap');
-
 .my-button{
   border: none;
   background-color: rgb(255, 182, 46,0.7);
   border-radius: 6px;
 }
-
 .fa, .fas {
     cursor: pointer;
 }
 .centres{
-    font-family: 'Montserrat', sans-serif;
-    font-size: 12px;
-padding-top: 0px;
-
+  font-family: 'Montserrat', sans-serif;
+  font-size: 12px;
+  padding-top: 0px;
 }
 .custom-button {
     color: black;
@@ -695,7 +692,7 @@ padding-top: 0px;
   padding: 1.35rem;
 }
 .table tr{
-  background-color: white;
+  background-color: rgba(248, 242, 242, 0.5);
   border-radius: 10px;
 }
 .hand:hover{

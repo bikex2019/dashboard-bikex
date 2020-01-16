@@ -16,8 +16,18 @@
 
     <div class="col-md-12 p-4 mb-2 mt-4 col-12 mobile top-content">
             <div class="row">
-                <div class="col-md-6 p-0 m-0 pl-4 text-left d-flex">
+                <div class="col-md-6 p-0 m-0 pl-4 text-left d-flex justify-content-between">
                   <h5 class="header"><strong>MODELS LIST</strong></h5>
+                  <vue-json-to-csv
+                    :json-data="modals"
+                    :labels="label"
+                    :csv-title="'bikex_models_report'"
+                    >
+                    <button class="teal button__custom mt-1 p-2 mr-5 my-button">
+                      <img src="../assets/download.svg" width="20px">
+                      <b>EXPORT TO CSV</b>
+                    </button>
+                </vue-json-to-csv>
                 </div>
                 <div class="col-md-3 pt-1 mr-3 d-flex justify-content-between">
                   <p class="p-0 m-0 pt-1">{{start }} - {{end}} <span class="mx-1"> of </span> {{modals.length}} 
@@ -592,6 +602,7 @@
 </div>
 </template>
 <script>
+import VueJsonToCsv from 'vue-json-to-csv'
 export default {
     data(){
         return{
@@ -631,11 +642,24 @@ export default {
                 loadonadd:false,
                 comments:'',
                 loading_procured:false,
-                confirm: false
+                confirm: false,
+                label:{ 
+              _id: {title: 'ID'} ,modal_name: { title: 'modal_name' },
+              make: { title: 'make' }, engine_cc: { title: 'engine_cc' },
+              fuel_type: { title: 'fuel_type'}, vehicle_type: { title: 'vehicle_type' },
+              power: { title: 'power' }, fuel_system: { title: 'fuel_system'}, abs: { title: 'abs' },
+              mileage: { title: 'mileage' }, number_of_gears: { title: 'number_of_gears' },
+              transmission_type: { title: 'transmission_type'}, wheel_type: { title: 'wheel_type' },
+              tyre_type: { title: 'tyre_type' }, tank_capacity: { title: 'tank_capacity'}, front_brake_type: { title: 'front_brake_type' },
+              rear_brake_type: { title: 'rear_brake_type' }, cooling_system: { title: 'cooling_system' },
+              starting: { title: 'starting'}, drive_type: { title: 'drive_type' },
+              console: { title: 'console' }, kerb_weight: { title: 'kerb_weight'}, comments: { title: 'comments' },
+              date: { title: 'date' }, updated: { title: 'updated' }
+            }
         }
     },
     components:{
-     
+              VueJsonToCsv
     },
     created(){
       this.pageNumber=this.$route.query.page || 1
@@ -861,6 +885,11 @@ export default {
     font-family: 'Montserrat', sans-serif;
     font-size: 12px;
 
+}
+.my-button{
+  border: none;
+  background-color: rgb(255, 182, 46,0.7);
+  border-radius: 6px;
 }
 .custom-button {
     color: black;
