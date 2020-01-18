@@ -19,7 +19,7 @@
                     </div>
                     </div>
                     <div class="col-md-4 text-center">
-                        <div class="card">
+                        <div class="card" v-on:click="take_to('all-purchase')">
                         <div class="row p-2">
                             <div class="col-md-5">
                             <img class="p-0 m-0" src="../assets/sold.svg" width="100%">

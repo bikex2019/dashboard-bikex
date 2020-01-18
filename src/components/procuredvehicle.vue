@@ -9,9 +9,9 @@
                     :labels="label"
                     :csv-title="'bikex_procured_report'"
                     >
-                    <button class="teal button__custom mt-1 p-2 mr-5 my-button">
-                      <img src="../assets/download.svg" width="20px">
-                      <b>EXPORT TO CSV</b>
+                    <button class="teal custom px-4 mr-4 mt-0 py-2 d-flex justify-content-between">
+                      <img src="../assets/download.svg" width="20px" class="m-0 p-0">
+                      <p class="m-0 p-0 pl-2">EXPORT TO CSV</p>
                     </button>
                 </vue-json-to-csv>
                 </div>
@@ -45,7 +45,7 @@
             <i class="fa fa-sort-amount-desc ml-3 sorter" aria-hidden="true" v-on:click="desc" v-else></i> -->
             </th>
             <th>MODEL</th>
-            <th>MAKE</th>
+            <th>MFG YEAR</th>
             <th>PROCURED ON</th>
             <th>STATUS</th>
             <th>Type</th>
@@ -57,8 +57,8 @@
             <tr v-for="(data, index) in paginatedData" :key="index" class="hand p-3">
                 <td v-on:click="see_vehicle(data.vehicle_id)" class="py-1">{{data.vehicle_id}}</td>
                 <td v-on:click="see_vehicle(data.vehicle_id)" class="py-1">{{data.vehicle_number}}</td>
-                <td v-on:click="see_model(data.model_id)" class="py-1 under">{{data.modal_name}}</td>
-                <td v-on:click="see_model(data.model_id)" class="py-1 under">{{data.make}}</td>
+                <td v-on:click="see_model(data.model_id)" class="py-1 under">{{data.modal_name}} {{data.make}}</td>
+                <td v-on:click="see_vehicle(data.vehicle_id)" class="py-1 under">{{data.manufacture_year| moment("calendar")}}</td>
                 <td v-on:click="see_vehicle(data.vehicle_id)" class="py-1">{{data.procured_date | moment("calendar")}}</td>
                 <td v-on:click="see_vehicle(data.vehicle_id)" class="py-1" v-if="data.status == 0"><span style="color:green">Procured</span></td>
                 <td v-on:click="see_vehicle(data.vehicle_id)" class="py-1" v-if="data.status == 1"><span style="color:brown">Under-Refurbish</span></td>
@@ -938,6 +938,18 @@ table{
   padding: 5px;
   width: 100%
 }
-
+.custom{
+    padding: 20px 40px;
+    border: none;
+    background: linear-gradient( to left, #ebebeb 50%,     #ffb52f 50% );
+	background-size: 200% 100%;
+	background-position: right bottom;
+    cursor: pointer;
+    transition: all ease .2s;
+}
+.custom:hover {
+        background-position: left bottom;
+        color: white;
+    }
 
 </style>

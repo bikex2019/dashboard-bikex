@@ -24,6 +24,10 @@ import customers from './components/customers'
 import viewCustomer from './components/viewCustomer'
 import purchased_vehicle from './components/purchasedVehicle'
 import nocPending from './components/noc-pending'
+import offline from './components/offlinesell'
+import addcustomer from './components/addcustomer'
+
+
 
 
 
@@ -51,6 +55,8 @@ export default[
     {path:'/customers', component:customers},
     {path:'/purchase', component:purchase},
     {path:'/sell', component:sell},
+    {path:'/add-customer', component:addcustomer},
+    {path:'/offline-sell', component:offline},
     {path:'/noc-pending',component:nocPending},
     {path:'/procured-vehicle', component:procuredVehicle},
     {path:'*', component:notfound}

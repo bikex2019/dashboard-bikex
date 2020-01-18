@@ -344,4 +344,17 @@ table{
   background-color: #ffb52f;
   color: white
 }
+.round{
+  border-radius: 50%;
+  background: linear-gradient( to left, #ebebeb 45%,     #ffb52f 50% );
+  background-size: 200% 100%;
+	background-position: right bottom;
+    cursor: pointer;
+    transition: all ease .1s;
+    color: #000
+}
+.round:hover {
+        background-position: left bottom;
+        color: white;
+    }
 </style>

@@ -1,10 +1,10 @@
 <template>
 <div id="app m-0 p-0">
-    <div class="filter d-flex justify-content-end pr-5 p-0 m-0">
+    <!-- <div class="filter d-flex justify-content-end pr-5 p-0 m-0">
         <p class="p-1 hand" v-bind:class="{active: totaldays == 7}" v-on:click="filter(7)">7D</p>
         <p class="p-1 hand" v-bind:class="{active: totaldays == 30}" v-on:click="filter(30)">30D</p>
         <p class="p-1 hand" v-bind:class="{active: totaldays == 90}" v-on:click="filter(90)">90D</p>
-    </div>
+    </div> -->
    <graph-line
             :width="500"
             :height="300"

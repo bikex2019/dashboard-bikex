@@ -8,10 +8,10 @@
                     :json-data="procured_vehicels"
                     :labels="label"
                     :csv-title="'bikex_all_vehicles_report'"
-                    >
-                    <button class="teal button__custom mt-1 p-2 mr-5 my-button">
-                      <img src="../assets/download.svg" width="20px">
-                      <b>EXPORT TO CSV</b>
+                    > 
+                    <button class="teal custom px-4 mr-4 mt-0 py-2 d-flex justify-content-between">
+                      <img src="../assets/download.svg" width="20px" class="m-0 p-0">
+                      <p class="m-0 p-0 pl-2">EXPORT TO CSV</p>
                     </button>
                 </vue-json-to-csv>
                 </div>
@@ -45,6 +45,7 @@
             <i class="fa fa-sort-amount-desc ml-3 sorter" aria-hidden="true" v-on:click="desc" v-else></i> -->
             </th>
             <th>MAKE/MODEL</th>
+            <TH>MFG YEAR</TH>
             <th>CHASIS NO</th>
             <th>STATUS</th>
             <th>TYPE</th>
@@ -57,6 +58,7 @@
                 <td v-on:click="see_vehicle(data.vehicle_id)" class="py-1">{{data.vehicle_id}}</td>
                 <td v-on:click="see_vehicle(data.vehicle_id)" class="py-1">{{data.vehicle_number}}</td>
                 <td v-on:click="see_model(data.model_id)" class="py-1 under">{{data.make}} {{data.modal_name}}</td>
+                <td v-on:click="see_vehicle(data.vehicle_id)" class="py-1">{{data.manufacture_year | moment('calendar')}}</td>
                 <td v-on:click="see_vehicle(data.vehicle_id)" class="py-1">{{data.chassis_no}}</td>
                 <td v-on:click="see_vehicle(data.vehicle_id)" class="py-1" v-if="data.status == 0"><span style="color:green">Procured</span></td>
                 <td v-on:click="see_vehicle(data.vehicle_id)" class="py-1" v-if="data.status == 1"><span style="color:brown">Under-Refurbish</span></td>
@@ -117,7 +119,7 @@
             </div>            
             </form>
              <div class="col-md-12 text-right mb-4">
-                <button type="button bt" class="btn btn-danger px-5" v-on:click="changeStatus">Save</button> 
+                <button type="button bt" class="btn custom px-5" v-on:click="changeStatus">Save</button> 
             </div>  
         </div>
       </div>
@@ -291,7 +293,7 @@
            
             </div>             
          </form>
-         <button type="button bt" class="btn btn-danger px-5" v-on:click="procureVehicle">
+         <button type="button bt" class="custom px-5" v-on:click="procureVehicle">
               <span >Add Vehicle</span>
               <div v-if="loadonadd" class="spinner-border spinner-border-sm ml-2">
               </div>
@@ -468,8 +470,8 @@
               <hr>
             </div>             
                 </form>
-                     <button type="submit" v-on:click="updateForm()" class="button1 btn btn-primary">Update</button>
-                    <button type="submit" v-on:click="chop()" class="button1 btn btn-danger ml-2">Delete</button>
+                     <button type="submit" v-on:click="updateForm()" class="custom">Update</button>
+                    <button type="submit" v-on:click="chop()" class="custom2 ml-2">Delete</button>
             </div>
         </div>
     </div>
@@ -967,11 +969,7 @@ label{
   text-decoration: none;
   cursor: pointer;
 }
-.round{
-  border-radius: 50%;
-  background-color: #ffb52f;
-  color: white
-}
+
 input:focus ~ .floating-label,
 input:not(:focus):valid ~ .floating-label{
   top: -7px;
@@ -1124,5 +1122,46 @@ table{
   padding: 5px;
 }
 
+.custom{
+    padding: 20px 40px;
+    border: none;
+    background: linear-gradient( to left, #ebebeb 50%,     #ffb52f 50% );
+	background-size: 200% 100%;
+	background-position: right bottom;
+    cursor: pointer;
+    transition: all ease .2s;
+}
+.custom:hover {
+        background-position: left bottom;
+        color: white;
+    }
+
+    .custom2{
+    padding: 20px 40px;
+    border: none;
+    background: linear-gradient( to left, #ebebeb 50%,     red 50% );
+	background-size: 200% 100%;
+	background-position: right bottom;
+    cursor: pointer;
+    transition: all ease .2s;
+}
+.custom2:hover {
+        background-position: left bottom;
+        color: white;
+    }
+
+.round{
+  border-radius: 50%;
+  background: linear-gradient( to left, #ebebeb 45%,     #ffb52f 50% );
+  background-size: 200% 100%;
+	background-position: right bottom;
+    cursor: pointer;
+    transition: all ease .1s;
+    color: #000
+}
+.round:hover {
+        background-position: left bottom;
+        color: white;
+    }
 
 </style>

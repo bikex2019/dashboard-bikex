@@ -23,9 +23,9 @@
                     :labels="label"
                     :csv-title="'bikex_models_report'"
                     >
-                    <button class="teal button__custom mt-1 p-2 mr-5 my-button">
-                      <img src="../assets/download.svg" width="20px">
-                      <b>EXPORT TO CSV</b>
+                     <button class="teal custom px-4 mr-4 mt-0 py-2 d-flex justify-content-between">
+                      <img src="../assets/download.svg" width="20px" class="m-0 p-0">
+                      <p class="m-0 p-0 pl-2">EXPORT TO CSV</p>
                     </button>
                 </vue-json-to-csv>
                 </div>
@@ -1148,4 +1148,30 @@ table{
   padding: 5px;
   width: 100%
 }
+.custom{
+    padding: 20px 40px;
+    border: none;
+    background: linear-gradient( to left, #ebebeb 50%,     #ffb52f 50% );
+	background-size: 200% 100%;
+	background-position: right bottom;
+    cursor: pointer;
+    transition: all ease .2s;
+}
+.custom:hover {
+        background-position: left bottom;
+        color: white;
+    }
+.round{
+  border-radius: 50%;
+  background: linear-gradient( to left, #ebebeb 45%,     #ffb52f 50% );
+  background-size: 200% 100%;
+	background-position: right bottom;
+    cursor: pointer;
+    transition: all ease .1s;
+    color: #000
+}
+.round:hover {
+        background-position: left bottom;
+        color: white;
+    }
 </style>

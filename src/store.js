@@ -20,7 +20,9 @@ state: {
   new_bookings:[],
   purchases:[],
   customers:[],
+  addcustomer:false,
   loading:true,
+  toggler:true,
   lastweek:[
     [ 10, 0, 5, 5 ],
     [ 40, 10, 10, 10 ],
@@ -28,6 +30,9 @@ state: {
 ]
   },
   mutations: {
+    CHANGE_TOGGLER(state, value){
+      state.toggler = value
+    },
     LOAD_STATUS(state, value) {
       state.loading = value;
     },
@@ -42,7 +47,7 @@ state: {
     },
     FETCH_PURCHASES(state, purchases){
       state.purchases = purchases
-  },
+    },
     FETCH_MODELS(state, models){
         state.models = models
     },
@@ -235,7 +240,7 @@ state: {
           const date2 = new Date(Date.now());
           const diffTime = Math.abs(date2 - date1);
           const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24)); 
-          return diffDays < 1
+          return diffDays <= 1
         })
       },
       // getdatas:(state)=>(array)=>{
@@ -261,7 +266,7 @@ state: {
         //   return new Date(state.purchases[i].date).toISOString().slice(0,10)
         // }
 
-      }
+      },
     },
 
 

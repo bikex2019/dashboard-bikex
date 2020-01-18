@@ -1,20 +1,18 @@
 <template>
   <div id="app">
     <navigation v-if="show"></navigation>
-       <div class="custom">
+       <div class="custom" v-bind:class="{toggle: !toggle}">
          <router-view></router-view>
        </div>
   </div>
 </template>
 
 <script>
-import navigationStore from './navigation'
 import navigation from './components/navigation'
 export default {
   name: 'app',
   data(){
     return{
-      toggle: navigationStore.data.toggler,
       show:true
     }
   },
@@ -36,7 +34,12 @@ export default {
        if(!auth){
          this.show = false
        }
-  }
+  },
+  computed: {
+    toggle(){
+      return this.$store.state.toggler
+    }
+  },
 }
 </script>
 
@@ -49,9 +52,13 @@ export default {
     margin-top: 39px;
 }
 .custom{
-  padding-left: 59px;
+  padding-left: 60px;
   padding-top: 0px;
+  transition: margin-left .3s;
   /* background-color: rgba(219, 248, 164, 0.5) */
+}
+.toggle{
+    margin-left: 100px;
 }
 
 @media only screen and (max-width: 768px) {

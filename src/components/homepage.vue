@@ -47,7 +47,12 @@ export default {
             data1:1,
             data2: this.data1
         }
-    }
+    },
+    computed: {
+        toggler(){
+            return this.$store.state.toggler
+        }
+    },
 }
 </script>
 <style scoped>

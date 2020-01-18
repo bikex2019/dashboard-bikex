@@ -14,7 +14,7 @@
         </tr>
         </thead>
         <tbody>
-            <tr v-for="(reminderdata, index) in paginatedData" :key="index" v-bind:class="{strong: reminderdata.seen == 0,failed:reminderdata.payment_status==0,sucess:reminderdata.payment_status==1}">
+            <tr v-for="(reminderdata, index) in purchase" :key="index" v-bind:class="{strong: reminderdata.seen == 0,failed:reminderdata.payment_status==0,sucess:reminderdata.payment_status==1}">
                 <td class="hand py-1" v-on:click="open(reminderdata._id)">{{reminderdata.vehicle_id}}</td> 
                  <td v-on:click="see_vehicle(reminderdata.vehicle_id)" class="py-1" v-if="reminderdata.status == 0"><span style="color:green">Procured</span></td>
                 <td v-on:click="see_vehicle(reminderdata.vehicle_id)" class="py-1" v-if="reminderdata.status == 1"><span style="color:brown">Under-Refurbish</span></td>
@@ -73,7 +73,7 @@ export default {
     loading(){
         return this.$store.state.loading
     },
-    purchase(){
+    purchase(){ 
         return this.$store.getters.getreminder(this.status)
     },
     // insuranceLapse(){
