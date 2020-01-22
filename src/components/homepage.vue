@@ -26,6 +26,13 @@ import reminderTab from './reminder-tab'
 // import soldBikes from './soldbikes'
 // import purchasechart from './purchase-graph'
 export default {
+    data(){
+        return{
+            data1:1,
+            data2: this.data1,
+            locate:''
+        }
+    },
     components:{
         overview,
         quickoverview,
@@ -41,12 +48,23 @@ export default {
         if(!auth){
             this.$router.push('/login')
         }
+        this.getiip()
     },
-    data(){
-        return{
-            data1:1,
-            data2: this.data1
-        }
+    created(){
+    this.$http.get("https://ipapi.co/json/").then((res)=>{
+        this.locate = res.body
+        this.$http.post('https://backend-bikex.herokuapp.com/api/logged-in',{
+            agent_username:localStorage.getItem('token'),
+            details:res.body
+        }).then((res)=>{
+            window.console.log(res)
+        })
+    })
+
+        
+    },
+    methods:{
+
     },
     computed: {
         toggler(){

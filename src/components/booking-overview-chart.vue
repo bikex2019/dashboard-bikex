@@ -29,7 +29,7 @@ const moment = require('moment');
 export default {
     data(){
         return{
-        totaldays:30,
+        totaldays:7,
         names: [ 'Bookings' ],
         }
     },
@@ -43,7 +43,7 @@ export default {
             return moment().subtract(this.totaldays, 'days').startOf(moment()).format('YYYY-MM-DD HH:mm:ss')
         },
         datenow(){
-            return moment("2019-12-25").format('YYYY-MM-DD HH:mm:ss')
+            return moment().format('YYYY-MM-DD HH:mm:ss')
         },
         dates(){
             var dates = [];
