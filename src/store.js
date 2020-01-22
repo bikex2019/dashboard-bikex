@@ -91,8 +91,10 @@ state: {
       });
     },
     loadFaq({commit}) {
+      commit('LOAD_STATUS', true);
       axios.get(url +'/faq').then(result => {
         commit('FETCH_FAQ', result.data);
+        commit('LOAD_STATUS', false);
       }).catch(error => {
         throw new Error(`API ${error}`);
       });

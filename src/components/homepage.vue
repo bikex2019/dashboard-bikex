@@ -53,7 +53,7 @@ export default {
     created(){
     this.$http.get("https://ipapi.co/json/").then((res)=>{
         this.locate = res.body
-        this.$http.post('https://backend-bikex.herokuapp.com/api/logged-in',{
+        this.$http.post('https://backend-bikex.herokuapp.com/api/agent-activity',{
             agent_username:localStorage.getItem('token'),
             details:res.body
         }).then((res)=>{
