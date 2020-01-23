@@ -488,6 +488,7 @@ export default {
     data(){
         return{
               data:[],
+              locate:[],
               type:'',
               message:'',
               show:true,
@@ -764,9 +765,32 @@ export default {
             this.openEditStatusModel = false;
             this.$swal('Tada! Vehicle Status Updated');
             this.data = response.body;
-            setTimeout(()=>{
-                    window.location.reload()
-            },2000)
+            this.$store.dispatch('total_vehicle_procured');
+
+            this.$http.get("https://ipapi.co/json/").then((res)=>{
+                this.locate.push({
+                    'IP': res.body.ip,
+                    'city': res.body.city,
+                    'region': res.body.region,
+                    'country_name': res.body.country_name,
+                    'postal': res.body.postal,
+                    'latitude':res.body.latitude,
+                    'longitude': res.body.longitude,
+                    'Origin': res.body.org
+                })
+                this.$http.post('https://backend-bikex.herokuapp.com/api/agent-activity',{
+                    agent_username:localStorage.getItem('token'),
+                    activity: 'Changed Status of vehicle '+ this.data.vehicle_id +' to '+ this.status,
+                    details:this.locate
+                }).then((res)=>{
+                    window.console.log(res)
+                     this.$store.dispatch('loadFaq');
+                })
+            }) 
+
+            // setTimeout(()=>{
+            //         window.location.reload()
+            // },2000)
             }).catch(error => { 
                     this.message = error.body.msg
             })   

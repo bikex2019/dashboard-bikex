@@ -48,7 +48,6 @@ export default {
         if(!auth){
             this.$router.push('/login')
         }
-        this.getiip()
     },
     created(){
     this.$http.get("https://ipapi.co/json/").then((res)=>{

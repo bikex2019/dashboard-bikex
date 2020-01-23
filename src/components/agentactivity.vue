@@ -14,9 +14,9 @@
                 </div>
                 <div class="col-md-2 p-0 m-0 text-right d-flex justify-content-end">
                 
-                    <button class="btn round" v-on:click="openModal">
+                    <!-- <button class="btn round" v-on:click="openModal">
                         <i class="fa fa-plus" aria-hidden="true"></i>
-                    </button>
+                    </button> -->
                 </div>
             </div>
     </div>
@@ -44,7 +44,7 @@
             </tr>
         </table>
         <div class="loader mt-5" style="min-height:200px;" v-if="loadingData">
-            <h5 class="pt-4">Fetching all Faq's.....</h5>
+            <h5 class="pt-4">Fetching all Activities.....</h5>
             <div class="spinner-grow text-success mt-4"></div>
         </div>
         <div class="loader mt-5" style="min-height:200px;" v-if="!loadingData && faqs.length == 0">
@@ -186,7 +186,7 @@ export default {
 @import url('https://fonts.googleapis.com/css?family=Montserrat&display=swap');
 
 .table td{
-    padding: 5px;
+    padding: 3px;
     margin: 0;
     font-size: 14px;
     font-family: 'Montserrat', sans-serif;
@@ -274,7 +274,8 @@ table{
 }
 .table td, .table th{
   border: none;
-  padding: 1.35rem;
+  padding: 0.35rem;
+  font-size: 12px
 }
 .table tr{
   background-color: rgba(248, 242, 242, 0.5);

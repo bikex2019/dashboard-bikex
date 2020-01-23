@@ -581,7 +581,7 @@
             </div>
         </div>
     </div>
-      <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+      <div class="modal fade" id="exampleModal" ref="demo" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
         <div class="modal-dialog" role="document">
           <div class="modal-content">
             <div class="modal-header">
@@ -608,7 +608,8 @@ export default {
         return{
                 data:[],
                 message:'',
-                modals:[],
+                locate:[],
+                // modals:[],
                 show:true,
                 filtered:[],
                 search:'',
@@ -638,7 +639,7 @@ export default {
                 console:'',
                 weight:'',
                 idtoedit:'',
-                loading:false,
+                // loading:false,
                 loadonadd:false,
                 comments:'',
                 loading_procured:false,
@@ -662,6 +663,7 @@ export default {
               VueJsonToCsv
     },
     created(){
+      this.$store.dispatch('load_models');
       this.pageNumber=this.$route.query.page || 1
       let auth = localStorage.getItem('token')
         this.admin_id = localStorage.getItem('temp')
@@ -669,12 +671,12 @@ export default {
             this.$swal('Please Log in.');
             this.$router.push('/login')
         }
-          this.loading = true
-          this.$http.get('https://backend-bikex.herokuapp.com/api/models')
-          .then(response=>{
-           this.modals = response.body
-           this.loading= false
-         })
+        //   this.loading = true
+        //   this.$http.get('https://backend-bikex.herokuapp.com/api/models')
+        //   .then(response=>{
+        //    this.modals = response.body
+        //    this.loading= false
+        //  })
     },
     methods:{
             nextPage(){
@@ -721,13 +723,38 @@ export default {
                 comments:this.comments,
             }).
             then(response=>{
-              this.loadonadd=false
+            this.loadonadd=false
             this.addModal = false;
             this.$swal('Tada! Modal has been added..');
-            this.data = response.body;
-            setTimeout(()=>{
-                    window.location.reload()
-            },2000)
+            this.data = response.data;
+            window.console.log(response)
+            // setTimeout(()=>{
+            //         window.location.reload()
+            // },2000)
+                    this.$http.get("https://ipapi.co/json/").then((res)=>{
+                    this.locate.push({
+                    'IP': res.body.ip,
+                    'city': res.body.city,
+                    'region': res.body.region,
+                    'country_name': res.body.country_name,
+                    'postal': res.body.postal,
+                    'latitude':res.body.latitude,
+                    'longitude': res.body.longitude,
+                    'Origin': res.body.org
+                    })
+                    this.$http.post('https://backend-bikex.herokuapp.com/api/agent-activity',{
+                        agent_username:localStorage.getItem('token'),
+                        activity: 'Added model ID: '+ this.data._id,
+                        details:this.locate
+                    })
+                    .then((res)=>{
+                        window.console.log(res)
+                         this.$store.dispatch('load_models');
+                    }).catch((err)=>{
+                        window.console.log(err)
+                    })
+                })
+
             }).catch(error => { 
                     this.message = error.body.msg
                     this.loadonadd=false;
@@ -786,9 +813,32 @@ export default {
             this.editModal = false;
             this.$swal('Modal has been Deleted');
             this.data = response.body;
-            setTimeout(()=>{
-                    window.location.reload()
-            },2000)
+                    this.$http.get("https://ipapi.co/json/").then((res)=>{
+                    this.locate.push({
+                    'IP': res.body.ip,
+                    'city': res.body.city,
+                    'region': res.body.region,
+                    'country_name': res.body.country_name,
+                    'postal': res.body.postal,
+                    'latitude':res.body.latitude,
+                    'longitude': res.body.longitude,
+                    'Origin': res.body.org
+                    })
+                    this.$http.post('https://backend-bikex.herokuapp.com/api/agent-activity',{
+                        agent_username:localStorage.getItem('token'),
+                        activity: 'Deleted model ID: '+ this.data._id,
+                        details:this.locate
+                    })
+                    .then((res)=>{
+                        window.console.log(res)
+                         this.$store.dispatch('load_models');
+                    }).catch((err)=>{
+                        window.console.log(err)
+                    })
+                })
+            // setTimeout(()=>{
+            //         window.location.reload()
+            // },2000)
             }).catch(error => { 
                     this.message = error.body.msg
             })   
@@ -822,6 +872,12 @@ export default {
         },
     },
     computed:{
+      loading(){
+                return this.$store.state.loading
+            },
+            modals(){
+                return this.$store.state.models
+            },
       date(){
         return new Date()
       },

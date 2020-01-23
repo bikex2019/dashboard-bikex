@@ -173,7 +173,7 @@ export default {
             this.$swal('Tada! FAQ has been added');
             this.data = response.body;
             window.console.log(this.data)
-             this.$http.get("https://ipapi.co/json/").then((res)=>{
+            this.$http.get("https://ipapi.co/json/").then((res)=>{
                 this.locate.push({
                     'IP': res.body.ip,
                     'city': res.body.city,

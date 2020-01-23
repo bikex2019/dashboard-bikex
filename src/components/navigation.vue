@@ -234,6 +234,22 @@
         </p>
       </div>
 
+       <div class="col-md-12 margin-right text-center border-bottom p-0" v-if="!toggle">
+        <router-link to="/agentactivity" exact-active-class="active" class="d-flex navigate-padding">
+          <i class='fa fa-rss pl-3 pt-1 pr-2' style='font-size:20px;color:#001232'> </i>
+          <p class="p-1 m-0">Agent Activity</p>
+        </router-link>
+      </div>
+
+      <div class="col-md-12 margin-right navigate m-0 mr-3 p-0 text-left border-bottom" v-else>
+        <p class="p-0 m-0">
+        <router-link to="/agentactivity" exact-active-class="active"
+          class="bikex-header mb-0 p-0 pb-1"><i class='fa fa-rss pl-3' style='font-size:20px;color:#001232'></i>
+        </router-link>
+        </p>
+      </div>
+
+
     </div>
 </div>
 </template>
