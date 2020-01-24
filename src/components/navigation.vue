@@ -11,13 +11,18 @@
         <!-- <span class="mr-3">Booking<span class="badge badge-light" style="color:red">2</span></span> -->
         <span class="mr-3 monte" v-on:click="go('sell')">Sell<span class="badge badge-light" style="color:red">{{sell.total}}</span></span>
        <span class="mr-3 monte" v-on:click="go('finance')">Finance<span class="badge badge-light" style="color:red">{{finance.total}}</span></span>
+       
+       <!-- <div class="d-inline"> 
+          <p>{{user}}</p>
         <i class="fa fa-sign-out mr-3"  v-on:click="logout" style='font-size:20px;color:#001232' aria-hidden="true"></i>
+       </div> -->
         <div class="dropdown mr-1">
-          <i class='fa fa-link mt-2 dropbtn' style='font-size:17px;color:#001232'></i>
+         <p><i class='fa fa-user-circle-o mt-3 dropbtn' style='font-size:17px;color:#001232'></i> {{user}} <i class="fa fa-angle-down" aria-hidden="true"></i></p> 
           <div class="dropdown-content">
             <a  v-on:click="go('live')">Live Vehicle</a>
             <a  v-on:click="go('models')">Models</a>
             <a  v-on:click="go('faqs')">FAQ'S</a>
+            <a v-on:click="logout">Log Out</a>
           </div>
         </div>
       </div>
@@ -263,7 +268,8 @@ export default {
             activenow : '',
             finance:'',
             sell:'',
-            purchases:''
+            purchases:'',
+            user:''
         }
     },
     computed: {
@@ -301,6 +307,7 @@ export default {
     },
     mounted(){
       let auth = localStorage.getItem('token')
+      this.user = auth
         this.id = localStorage.getItem('temp')
         if(!auth){
             this.$router.push('/login')
