@@ -536,7 +536,7 @@ export default {
               update_loader:false,
               delete_loader:false,
               label:{ 
-              _id: {title: 'ID'} ,vehicle_id: { title: 'Vehicle ID' },
+              _id: {title: 'ID'} ,vehicle_id: { title: 'Vehicle ID' },status: { title: 'Vehicle Status' },
               vehicle_number: { title: 'Vehicle Number' }, model_id: { title: 'Model ID' },
               type: { title: 'Type'}, manufacture_year: { title: 'manufacture_year' },
               color: { title: 'color' }, fines: { title: 'fines'}, source: { title: 'source' },

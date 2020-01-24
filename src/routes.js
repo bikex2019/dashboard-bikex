@@ -27,6 +27,7 @@ import nocPending from './components/noc-pending'
 import offline from './components/offlinesell'
 import addcustomer from './components/addcustomer'
 import agentactivity from './components/agentactivity'
+import profile from './components/agent-profile'
 
 
 
@@ -56,6 +57,7 @@ export default[
     {path:'/customers', component:customers},
     {path:'/purchase', component:purchase},
     {path:'/sell', component:sell},
+    {path:'/view-profile', component:profile},
     {path:'/agentactivity', component:agentactivity},
     {path:'/add-customer', component:addcustomer},
     {path:'/offline-sell', component:offline},

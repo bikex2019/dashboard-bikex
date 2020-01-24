@@ -12,6 +12,7 @@ state: {
   faqs: [],
   live_vehicles:[],
   models:[],
+  agents:[],
   display_images:[],
   total_sold:[],
   total_booked:[],
@@ -68,6 +69,9 @@ state: {
     },
     FETCH_CUSTOMERS(state, customers){
       state.customers = customers
+    },
+    FETCH_AGENTS(state, agents){
+      state.agents = agents
     },
     FETCH_NEW_BOOKINGS(state, new_bookings){
       state.new_bookings = new_bookings
@@ -151,10 +155,17 @@ state: {
       }).catch(error => {
         throw new Error(`API ${error}`);
       });
-    },
+    }, 
     customers({commit}) {
       axios.get(url +'/customers').then(result => {
         commit('FETCH_CUSTOMERS', result.data);
+      }).catch(error => {
+        throw new Error(`API ${error}`);
+      });
+    },
+    agents({commit}) {
+      axios.get(url +'/agents').then(result => {
+        commit('FETCH_AGENTS', result.data);
       }).catch(error => {
         throw new Error(`API ${error}`);
       });
@@ -201,6 +212,13 @@ state: {
           return item._id === id
         });
       },
+
+      agent_by_id(state) {
+        return id => state.agents.filter(item =>{
+          return item._id == id
+        });
+      },
+
       newPurchases:(state)=>(id)=>{
         if(id == 3){
           return state.purchases.filter(item=>{

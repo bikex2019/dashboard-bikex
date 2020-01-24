@@ -1,6 +1,6 @@
 <template>
   <div class="navigation mb-4 fixed-top">
-    <div class="row col-md-12 col-12 top-nav custom mt-0 pt-0" v-bind:class="{main: !toggle}">
+    <div class="row col-md-12 col-12 top-nav custom mt-1 pt-0" v-bind:class="{main: !toggle}">
       <div class="col-md-6 col-4 text-left pl-4">
         <span style="font-size:25px;cursor:pointer" v-if="toggle" v-on:click="toggle_change()">&#9776;</span>
                 <span class="phone" style="font-size:25px;cursor:pointer" v-if="!toggle" v-on:click="toggle_change()">&times;</span>
@@ -16,9 +16,10 @@
           <p>{{user}}</p>
         <i class="fa fa-sign-out mr-3"  v-on:click="logout" style='font-size:20px;color:#001232' aria-hidden="true"></i>
        </div> -->
-        <div class="dropdown mr-1">
+        <div class="dropdown">
          <p><i class='fa fa-user-circle-o mt-3 dropbtn' style='font-size:17px;color:#001232'></i> {{user}} <i class="fa fa-angle-down" aria-hidden="true"></i></p> 
           <div class="dropdown-content">
+            <a v-on:click="go('view-profile')">View Profile</a>
             <a  v-on:click="go('live')">Live Vehicle</a>
             <a  v-on:click="go('models')">Models</a>
             <a  v-on:click="go('faqs')">FAQ'S</a>
