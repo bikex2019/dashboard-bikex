@@ -26,8 +26,9 @@
                     </div>
 
 
-                <form v-if="currenttab == 1">
-                    <div class="row">
+            <div class="col-md-12" v-if="currenttab == 1">
+                    <form >
+                    <div class="row col-md-12">
                         <div class="col-25">
                         <label for="username">Username:</label>
                         </div>
@@ -59,14 +60,19 @@
                         <input type="text" id="designation" disabled v-model="designation" name="designation">
                         </div>
                     </div>
-                    <div class="row pull-right mt-4">
-                        <button class="custom" type="submit">SAVE CHANGES</button>
-                    </div>
+                   
                 </form>
+                 <div class="row pull-right mt-4">
+                        <button type="submit" class="custom" data-toggle="modal" data-target="#exampleModalCenter">
+                            <span v-if="!update">SAVE CHANGES</span>
+                            <span v-else>Loading</span>
+                        </button>
+                    </div>
+            </div>
 
-              <div v-if="currenttab == 2">
+              <div class="col-md-12" v-if="currenttab == 2">
                     <form >
-                    <div class="row">
+                    <div class="row col-md-12">
                         <div class="col-25">
                         <label for="currentpass">Current Password:</label>
                         </div>
@@ -93,16 +99,44 @@
                   
                 </form>
                   <div class="row pull-right mt-4">
-                        <button class="custom" v-on:click="changepassword()">Change Password</button>
+                        <button class="custom" v-on:click="changepassword()">
+                            <span v-if="changepass">Loading</span>
+                            <span v-else>CHANGE PASSWORD</span>
+                        </button>
                        
                     </div>
-                     <p class="mt-4" v-if="message">{{message}}</p>
+                     <p class="mt-4" v-if="message" style="color:red">{{message}}</p>
               </div>
 
 
             </div>
         </div>
     </div>
+
+<!-- Modal -->
+<div class="modal" id="exampleModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLongTitle">Enter Password to continue..</h5>
+      </div>
+      <div class="modal-body">
+            <div class="col-md-12">
+                <input type="password" id="currentpass" v-model="passwordverify" name="currentpass">
+            </div>
+      </div>
+      <p style="color:red">{{message}}</p>
+      <div class="modal-footer">
+          
+        <button type="button" class="custom" v-on:click="updateprofile()">
+            <span v-if="!update">CONFIRM</span>
+            <span v-else>Loading.</span>
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+
 </div>
 </template>
 
@@ -119,7 +153,10 @@ export default {
             currentpassword:'',
             newpassword:'',
             repeatpassword:'',
-            message:''
+            message:'',
+            changepass: false,
+            update:false,
+            passwordverify:''
         }
     },
     created(){
@@ -135,11 +172,34 @@ export default {
     methods:{
         changetab(id){
             this.currenttab = id
+            this.message = ''
+        },
+        updateprofile: function(){
+            this.update = true
+            this.$http.put('https://backend-bikex.herokuapp.com/api/agents/update/'+ this.id,{
+            agent_username: this.agent_username,
+            email: this.email,
+            phone: this.phone,
+            designation: this.designation,
+            password:this.passwordverify
+            }).
+            then(response=>{
+            this.$swal('Profile Updated Sucessfully.');
+            this.update= false
+            this.data = response.body;
+            this.message = response.body.msg
+            this.$store.dispatch('agents')
+            }).catch((error)=>{
+                this.message = error.body.msg
+                this.update =  false;
+                // this.editModal = false
+            })
         },
         changepassword(){
             if(!this.currentpassword || !this.newpassword){
                 this.message= 'Please fill all the fields.'
             }else{
+                this.changepass = true
                 if(this.newpassword == this.repeatpassword){
                      this.$http.post('https://backend-bikex.herokuapp.com/api/agents/changepassword',{
                     id:this.id,
@@ -147,12 +207,15 @@ export default {
                     newpassword:this.newpassword
                 }).then((res)=>{
                     window.console.log(res)
-                    this.message = 'Password has been changed.'
+                    this.message = res.body.msg
+                    this.changepass = false
                 }).catch(()=>{
                     this.message = 'Some error occured.'
+                    this.changepass = false
                 })
                 }else{
                     this.message = 'Password do not match.'
+                    this.changepass = false
                 }
             }
         }

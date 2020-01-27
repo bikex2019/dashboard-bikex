@@ -28,7 +28,7 @@ import offline from './components/offlinesell'
 import addcustomer from './components/addcustomer'
 import agentactivity from './components/agentactivity'
 import profile from './components/agent-profile'
-
+import manageAgents from './components/manageAgents'
 
 
 
@@ -57,6 +57,7 @@ export default[
     {path:'/customers', component:customers},
     {path:'/purchase', component:purchase},
     {path:'/sell', component:sell},
+    {path:'/manage-agents', component:manageAgents},
     {path:'/view-profile', component:profile},
     {path:'/agentactivity', component:agentactivity},
     {path:'/add-customer', component:addcustomer},

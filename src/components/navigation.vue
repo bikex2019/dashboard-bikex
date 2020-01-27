@@ -1,6 +1,6 @@
 <template>
   <div class="navigation mb-4 fixed-top">
-    <div class="row col-md-12 col-12 top-nav custom mt-1 pt-0" v-bind:class="{main: !toggle}">
+    <div class="row col-md-12 col-12 top-nav custom mt-0 pt-0" v-bind:class="{main: !toggle}">
       <div class="col-md-6 col-4 text-left pl-4">
         <span style="font-size:25px;cursor:pointer" v-if="toggle" v-on:click="toggle_change()">&#9776;</span>
                 <span class="phone" style="font-size:25px;cursor:pointer" v-if="!toggle" v-on:click="toggle_change()">&times;</span>
@@ -17,7 +17,7 @@
         <i class="fa fa-sign-out mr-3"  v-on:click="logout" style='font-size:20px;color:#001232' aria-hidden="true"></i>
        </div> -->
         <div class="dropdown">
-         <p><i class='fa fa-user-circle-o mt-3 dropbtn' style='font-size:17px;color:#001232'></i> {{user}} <i class="fa fa-angle-down" aria-hidden="true"></i></p> 
+         <p><i class='fa fa-user-circle-o mt-2 dropbtn' style='font-size:17px;color:#001232'></i> {{user}} <i class="fa fa-angle-down" aria-hidden="true"></i></p> 
           <div class="dropdown-content">
             <a v-on:click="go('view-profile')">View Profile</a>
             <a  v-on:click="go('live')">Live Vehicle</a>
@@ -193,7 +193,6 @@
         </router-link>
         </p>
       </div> -->
-
       <div class="col-md-12 margin-right text-center border-bottom p-0" v-if="!toggle">
         <router-link to="/faqs" exact-active-class="active" class="d-flex navigate-padding">
           <i class='fa fa-quora pl-3 pt-1 pr-2' style='font-size:20px;color:#001232'> </i>
@@ -255,6 +254,22 @@
         </p>
       </div>
 
+    <div class="col-md-12 margin-right text-center border-bottom p-0" v-if="!toggle && admin">
+        <router-link to="/manage-agents" exact-active-class="active" class="d-flex navigate-padding">
+          <i class='fas fa-users pl-3 pt-1 pr-2' style='font-size:20px;color:#001232'> </i>
+          <p class="p-1 m-0">Manage Agents</p>
+        </router-link>
+      </div>
+
+      <div class="col-md-12 margin-right navigate m-0 mr-3 p-0 text-left border-bottom" v-if="toggle && admin">
+        <p class="p-0 m-0">
+        <router-link to="/manage-agents" exact-active-class="active"
+          class="bikex-header mb-0 p-0 pb-1"><i class='fas fa-users pl-3' style='font-size:20px;color:#001232'></i>
+        </router-link>
+        </p>
+      </div>
+
+
 
     </div>
 </div>
@@ -273,11 +288,45 @@ export default {
             user:''
         }
     },
+    mounted(){
+
+      this.$store.dispatch('agents');
+      let auth = localStorage.getItem('token')
+      this.id = localStorage.getItem('temp')
+      this.user = auth
+        
+        if(!auth){
+            this.$router.push('/login')
+        }
+      this.activenow = 'home'
+
+       this.$http.get('https://backend-bikex.herokuapp.com/api/finance/notseen')
+          .then(response=>{
+           this.finance = response.body
+         })
+        
+         this.$http.get('https://backend-bikex.herokuapp.com/api/sell/notseen')
+          .then(response=>{
+           this.sell = response.body
+         })
+
+          this.$http.get('https://backend-bikex.herokuapp.com/api/purchases/get/notseen')
+          .then(response=>{
+           this.purchases = response.body
+         })
+
+    },
     computed: {
       toggle(){
         return this.$store.state.toggler
+      },
+        agentdata(){
+        return this.$store.getters.agent_by_id(this.id)
+      },
+      admin(){
+          return true
       }
-    },
+    }, 
     methods:{
         toggle_change(){
           this.$store.state.toggler = !this.$store.state.toggler
@@ -305,31 +354,6 @@ export default {
       refresh(){
         window.location.reload()
       }
-    },
-    mounted(){
-      let auth = localStorage.getItem('token')
-      this.user = auth
-        this.id = localStorage.getItem('temp')
-        if(!auth){
-            this.$router.push('/login')
-        }
-      this.activenow = 'home'
-
-       this.$http.get('https://backend-bikex.herokuapp.com/api/finance/notseen')
-          .then(response=>{
-           this.finance = response.body
-         })
-        
-         this.$http.get('https://backend-bikex.herokuapp.com/api/sell/notseen')
-          .then(response=>{
-           this.sell = response.body
-         })
-
-          this.$http.get('https://backend-bikex.herokuapp.com/api/purchases/get/notseen')
-          .then(response=>{
-           this.purchases = response.body
-         })
-
     }
     
 }
