@@ -24,7 +24,7 @@
                       <label for="" class="labels">Password</label>
                     </div>
                     <div class="col-md-9 col-9 mb-4 mt-3 text-center">
-                    <input type="password" v-model="password" class="inputText form-control" required />
+                    <input type="password" v-model="password" class="inputText form-control" required v-on:keyup.enter="log_me"/>
                     <span class="floating-label" >Enter password</span>
                     
                     <div class="col-md-12 mb-2 pt-4 mt-3 text-left m-0 p-0">

@@ -218,7 +218,16 @@ state: {
           return item._id == id
         });
       },
-
+      vehicle_by_id(state) {
+        return id => state.procured_vehicles.filter(item =>{
+          return item.vehicle_id === id
+        });
+      },
+      display_image_by_vehicle_id(state) {
+        return id => state.display_images.filter(item =>{
+          return item.vehicle_id === id
+        });
+      },
       newPurchases:(state)=>(id)=>{
         if(id == 3){
           return state.purchases.filter(item=>{

@@ -131,9 +131,7 @@
             <form>     
             <div>
             <h4 class="mb-4 mt-2" style="font-weight:bold">Add Vehicle!</h4>
-              <div class="error">
-              <p>{{message}}</p>
-              </div>
+              
             <h5 class="col-sm-4 mb-4 p-0 font-weight-bold text-left">Vehicle Details: </h5>
             </div>
             <div class="form row">         
@@ -190,7 +188,7 @@
               </div>
               <div class="col-md-4 mb-4">
                 <input type="text" v-model="city" class="inputText form-control" required/>
-                <span class="floating-label">city</span>
+                <span class="floating-label">City</span>
               </div>
                <div class="col-md-4 mb-4">
                 <input type="Number" v-model="pincode" class="inputText form-control" required/>
@@ -234,10 +232,15 @@
               </div>
               
             </div>
+            
             <div class="row form">
+              
               <div class="col-md-4 mb-4">
-                <input type="text" v-model="regn_no" class="inputText form-control" required/>
+                <input type="text" v-model="regn_no" class="inputText form-control" required @blur="checkregn"/>
                 <span class="floating-label">Registration No</span>
+               <span v-if="regnmessage" style="color:red">{{regnmessage}} <i class="fa fa-exclamation mt-3" aria-hidden="true"></i></span>
+              <span v-if="sucessregn" style="color:green">{{sucessregn}} <i class="fa fa-check mt-3" aria-hidden="true"></i></span>
+               
               </div>
               <div class="col-md-4 mb-4">
                 <input type="text" v-model="chassis_no" class="inputText form-control" required/>
@@ -268,11 +271,10 @@
                  <span class="floating-label">Insurance End*</span>
                 </div>
             </div>
-               <div class="col-md-12 mb-4 ">
+               <div class="col-md-12 mb-4 m-0 p-0">
                 <textarea type="text" v-model="remarks" class="inputText form-control" required/>
                  <span class="floating-label">Remarks</span>
               </div> 
-              <hr>
 
             <div class="form row">
              
@@ -288,11 +290,13 @@
                 <input type="number" v-model="selling_price" class="inputText form-control" required/>
                 <span class="floating-label">Selling Price</span>
               </div> 
-              <hr>
 
            
             </div>             
          </form>
+         <div class="error">
+              <p style="color:red">{{message}}</p>
+              </div>
          <button type="button bt" class="custom px-5" v-on:click="procureVehicle">
               <span >Add Vehicle</span>
               <div v-if="loadonadd" class="spinner-border spinner-border-sm ml-2">
@@ -487,6 +491,8 @@ import VueJsonToCsv from 'vue-json-to-csv'
 export default {
     data(){
         return{
+          regnmessage:'',
+          sucessregn:'',
               data:[],
               locate:[],
               type:'',
@@ -636,16 +642,15 @@ export default {
               
             }).
             then(response=>{
-            this.addModal = false;
-            this.loadonadd=false
-            this.$swal('Tada! Vehicle Procured');
-            this.data = response.body;
-            setTimeout(()=>{
-                    window.location.reload()
-            },2000)
+              this.addModal = false;
+              this.loadonadd=false
+              this.$swal('Tada! Vehicle Procured');
+              this.data = response.body;
+              this.$store.dispatch('total_vehicle_procured');
             }).catch(error => { 
                     this.message = error.body.msg
                     this.loadonadd=false
+                   
             })   
             },
             updateForm: function(){
@@ -794,7 +799,22 @@ export default {
             }).catch(error => { 
                     this.message = error.body.msg
             })   
-         }
+         },
+        checkregn(){
+          this.$http.post('https://backend-bikex.herokuapp.com/api/procurements/checkregistration',{
+                    registration:this.regn_no
+                }).then((res)=>{
+                   if(res.body.err == 0){
+                     this.sucessregn = res.body.msg
+                     this.regnmessage = ''
+                   }else{
+                     this.regnmessage = res.body.msg
+                     this.sucessregn = ''
+                   }
+                }).catch(()=>{
+                  this.regnmessage = 'Something is wrong, please refresh.'
+                })
+        }
     },
     computed:{
       loading(){

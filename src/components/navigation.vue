@@ -19,10 +19,10 @@
         <div class="dropdown">
          <p><i class='fa fa-user-circle-o mt-2 dropbtn' style='font-size:17px;color:#001232'></i> {{user}} <i class="fa fa-angle-down" aria-hidden="true"></i></p> 
           <div class="dropdown-content">
-            <a v-on:click="go('view-profile')">View Profile</a>
-            <a  v-on:click="go('live')">Live Vehicle</a>
+            <a v-on:click="go('view-profile')">Account & Settings</a>
+            <!-- <a  v-on:click="go('live')">Live Vehicle</a>
             <a  v-on:click="go('models')">Models</a>
-            <a  v-on:click="go('faqs')">FAQ'S</a>
+            <a  v-on:click="go('faqs')">FAQ'S</a> -->
             <a v-on:click="logout">Log Out</a>
           </div>
         </div>
