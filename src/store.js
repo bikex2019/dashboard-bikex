@@ -21,6 +21,7 @@ state: {
   new_bookings:[],
   purchases:[],
   customers:[],
+  vehicles_with_models:[],
   addcustomer:false,
   loading:true,
   toggler:true,
@@ -49,6 +50,9 @@ state: {
     FETCH_PURCHASES(state, purchases){
       state.purchases = purchases
     },
+    FETCH_VEHICLES_WITH_MODEL(state, vehicles_with_models){
+      state.vehicles_with_models = vehicles_with_models
+    }, 
     FETCH_MODELS(state, models){
         state.models = models
     },
@@ -112,6 +116,13 @@ state: {
           throw new Error(`API ${error}`);
         });
     },
+    load_Vehicles_with_models({commit}) {
+      axios.get(url +'/fetch/all-vehicles').then(result => {
+        commit('FETCH_VEHICLES_WITH_MODEL', result.data);
+      }).catch(error => {
+        throw new Error(`API ${error}`);
+      });
+  },
     load_display_images({commit}) {
         axios.get(url +'/upload-display').then(result => {
           commit('FETCH_DISPLAY_IMAGES', result.data);
@@ -220,6 +231,11 @@ state: {
       },
       vehicle_by_id(state) {
         return id => state.procured_vehicles.filter(item =>{
+          return item.vehicle_id === id
+        });
+      },
+      vehicle_with_model_by_id(state) {
+        return id => state.vehicles_with_models.filter(item =>{
           return item.vehicle_id === id
         });
       },

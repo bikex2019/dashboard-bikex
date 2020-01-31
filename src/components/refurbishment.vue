@@ -1,82 +1,17 @@
 <template>
-<div class="centres">
-    <div class="col-md-11 ml-4 mb-2">
-      <div class="row">
-        <div class="col-md-6 p-0 m-0 text-left pt-1 d-flex">
-          <p class="p-0 m-0">Showing {{paginatedData.length}} out of {{modals.length}}</p>
-        </div>
-        <div class="col-md-2 pt-1">
-          <input type="text" v-model="search" placeholder="search vehicle number">
-        </div>
-        <div class="col-md-4 p-0 m-0 text-right">
-          <button class="btn btn-danger rounded" v-on:click="openModal">Add vehicle Refurbished +</button>
-        </div>
-      </div>
-    </div>
-    <table class="table table-striped table-bordered col-md-11 ml-4">
-      <thead>
-      <tr>
-        <th>ID</th>
-        <th>Vehicle Number 
-            <!-- <i class="fa fa-sort-amount-asc ml-3 sorter" aria-hidden="true" v-on:click="asc" v-if="show"></i>
-            <i class="fa fa-sort-amount-desc ml-3 sorter" aria-hidden="true" v-on:click="desc" v-else></i> -->
-        </th>
-        <th>CC</th>
-        <th>FUEL SYSTEM</th>
-        <th>MILEAGE</th>
-        <th>STATUS</th>
-        <th>Action</th>
-      </tr>
-      </thead>
-      <tbody>
-        <tr v-for="(faq, index) in paginatedData" :key="index">
-          <td class="py-1">{{faq._id}}</td>
-          <td class="py-1">{{faq.vehicle_number}}</td>
-          <td class="py-1">{{faq.engine_cc}}</td>
-          <td class="py-1">{{faq.fuel_system}}</td>
-          <td class="py-1">{{faq.mileage}}</td>
-          <td>Procured {{faq.date}}</td>
-          <td class="py-1"><button class="button btn btn-primary m-0 py-1 custom-button" v-on:click="editModals()"><i class="fa fa-pencil" aria-hidden="true"></i></button></td>
-        </tr>
-      </tbody>
-      <div id="overlay" v-if="loading">
-        <div class="load" id="text"></div>
-        <div id="text">Loading...</div>
-      </div>
-    </table>
+<div class="centres col-md-12 mt-5" style="margin: 0 auto">
 
-    <div class="container" style="margin-top:80px" v-if="filteredList.length == 0">
-      <p>Sorry :(</p>
-      <p>No results Found</p>
-    </div>
-
-    <div class="col-md-12">
-      <div class="row">
-          <div class="col-md-12 text-center" v-if="filteredList.length != 0">
-            <button class="btn mr-2" v-on:click="prevPage" :disabled="pageNumber==0"><i class="fa fa-angle-double-left" aria-hidden="true"> prev</i></button>
-            <button class="btn ml-2" v-on:click="nextPage" :disabled="pageNumber == pageCount - 1">next <i class="fa fa-angle-double-right" aria-hidden="true"></i></button>
-          </div>
-      </div>
-    </div>
-
-    <div id="mymodals" class="modals" v-bind:class="{'displayModal':addModal}">
-    <!-- modals content -->
-      <div class="modals-content" style="top:0">
-        <span class="close" v-on:click="closeModal">&times;</span>
         <form> 
             <h4 class="mb-4 mt-2" style="font-weight:bold">Refurbishment!</h4>
             <div class="form row ">
                 <div class="col-md-4 mb-4">
             
                 <select v-model="vehicle_number" class="form-control" required>
-                    <option disabled value=""></option>
-                    <option>A</option>
-                    <option>B</option>
-                    <option>C</option>
-                    </select>
+                      <option :value="vehicle.vehicle_id" v-for="(vehicle, index) in all_vehicels" :key="index">{{vehicle.vehicle_id}}-{{vehicle.model_id.make}}-{{vehicle.model_id.modal_name}}</option>
+                    </select> 
                   <span class="floating-label" >Vehicle No</span>
                 </div>
-                <div class="col-md-4 mb-4">
+                <!-- <div class="col-md-4 mb-4">
                    <input list="hosting-plan2" type="number" class="form-control" v-model="centercode" required>
                     <datalist id="hosting-plan2">
                          <option value=1></option>
@@ -96,9 +31,9 @@
                         <option value=""></option>
                     </datalist>
                   <span class="floating-label">Make</span>
-                </div>
+                </div> -->
             </div>
-            <div class="form row">
+            <!-- <div class="form row">
             
                 <div class="col-md-4 mb-4">
                 <select class="form-control"  v-model="type_of_vehicle" required>
@@ -120,7 +55,7 @@
                   <textarea class="form-control" rows="2" id="comment" v-model="check_for" required></textarea>
                   <span class="floating-label ">What to check?</span>
                 </div>
-            </div>
+            </div> -->
                 <div class="row form">
               <div class="testing col-md-12 mb-4">
         <div class="show" hidden>
@@ -135,7 +70,7 @@
                     <th>Item Price</th>
                     <th>Labour</th>
                     <th>Total</th>
-                    <th><i class="fa fa-plus custom" aria-hidden="true" v-on:click="addrow()"></i></th>
+                    <th><i class="fa fa-plus" aria-hidden="true" v-on:click="addrow()"></i></th>
                 </tr>
             </thead>
             <tbody>
@@ -171,28 +106,15 @@
             </tbody>
         </table>
     </div>
-            
-
-                    <div class="col-md-12 mb-4">
-                      <textarea class="form-control" rows="3" id="comment" placeholder="Mechanic's comments / Recommendation " v-model="comments"></textarea>
-                    </div>
-                 </div>
+      <div class="col-md-12 mb-4">
+              <textarea class="form-control" rows="3" id="comment" placeholder="Mechanic's comments / Recommendation " v-model="comments"></textarea>
+              </div>
+      </div>
                     
-                    <button type="button bt" class="btn btn-danger px-5" v-on:click="refurbishVehicle">Add</button>               
-                    </form>
-            </div>
-        </div>
+    </form>
+          <button type=" bt" class="custom2 px-5" v-on:click="refurbishVehicle">Add</button>               
 
-         <div id="mymodals" class="modals" v-bind:class="{'displayModal':editModal}">
-    <!-- modals content -->
-        <div class="modals-content">
-            <span class="close" v-on:click="closeeditModal">&times;</span>
-            <div>  
             </div>
-        </div>
-    </div>
-
-</div>
 </template>
 <script>
 // import * as _ from 'lodash';
@@ -228,6 +150,8 @@ export default {
      
     },
     created(){
+       this.$store.dispatch('load_Vehicles_with_models');
+
       let auth = localStorage.getItem('token')
         this.id = localStorage.getItem('temp')
         if(!auth){
@@ -266,17 +190,12 @@ export default {
             refurbishVehicle: function(){
             this.$http.post('https://backend-bikex.herokuapp.com/api/refurbished/',{
                 vehicle_number:this.vehicle_number,
-                center_code:this.centercode,
-                make:this.make,
-                type_of_vehicle:this.type_of_vehicle,
-                model_name:this.model_name,
-                check_for:this.check_for,
-                parts_changed:JSON.stringify(this.datas),
+                totalcost: this.grandTotal,
+                parts_changed:this.datas,
                 comments:this.comments
             }).
             then(response=>{
-            this.addModal = false;
-            this.$swal('Tada! Vehicle Refurbished');
+            this.$swal('Updated');
             this.data = response.body;
             setTimeout(()=>{
                     window.location.reload()
@@ -288,11 +207,7 @@ export default {
             updateForm: function(){
             this.$http.put('https://backend-bikex.herokuapp.com/api/models/'+ this.idtoedit,{
                 vehicle_number:this.vehicle_number,
-                center_code:this.centercode,
-                make:this.make,
-                type_of_vehicle:this.type_of_vehicle,
-                model_name:this.model_name,
-                check_for:this.check_for,
+                totalcost: this.grandTotal,
                 parts_changed:this.datas,
                 comments:this.comments
             }).
@@ -337,6 +252,9 @@ export default {
             }
     },
     computed:{
+        all_vehicels(){
+         return this.$store.state.vehicles_with_models;
+      },
       datas:function(){
         return this.input
       },
@@ -668,6 +586,19 @@ th{
   -webkit-animation: load2 2s infinite ease;
   animation: load2 2s infinite ease;
 }
+.custom2{
+    padding: 20px 40px;
+    border: none;
+    background: linear-gradient( to left, #ebebeb 50%,     #ffb52f 50% );
+	background-size: 200% 100%;
+	background-position: right bottom;
+    cursor: pointer;
+    transition: all ease .2s;
+}
+.custom2:hover {
+        background-position: left bottom;
+        color: white;
+    }
 @-webkit-keyframes load2 {
   0% {
     -webkit-transform: rotate(0deg);

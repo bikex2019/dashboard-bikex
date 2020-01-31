@@ -18,9 +18,9 @@
                 </vue-json-to-csv>
                 </div>
                  <div class="col-md-2 pt-2 d-inline">
-                   <span class="link px-2" v-bind:class="{active: filter === 'all'}"  v-on:click="filterkey('all')">All</span>
-                   <span class="link px-2" v-bind:class="{active: filter === 'failed'}" v-on:click="filterkey('failed')">Failed</span>
                    <span class="link px-2" v-bind:class="{active: filter === 'sucess'}" v-on:click="filterkey('sucess')">Success</span>
+                    <span class="link px-2" v-bind:class="{active: filter === 'failed'}" v-on:click="filterkey('failed')">Failed</span>
+                    <span class="link px-2" v-bind:class="{active: filter === 'all'}"  v-on:click="filterkey('all')">All</span>
                 </div>
 
                 <div class="col-md-3 pt-1 mr-3 d-flex justify-content-between">
@@ -112,6 +112,14 @@
                     <p><label>Razorpay Signature:</label> {{views.razorpay_signature}}</p>
 
                     <p><label>Date</label> {{views.date| moment("MMMM Do YYYY")}}</p>
+                <div class="d-flex justify-content-between">
+                      <button class="btn custom" v-if="views.payment_status === 1" v-on:click="downloadAuthority()">
+                      <i class="fa fa-download" aria-hidden="true"></i>
+                      Authorization Letter</button>
+                    <button class="btn custom" v-if="views.payment_status === 1" v-on:click="purchaseAggrement()">
+                      <i class="fa fa-download" aria-hidden="true"></i>
+                      Purchase Aggrement</button>
+                </div>
                 </div>
             </div>
     </div>
@@ -130,19 +138,22 @@
 
     </div>
 </template>
-<script>import VueJsonToCsv from 'vue-json-to-csv'
-
+<script>
+import VueJsonToCsv from 'vue-json-to-csv'
+import jsPDF from 'jspdf'
+var moment = require('moment');
 export default {
     data(){
         return{
             purchase:[],
+            vehicle_id:'',
             view:[],
             loading:true,
             openmodal:false,
             pageNumber: 1,
             itemperpage:10,
             search:'',
-            filter:'all',
+            filter:'sucess',
             label:{ 
               _id: {title: 'ID'} ,customer_id: { title: 'customer_id' },
               vehicle_id: { title: 'vehicle_id' }, firstname: { title: 'firstname' },
@@ -197,6 +208,7 @@ export default {
             this.openmodal = true
             const edit = this.purchase.filter(x=>x._id == id)
             this.view = edit
+            this.vehicle_id = this.view[0].vehicle_id
         },
         close(){
             this.openmodal = false
@@ -209,6 +221,208 @@ export default {
                  let x = this.pageNumber--
                this.$router.push({query: { page: x - 1}})
         },
+        downloadAuthority(){
+          this.$store.dispatch('load_Vehicles_with_models')
+          var vehicle = this.$store.getters.vehicle_with_model_by_id(this.vehicle_id)
+            let pdfName = 'Authorization_letter'; 
+            var doc = new jsPDF();
+            doc.setFontSize(10);
+                doc.text("Date:", 160, 30);
+                doc.text(`${moment(this.view[0].date).format('LL')}`, 170, 30);
+                doc.text("WELLBORN FLOORINGS PRIVATE LIMITED", 10, 45);
+                doc.text("Bangalore", 10, 50);
+                doc.text(`Dear ${this.view[0].firstname} ${this.view[0].lastname},`, 10, 75);
+                doc.text(`We thank you for buying ${vehicle[0].model_id.make} ${vehicle[0].model_id.modal_name} ${vehicle[0].model_id.engine_cc}CC with vehicle ID : BX${vehicle[0].vehicle_id} bearing Reg No ${vehicle[0].regn_no}, and Chassis No`, 10, 85);
+                doc.text(` ${vehicle[0].chassis_no}.`, 10, 90);
+                doc.text("The process of change of ownership in the Registration Certificate will be undertaken by us and once the formalities are", 10, 100);
+                doc.text("completed we will provide you the original Registration Certificate duly transferred in to your name. During this period, it will be", 10, 105);
+                doc.text(" your responsibility if the vehicle is misused or any kind of accident happens.", 10, 110);
+                doc.text("Regards,", 10, 130);
+                doc.text("Yours truly,", 10, 135);
+                doc.text("For: BikeX", 10, 155);
+                doc.text("Authorised Signature", 10, 185);
+            doc.save(pdfName + '.pdf');
+        },
+        purchaseAggrement(){
+          this.$store.dispatch('load_Vehicles_with_models')
+          var vehicle = this.$store.getters.vehicle_with_model_by_id(this.vehicle_id)
+          let pdfName = 'purchase_aggrement_letter';
+          var doc = new jsPDF();
+
+          doc.setFontSize(13);
+          doc.line(10,8, 200, 8);
+          doc.text("PURCHASER TERMS AND CONDITIONS", 70, 14);
+          doc.line(10, 17,200, 17);
+
+          doc.text("A.", 15, 35);
+          doc.text("Bimal  Hero, having  its registered  office at Site  No  90,  Bytarayanapura,  Bangalore  ", 25, 35);
+          doc.text("560090 is inter alia involved in facilitating the sale of second-hand vehicles, especially", 25, 41);
+          doc.text("two-wheelers (with or without gear).", 25, 47);
+
+          doc.text("B.", 15, 60);
+          doc.text("WELLBORN  FLOORINGS PRIVATE  LIMITED  [Purchaser Name],  address  at  1572, ", 25, 60);
+          doc.text("SERVICE ROAD, HSR LAYOUT, SECTOR 1,HSR RING ROAD, BENGLURU URBAN, ", 25, 66);
+          doc.text("KARNATAKA 560102 (“Purchaser”)  is  desirous of  availing the services of Bimal Hero", 25, 72);
+          doc.text("to purchase a vehicle for [his/her] personal use.", 25, 78);
+
+          doc.text("C.", 15, 91);
+          doc.text("Bimal Hero has according to the  request of  the Purchaser agreed to facilitate the sale ", 25, 91);
+          doc.text(`of the vehicle, being ${vehicle[0].model_id.make} ${vehicle[0].model_id.modal_name} ${vehicle[0].model_id.engine_cc}CC [make and model] bearing Registration `, 25, 97);
+          doc.text(`No. ${vehicle[0].regn_no} (“the Vehicle”).Chassis No ${vehicle[0].chassis_no}`, 25, 103);
+          doc.text(`Vehicle Id ${vehicle[0].vehicle_id}.`, 25, 109);
+
+          doc.text("D.", 15, 122);
+          doc.text("THE PURCHASER REPRESENTS THAT:", 25, 122);
+
+          doc.text("a.", 15, 132);
+          doc.text("The Vehicle shall be sold to the Purchaser on an ‘as-is’ basis and Bimal Hero is not the ", 25, 132);
+          doc.text("seller of the Vehicle, but merely a facilitator of such sale.", 25, 138);
+
+          doc.text("b.", 15, 144);
+          doc.text("[He/She] has inspected the Vehicle and is satisfied with the condition of the Vehicle.", 25, 144);
+
+
+          doc.text("c.", 15, 150);
+          doc.text("On and from the below-mentioned date, the Vehicle shall be wholly owned by the ", 25, 150);
+          doc.text("Purchaser, who shall be solely responsible for the Vehicle in all respects.", 25, 156);
+
+
+          doc.text("d.", 15, 162);
+          doc.text("The Purchaser shall be responsible for getting the Registration Certificate in respect of ", 25, 162);
+          doc.text("the Vehicle transferred to [his/her] name. Bimal Hero shall facilitate the transfer. For ", 25, 168);
+          doc.text("the avoidance of doubt, all costs and expenses incurred in the facilitation shall be ", 25, 174);
+          doc.text("borne by the Purchaser.", 25, 180);
+
+          doc.text("e.", 15, 186);
+          doc.text("The Purchaser has read and understood these terms and conditions and agrees to", 25, 186);
+          doc.text("abide by and be bound by the same.", 25, 192);
+
+          doc.text("f.", 15, 198);
+          doc.text(`The Purchaser has agreed to pay a sum of Rs. ${vehicle[0].selling_price}/- (Rupees fourty thousands only)`, 25, 198);
+          doc.text("[amount] (“Purchase Value”) towards purchase of the Vehicle, excluding any ", 25, 204);
+          doc.text("charges or fees towards additional services provided by Bimal Hero.", 25, 210);
+
+          doc.text("g.", 15, 216);
+          doc.text("The Purchaser has received the Vehicle, along with the key(s) and all original ", 25, 216);
+          doc.text("documents pertaining to the same from Bimal Hero(List mentioned below).", 25, 222);
+
+          doc.text("h.", 15, 228);
+          doc.text("The Purchaser agrees that on and from the below mentioned date, Bimal Hero shall ", 25, 228);
+          doc.text("not in any manner be liable for any damage of whatsoever nature to the Vehicle and ", 25, 234);
+          doc.text("the Purchaser shall have no claim whatsoever against Bimal Hero in respect of any ", 25, 240);
+          doc.text("damage or defect in the Vehicle. ", 25, 246);
+
+          doc.text("Page 1 of 3", 100, 270);
+
+          doc.addPage();
+
+          doc.text("i.", 15, 40);
+          doc.text("The Purchaser has a valid driving license and is competent to purchase the Vehicle and ", 25, 40);
+          doc.text("to operate the same.", 25, 46);
+
+          doc.text("D.", 15, 59);
+          doc.text("THE PURCHASER REPRESENTS THAT:", 25, 59);
+
+          doc.text("a.", 15, 72);
+          doc.text("Facilitation of sale of the Vehicle from prospective sellers; ", 25, 72);
+
+          doc.text("b.", 15, 78);
+          doc.text("Inspection and determination of market value of the Vehicle;", 25, 78);
+
+
+          doc.text("c.", 15, 84);
+          doc.text("Servicing of the Vehicle prior to sale and assistance with registration / transfer of", 25, 84);
+          doc.text("Registration Certificate to the name of the Purchaser, subject to payment of ", 25, 90);
+          doc.text("appropriate facilitation charges as may be determined by Bimal Hero; ", 25, 96);
+
+          doc.text("F.", 15, 109);
+          doc.text("INDEMNITY", 25, 109);
+
+          doc.text("The  Purchaser  hereby  agrees  to indemnify  and keep  indemnified Bimal Hero, in", 25, 122);
+          doc.text("perpetuity, from any losses, claims or damages of whatsoever nature incurred or ", 25, 128);
+          doc.text("suffered by Bimal Hero as a result of any breach of the above terms by the Purchaser", 25, 134);
+          doc.text("or any misrepresentation whatsoever by the Purchaser or arising due to the failure of ", 25, 140);
+          doc.text("the Purchaser in getting the Registration Certificate of the vehicle transferred to ", 25, 146);
+          doc.text("[his/her] name;", 25, 152);
+
+          doc.text("G.", 15, 165);
+          doc.text("JURISDICTION AND GOVERNING LAW", 25, 165);
+
+          doc.text("The Purchaser acknowledges and agrees that these terms and conditions shall be", 25, 178);
+          doc.text("governed by the laws of India and any dispute of whatsoever nature arising out of  ", 25, 184);
+          doc.text("suffered by Bimal Hero as a result of any breach of the above terms by the Purchaser", 25, 190);
+          doc.text("these terms and conditions shall be subject to the exclusive jurisdiction of the Courts", 25, 196);
+          doc.text("at Bangalore.", 25, 202);
+
+          doc.line(25,230,80,230);
+          doc.text("[Signature of Purchaser]", 25, 236);
+          doc.text("Purchaser", 25, 242);
+
+          doc.line(39,248,80,248);
+          doc.text("Name:", 25, 248);
+
+          doc.line(44,254,90,254);
+          doc.text("Address:", 25, 254);
+
+          doc.line(39,260,90,260);
+          doc.text("Date:", 25, 260);
+
+          doc.line(195,230,140,230);
+          doc.text("Bimal Hero", 155, 236);
+          doc.text("[Signature on behalf of Company]", 130, 242);
+          doc.text("Date:", 135, 250);
+          doc.line(195,250,150,250);
+
+          doc.text("Page 2 of 3", 90, 280);
+
+
+          doc.addPage();
+
+          doc.text("LIST OF DOCUMENTS / ITEMS HANDED OVER:", 55, 40);
+
+
+          doc.text("PARTICULARS", 90, 50);
+
+          doc.rect(25, 65, 10, 10)
+          doc.text("PURCHASE AGREEMENT", 45, 72);
+
+          doc.rect(25, 79, 10, 10)
+          doc.text("AUTHORIZATION LETTER", 45, 86);
+
+          doc.rect(25, 93, 10, 10)
+          doc.text("INSURANCE COPY", 45, 100);
+
+          doc.rect(25, 107, 10, 10)
+          doc.text("KEYS", 45, 114);
+
+          doc.rect(25, 121, 10, 10)
+          doc.text("REGISTRATION DOCUMENTS SIGNED", 45, 128);
+
+          doc.rect(25, 135, 10, 10)
+          doc.text("(ANY OTHER)", 45, 142);
+
+          doc.line(25,185,80,185);
+          doc.text("[Signature of Purchaser]", 25, 195);
+          doc.text("Purchaser", 25, 202);
+
+          doc.line(39,210,80,210);
+          doc.text("Name:", 25, 210);
+
+          doc.line(44,218,90,218);
+          doc.text("Address:", 25, 218);
+
+          doc.line(39,226,90,226);
+          doc.text("Date:", 25, 226);
+
+          doc.line(195,185,140,185);
+          doc.text("Bimal Hero", 155, 195);
+          doc.text("[Signature on behalf of Company]", 130, 202);
+          doc.text("Date:", 135, 210);
+          doc.line(195,210,150,210);
+
+          doc.text("Page 3 of 3", 90, 280);
+          doc.save(pdfName + '.pdf');
+        }
     },
     computed:{
     // perpage(){
@@ -388,6 +602,7 @@ table{
     cursor: pointer;
     transition: all ease .2s;
 }
+
 .custom:hover {
         background-position: left bottom;
         color: white;

@@ -52,7 +52,7 @@ export default {
     margin-top: 39px;
 }
 .custom{
-  padding-left: 60px;
+  padding-left: 64px;
   padding-top: 0px;
   transition: margin-left .3s;
   /* background-color: rgba(219, 248, 164, 0.5) */

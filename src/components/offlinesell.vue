@@ -231,7 +231,7 @@ export default {
         closeAddCustomer(){
           this.$store.state.addcustomer = false
         }
-    },
+    }, 
     computed: {
     procured_vehicels(){
          return this.$store.state.procured_vehicles;
