@@ -1,64 +1,223 @@
 <template>
-<div class="upload">
-  <div class="col-md-12 m-0 p-0">
-    <div class="row">
-      <div class="col-md-3 text-left pl-4">
-       <button @click="$router.go(-1)" class="backbutton"><i class="fa fa-long-arrow-left" aria-hidden="true"></i></button>
-      </div>
-      <div class="col-md-9 text-left">
-        <p>You're viewing Vehicle {{id}}</p>
+<div class="upload col-md-12" style="margin:0 auto">
+  <div class="col-md-12 mt-5 m-0 p-0">
+    <div class="row col-md-12 m-0 p-0">
+      <div class="col-md-11 d-flex justify-content-between">
+       <button @click="$router.go(-1)" class="backbutton"><i class="fa fa-long-arrow-left p-2" aria-hidden="true"></i></button>
+        <p class="pl-3 pt-2" style="font-size:15px"><STRONG>VEHICLE ID:</STRONG> BX{{id}}</p>
       </div>
     </div>
-    <hr>
   </div>
-  <div class="col-md-12 border p-3">
-    <div class="row detail m-0 p-0">
-      <div class="col-md-4 text-left"  v-for="(vehicledetail, index) in vehicles" :key="index">
-         <p><label>ID:</label> {{vehicledetail._id}}</p>
-          <p><label>Vehicle No:</label> {{vehicledetail.vehicle_number}}</p>
-          <p><label>Model ID:</label> {{vehicledetail.model_id}}
-             <span v-on:click="view_model(vehicledetail.model_id)" class="mt-4 under" style="cursor:pointer">view model</span>
+  <div class="table col-md-11" style="margin:0 auto">
+        <div class="col-md-12 m-0 p-0 text-left">
+      <div class="container col-md-12 m-0 p-0 mb-3">
+        <button class="accordion" v-on:click="showvehicledetail = ! showvehicledetail">
+          <span class="mr-5">Vehicle Details</span>
+          <p class="pull-right m-0 p-0" v-if="showvehicledetail">
+          <i class="fa fa-angle-up" aria-hidden="true"></i>
           </p>
+          <p class="pull-right m-0 p-0" v-else>
+           <i class="fa fa-angle-down" aria-hidden="true"></i>
+          </p>
+        </button>
+          <div class="panel text-left" v-bind:class="{panel100: showvehicledetail}"> 
+            <div class="row detail m-0 p-0 mt-3"  v-for="(vehicledetail, index) in vehicles" :key="index">
+              <div class="col-md-12 mb-3 d-flex justify-content-between">
+                  <h4 class="m-0 p-0 mb-3 vehicle">
+                    <strong>{{vehicledetail.model_id.make}} {{vehicledetail.model_id.modal_name}} {{vehicledetail.model_id.engine_cc}}CC</strong>
+                  </h4>
+                  <p><label>ID:</label> {{vehicledetail._id}}</p>
+              </div>
+      <div class="col-md-4 text-left" >
+        <div class="border p-2">
+           <!-- <p class="head mb-3">Basic Details:</p>          -->
+          <p><label>Vehicle No:</label> {{vehicledetail.vehicle_number}}</p>
+          <p><label>Model ID:</label> {{vehicledetail.model_id._id}}
+             <span v-on:click="view_model(vehicledetail.model_id._id)" class="mt-4 under" style="cursor:pointer">view model</span>
+          </p> 
           <p><label>Vehicle Type:</label> {{vehicledetail.type}}</p>
-          <p><label>Manufacture Year:</label> {{vehicledetail.manufacture_year| moment("MMMM Do YYYY")}}</p>
           <p><label>Color:</label> {{vehicledetail.color}}</p>
-          <p><label>Fines:</label> {{vehicledetail.fines}}</p>
-          <p><label>Source:</label> {{vehicledetail.source}}</p>
-          <p><label>City:</label> {{vehicledetail.city}}</p>
-          <p><label>PIN Code:</label> {{vehicledetail.pincode}}</p>
-          <p><label>Remarks:</label> {{vehicledetail.remarks}}</p>
-          <p><label>Procured Price:</label> {{vehicledetail.procured_price | currency}}</p>
-          <p><label>Last Updated:</label> {{vehicledetail.updated| moment("MMMM Do YYYY")}}</p>
-      </div>
-
-       <div class="col-md-4 text-left"  v-for="(vehicledetail, index) in vehicles" :key="index">
-         <p><label>State:</label> {{vehicledetail.state}}</p>
-          <p><label>Address:</label> {{vehicledetail.address}}</p>
-          <p><label>RC:</label> {{vehicledetail.rc_card}}</p>
-          <p><label>Insurance:</label> {{vehicledetail.insurance}}</p>
-          <p><label>B Extract:</label> {{vehicledetail.b_extract}}</p>
-          <p><label>Hypothecation:</label> {{vehicledetail.hypothecation}}</p>
-          <p><label>Registration Number:</label> {{vehicledetail.regn_no}}</p>
+            <p><label>Registration Number:</label> {{vehicledetail.regn_no}}</p>
           <p><label>Chassis No:</label> {{vehicledetail.chassis_no}}</p>
-          <p><label>RC Start:</label> {{vehicledetail.rc_start| moment("MMMM Do YYYY")}}</p>
-          <p><label>RC End:</label> {{vehicledetail.rc_end| moment("MMMM Do YYYY")}}</p>
-          <p><label>Insurance Start:</label> {{vehicledetail.insurance_start| moment("MMMM Do YYYY")}}</p>
-          <p><label>Insurance End:</label> {{vehicledetail.insurance_end| moment("MMMM Do YYYY")}}</p>
-
-           <h2>Selling Price: {{vehicledetail.selling_price| currency}}</h2>
+          <p><label>Manufacture Year:</label> {{vehicledetail.manufacture_year| moment("MMMM Do YYYY")}}</p>
+          <p><label>Fines:</label> {{vehicledetail.fines}}</p>
         </div>
-        <div class="col-md-4 image-container " v-for="(image, index) in display" :key="index">
+
+       <div class="border p-2 mt-3">
+             <div class="d-flex justify-content-between">
+               <p><label>RC:</label>
+           <span v-if="vehicledetail.rc_card" class="pl-3" style="color:green"><i class="fa fa-check" aria-hidden="true"></i></span>
+           <span v-else class="pl-3" style="color:red"><i class="fa fa-times" aria-hidden="true"></i></span>
+           </p>
+          <p><label>Insurance:</label>
+           <span v-if="vehicledetail.insurance" class="pl-3" style="color:green"><i class="fa fa-check" aria-hidden="true"></i></span>
+           <span v-else class="pl-3" style="color:red"><i class="fa fa-times" aria-hidden="true"></i></span>
+           </p>
+             </div>
+          <div class="d-flex justify-content-between">
+            <p><label>B Extract:</label>
+           <span v-if="vehicledetail.b_extract" class="pl-3" style="color:green"><i class="fa fa-check" aria-hidden="true"></i></span>
+           <span v-else class="pl-3" style="color:red"><i class="fa fa-times" aria-hidden="true"></i></span>
+           </p>
+          <p><label>Hypothecation:</label>
+           <span v-if="vehicledetail.hypothecation" class="pl-3" style="color:green"><i class="fa fa-check" aria-hidden="true"></i></span>
+           <span v-else class="pl-3" style="color:red"><i class="fa fa-times" aria-hidden="true"></i></span>
+           </p>
+          </div>
+          <div class="d-flex justify-content-between">
+            <p><label>NOC:</label>
+           <span v-if="vehicledetail.noc" class="pl-3" style="color:green"><i class="fa fa-check" aria-hidden="true"></i></span>
+           <span v-else class="pl-3" style="color:red"><i class="fa fa-times" aria-hidden="true"></i></span>
+           </p>
+          </div>
+          
+       </div>
+       <div class="border p-2 mt-3">
+            <p><label>Remarks:</label> {{vehicledetail.remarks}}</p>
+          </div>
+          <!-- <p><label>Procured Price:</label> {{vehicledetail.procured_price | currency}}</p> -->
+      </div>
+       <div class="col-md-4 text-left"  v-for="(vehicledetail, index) in vehicles" :key="index">
+        <div class="border p-2">
+           <!-- <p class="head mb-3">Address & Dates:</p> -->
+        <div class="d-flex justify-content-between">
+           <p><label>Source:</label> {{vehicledetail.source}}</p>
+          <p><label>City:</label> {{vehicledetail.city}}</p>
+        </div>
+
+        <div class="d-flex justify-content-between">
+          <p><label>PIN Code:</label> {{vehicledetail.pincode}}</p>
+          <p><label>State:</label> {{vehicledetail.state}}</p>
+        </div>
+          
+          <p><label>Address:</label> {{vehicledetail.address}}</p>
+        </div>
+          
+          <div class="d-flex justify-content-between mt-2 border p-2">
+            <div>
+              <label>RC Start:</label><p> {{vehicledetail.rc_start| moment("MMMM Do YYYY")}}</p>
+            </div>
+            <div>
+              <label>RC End:</label> <p>{{vehicledetail.rc_end| moment("MMMM Do YYYY")}}</p>
+            </div>
+          </div>
+ 
+          <div class="d-flex justify-content-between mt-2 mb-2 border p-2">
+          <div>
+            <label>Insurance Start:</label><p> {{vehicledetail.insurance_start| moment("MMMM Do YYYY")}}</p>
+          </div>
+          <div>
+            <label>Insurance End:</label><p> {{vehicledetail.insurance_end| moment("MMMM Do YYYY")}}</p>
+          </div>
+          </div>
+          
+           <div class="border p-2">
+             <p><label>Procured Date:</label> {{vehicledetail.procured_date| moment("MMMM Do YYYY")}}</p>
+           </div>
+
+           <div class="border p-2 mt-2">
+             <p><label>Last Updated:</label> {{vehicledetail.updated| moment("MMMM Do YYYY")}}</p>
+           </div>
+
+            <div class="border p-2 mt-2">
+             <p><label>Vehicle Created on:</label> {{vehicledetail.date| moment("MMMM Do YYYY")}}</p>
+           </div>
+
+          <!-- <h6>Refurbishment Cost: {{refurbishCost | currency}}</h6>
+          <h4>Selling Price: {{vehicledetail.selling_price| currency}}</h4> -->
+        </div>
+        <div class="col-md-4 image-container text-center " v-for="(image, index) in display" :key="index">
         <img :src="image.path" width="90%">
          <p v-on:click="view_upload(id)" class="under mt-4" style="cursor:pointer">Update Image</p>
         </div>
 
-        <div v-show="loading == false && display.length == 0">
+        <div v-show="loading == false && display.length == 0" class="text-center">
           <span style="color:red">*No Image Uploaded..</span>
           <p v-on:click="view_upload(id)" class="mt-4 under" style="cursor:pointer">Add Images</p>
         </div>
     </div>
+      </div>
+    </div>
   </div>
-  <div class="container col-md-12">
+
+
+  <div class="col-md-12 mt-5 mb-5 m-0 p-0 text-left">
+      <div class="container col-md-12 m-0 p-0 mb-3">
+        <button class="accordion" v-on:click="showpricing = !showpricing">
+          <span class="mr-5">Pricing Breakdown</span>
+         
+          <p class="pull-right m-0 p-0" v-if="showpricing">
+          <i class="fa fa-angle-up" aria-hidden="true"></i>
+          </p>
+          <p class="pull-right m-0 p-0" v-else>
+           <i class="fa fa-angle-down" aria-hidden="true"></i>
+          </p>
+        </button>
+          <div class="panel text-left" v-bind:class="{panel100: showpricing}"> 
+            <div class="col-md-12 mt-3 d-flex justify-content-between">
+               <h5>Procured Price</h5>
+               <h5>{{procuredcost | currency}}</h5>
+             </div>
+             <div class="col-md-12 mt-3 d-flex justify-content-between">
+               <h5>Refurbishment Cost</h5>
+               <h5>{{refurbishCost | currency}}</h5>
+             </div>
+             <div class="col-md-12 mt-3 d-flex justify-content-between">
+               <h5>Selling Price</h5>
+               <h5>{{sellingprice | currency}}</h5>
+             </div>
+              <div class="col-md-12 mt-3 d-flex justify-content-between">
+               <h5>Margin value</h5>
+               <h5 v-bind:class="{positive: marginvalue > 0}" class="red">
+                 <span v-if="marginvalue > 0"> + </span>
+                  {{marginvalue | currency}}
+                 </h5>
+             </div>
+          </div>
+      </div>
+  <div class="col-md- mt-5 mb-5 text-left">
+    <h5>Refurbishment Details:</h5>
+      <div class="container col-md-12 m-0 p-0 mb-3" v-for="(refurbish, index) in refurbish" :key="index">
+        <button class="accordion" v-on:click="openaccord(refurbish._id)">
+          <span class="mr-5">Date: {{refurbish.date | moment("MMMM Do YYYY")}}</span>
+          <span class="pl-5">Amount: {{refurbish.total_cost | currency}}</span>
+
+          <p class="pull-right m-0 p-0" v-if="id==refurbish._id">
+          <i class="fa fa-angle-up" aria-hidden="true"></i>
+          </p>
+          <p class="pull-right m-0 p-0" v-else>
+           <i class="fa fa-angle-down" aria-hidden="true"></i>
+          </p>
+        </button>
+          <div class="panel text-left" v-bind:class="{panel100: acc_id == refurbish._id}"> 
+             <table class="col-md-12 table">
+                <tr>
+                  <th>Sl. No</th>
+                  <th>Item Name</th>
+                   <th>Item Price</th>
+                  <th>Labour Cost</th>
+                </tr>
+                <tr v-for="(ref, index) in refurbish.parts_changed" :key="index">
+                  <td>{{ref.serial_number}}</td>
+                  <td>{{ref.name}}</td>
+                  <td>{{ref.item_price |currency}}</td>
+                  <td>{{ref.labour |currency}}</td>
+                </tr>
+           </table>
+          <div class="col-md-12 text-left d-flex">
+            <h6><strong>Comments:</strong></h6>
+            <h7 class="pl-3"> {{refurbish.comments}}</h7>
+          </div>
+      </div>
+    </div>
+     <div v-if="refurbish.length == 0"> 
+      <h6 class="red">This vehicle has no refurbishment record.</h6>
+    </div>
+  </div>
+  </div>
+
+  <div class="container text-left m-0 p-0 col-md-12">
+    <h5>Vehicle Life History:</h5>
     <ul class="progressBar" v-for="(vehicle, index) in vehicles" :key="index">
       <li v-bind:class="{active : vehicle.procured_date}">Procured
         <p v-if="vehicle.procured_date">{{vehicle.procured_date | moment("MMMM Do YYYY")}}</p>
@@ -86,11 +245,18 @@
       </li>
     </ul>
   </div>
-          <div id="overlay" class="loading text-center mb-4" style="min-height:200px" v-if="upload_load">
+          <div id="overlay" class="loading text-center mb-4" style="min-height:200px" v-if="loading">
             <div id="text" class="spinner-border" role="status">
             <span class="sr-only">Loading...</span>
             </div>
         </div>
+        
+  </div>
+
+
+
+
+  
 
 </div>
 </template>
@@ -101,34 +267,45 @@ export default {
     return{
       display:[],
       uploadedImage:[],
+      refurbish:[],
       message:'',
+      showvehicledetail:true,
+      showpricing:true,
       image:'',
       images:'a',
       id:'',
       idtoedit:'',
       uploadidtoedit:'',
-      loading:false,
+      loading:true,
       displayedit:false,
       vehicles:[],
-      upload_load:false
+      upload_load:false,
+      acc_id:0,
+      expand: false,
     }
   },
   created(){
-    this.loading = true
      this.id = this.$route.params.id
      this.$http.get('https://backend-bikex.herokuapp.com/api/upload-display/'+ this.id)
           .then(response=>{
            this.display = response.body.data
-           this.loading=false
          })
-    this.$http.get('https://backend-bikex.herokuapp.com/api/procurements/'+ this.id)
+    this.$http.get('https://backend-bikex.herokuapp.com/api/fetch/procured-vehicle/'+ this.id)
           .then(response=>{
           this.vehicles = response.body
-          window.console.log(this.vehicles)
+         }).catch(()=>{
+           this.loading = false
+         })
+    
+    this.$http.get('https://backend-bikex.herokuapp.com/api/refurbished/'+ this.id)
+          .then(response=>{
+          this.refurbish = response.body
+          window.console.log(this.refurbish)
           this.loading = false
          }).catch(()=>{
            this.loading = false
          })
+
   },
   mounted(){
     let auth = localStorage.getItem('token')
@@ -145,7 +322,41 @@ export default {
       },
       view_upload(ident){
         this.$router.push('/uploads/'+ident)
-      }
+      },
+      openaccord(id){
+            if(this.acc_id != id){
+                this.acc_id = id
+               
+            }else{
+                this.acc_id = 0
+            }
+        }
+  },
+  computed:{
+    refurbishCost(){
+      var cost = 0 ;
+          for(var i in this.refurbish){
+            cost += this.refurbish[i].total_cost
+          }
+          return cost 
+    },
+    procuredcost(){
+      var cost = 0 ;
+          for(var i in this.vehicles){
+            cost += this.vehicles[i].procured_price
+          }
+          return cost 
+    }, 
+    sellingprice(){
+       var cost = 0 ;
+          for(var i in this.vehicles){
+            cost += this.vehicles[i].selling_price
+          }
+          return cost 
+    },
+    marginvalue(){
+      return this.sellingprice - (this.procuredcost + this.refurbishCost)
+    }
   }
 
 }
@@ -193,7 +404,7 @@ export default {
   margin: 0;
   padding: 1px;
   font-family: 'Montserrat', sans-serif;
-  font-size: 12px;
+  font-size: 15px;
 }
 .action-button{
     border: 1.5px solid #ffb52f;
@@ -224,6 +435,10 @@ p{
 }
 .under:hover{
   text-decoration: underline
+}
+.vehicle{
+  color: #001232;
+  text-transform: uppercase
 }
 .progressBar li:before {
     content: " ";
@@ -256,7 +471,9 @@ p{
 .progressBar li.active {
     color: #aa781d;
 }
-
+.positive{
+  color: green !important
+}
 .progressBar li.active:before {
     border-color: #ffb52f;
     background-color: #ffb52f
@@ -282,5 +499,51 @@ p{
   position: absolute;
   top: 50%;
   left: 50%;
+}
+.red{
+  color: red
+}
+.accordion {
+  color: #444;
+  background-color: transparent;
+  cursor: pointer;
+  padding: 18px 0px 18px 0px;
+  width: 100%;
+  border: none;
+  text-align: left;
+  outline: none;
+  font-size: 15px;
+  font-weight: bold;
+  transition: 0.2s;
+  border-bottom: 1px solid rgb(138, 117, 117,0.2)
+}
+.head{
+  color: #444;
+  font-size: 15px;
+  font-weight: bold;
+  text-transform: uppercase
+}
+
+/* .active, .accordion:hover {
+  border-bottom: 1px solid #ffb52f
+} */
+
+.panel {
+  height: 0px;
+  font-size: 15px;
+  background-color: rgb(255, 255, 255);
+  font-family: 'Montserrat', sans-serif;
+  overflow: hidden;
+}
+.panel100{
+  animation: expand 1s;
+  height:100%;
+   
+}
+.center-align{
+  margin:0 auto
+}
+.border{
+   box-shadow: 0 2px 5px 0 rgba(0,0,0,0.06);
 }
 </style>

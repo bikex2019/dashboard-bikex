@@ -49,11 +49,10 @@ export default {
     -moz-osx-font-smoothing: grayscale;
     text-align: center;
     color: #2c3e50;
-    margin-top: 39px;
 }
 .custom{
-  padding-left: 64px;
-  padding-top: 0px;
+  padding-left: 68px;
+  padding-top: 15px;
   transition: margin-left .3s;
   /* background-color: rgba(219, 248, 164, 0.5) */
 }

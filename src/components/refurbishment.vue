@@ -59,7 +59,7 @@
                 <div class="row form">
               <div class="testing col-md-12 mb-4">
         <div class="show" hidden>
-             {{test}}
+             {{test}} {{message}}
         </div>
         <table class="table table-bordered">
             <thead>
@@ -190,7 +190,7 @@ export default {
             refurbishVehicle: function(){
             this.$http.post('https://backend-bikex.herokuapp.com/api/refurbished/',{
                 vehicle_number:this.vehicle_number,
-                totalcost: this.grandTotal,
+                total_cost: this.grandTotal,
                 parts_changed:this.datas,
                 comments:this.comments
             }).

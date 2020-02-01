@@ -36,7 +36,7 @@
                 </div>
             </div>
     </div>
-    <table class="table col-md-11 ml-5">
+    <table class="table col-md-11" style="margin:0 auto">
         <thead>
             <tr>
             <th>ID</th>
@@ -48,8 +48,8 @@
             <th>MFG YEAR</th>
             <th>PROCURED ON</th>
             <th>STATUS</th>
-            <th>Type</th>
-            <th>UPLOAD</th>
+            <!-- <th>Type</th> -->
+            <!-- <th>UPLOAD</th> -->
             <th>Action</th>
         </tr>
         </thead>
@@ -66,11 +66,11 @@
                 <td v-on:click="see_vehicle(data.vehicle_id)" class="py-1" v-if="data.status == 3"><span style="color:#FFB52F">Live!</span></td>
                 <td v-on:click="see_vehicle(data.vehicle_id)" class="py-1" v-if="data.status == 4"><span style="color:#FFB52F">Booked!</span></td>
                 <td v-on:click="see_vehicle(data.vehicle_id)" class="py-1" v-if="data.status == 5"><span style="color:#FFB52F">Sold!</span></td>
-                <td v-on:click="see_vehicle(data.vehicle_id)" class="py-1">{{data.vehicle_type}}</td>
-                <td v-on:click="see_vehicle(data.vehicle_id)" class="py-1" v-if="data.imageUpload == 0"><span style="color:#FFB52F"><i class="fa fa-times" aria-hidden="true"></i></span></td>
+                <!-- <td v-on:click="see_vehicle(data.vehicle_id)" class="py-1">{{data.vehicle_type}}</td> -->
+                <!-- <td v-on:click="see_vehicle(data.vehicle_id)" class="py-1" v-if="data.imageUpload == 0"><span style="color:#FFB52F"><i class="fa fa-times" aria-hidden="true"></i></span></td>
                 <td v-on:click="see_vehicle(data.vehicle_id)" class="py-1" v-if="data.imageUpload == 1"><span style="color:#FFB52F"><i class="fa fa-clock-o" aria-hidden="true"></i></span></td>
                 <td v-on:click="see_vehicle(data.vehicle_id)" class="py-1" v-if="data.imageUpload == 2"><span><i class="fa fa-check" aria-hidden="true"></i></span></td>
-                <td v-on:click="see_vehicle(data.vehicle_id)" class="py-1"  v-if="data.imageUpload == null"><span>-</span></td>
+                <td v-on:click="see_vehicle(data.vehicle_id)" class="py-1"  v-if="data.imageUpload == null"><span>-</span></td> -->
                 <td class="py-1"><button class="button btn btn-primary m-0 p-0 custom-button" v-on:click="editModals(data)"><i class="fa fa-pencil px-1" aria-hidden="true"></i></button>
                 <button class="button btn btn-primary m-0 p-0  custom-button" v-on:click="editStatus(data)"><i class="fa fa-bicycle px-1" aria-hidden="true"></i></button>
                <button class="button btn btn-primary m-0 p-0  custom-button" v-on:click="goToUpload(data.vehicle_id)"><i class="fa fa-eye px-1" aria-hidden="true"></i></button>

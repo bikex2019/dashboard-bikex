@@ -36,7 +36,7 @@
                 </div>
             </div>
     </div>
-    <table class="table col-md-11 ml-5">
+    <table class="table col-md-11" style="margin:0 auto">
         <thead>
             <tr>
             <th>ID</th>
@@ -48,7 +48,7 @@
             <TH>MFG YEAR</TH>
             <th>CHASIS NO</th>
             <th>STATUS</th>
-            <th>TYPE</th>
+            <!-- <th>TYPE</th> -->
             <!-- <th>UPLOAD</th> -->
             <th>ACTION</th>
         </tr>
@@ -66,7 +66,7 @@
                 <td v-on:click="see_vehicle(data.vehicle_id)" class="py-1" v-if="data.status == 3"><span style="color:#FFB52F">Live!</span></td>
                 <td v-on:click="see_vehicle(data.vehicle_id)" class="py-1" v-if="data.status == 4"><span style="color:#FFB52F">Booked!</span></td>
                 <td v-on:click="see_vehicle(data.vehicle_id)" class="py-1" v-if="data.status == 5"><span style="color:#FFB52F">Sold!</span></td>
-                <td v-on:click="see_vehicle(data.vehicle_id)" class="py-1">{{data.vehicle_type}}</td>
+                <!-- <td v-on:click="see_vehicle(data.vehicle_id)" class="py-1">{{data.vehicle_type}}</td> -->
                 <!-- <td v-on:click="see_vehicle(data.vehicle_id)" class="py-1" v-if="data.imageUpload == 0"><span style="color:#FFB52F"><i class="fa fa-times" aria-hidden="true"></i></span></td>
                 <td v-on:click="see_vehicle(data.vehicle_id)" class="py-1" v-if="data.imageUpload == 1"><span style="color:#FFB52F"><i class="fa fa-clock-o" aria-hidden="true"></i></span></td>
                 <td v-on:click="see_vehicle(data.vehicle_id)" class="py-1" v-if="data.imageUpload == 2"><span><i class="fa fa-check" aria-hidden="true"></i></span></td>

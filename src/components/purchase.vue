@@ -240,7 +240,7 @@ export default {
                 doc.text("Regards,", 10, 130);
                 doc.text("Yours truly,", 10, 135);
                 doc.text("For: BikeX", 10, 155);
-                doc.text("Authorised Signature", 10, 185);
+                doc.text("Authorized Signature", 10, 185);
             doc.save(pdfName + '.pdf');
         },
         purchaseAggrement(){
