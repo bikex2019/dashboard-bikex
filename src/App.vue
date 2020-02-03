@@ -35,6 +35,9 @@ export default {
          this.show = false
        }
   },
+  methods:{
+
+  },
   computed: {
     toggle(){
       return this.$store.state.toggler

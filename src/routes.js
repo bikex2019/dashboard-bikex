@@ -29,6 +29,8 @@ import addcustomer from './components/addcustomer'
 import agentactivity from './components/agentactivity'
 import profile from './components/agent-profile'
 import manageAgents from './components/manageAgents'
+import banners from './components/banners'
+
 
 
 
@@ -57,6 +59,7 @@ export default[
     {path:'/customers', component:customers},
     {path:'/purchase', component:purchase},
     {path:'/sell', component:sell},
+    {path:'/banners', component:banners},
     {path:'/manage-agents', component:manageAgents},
     {path:'/view-profile', component:profile},
     {path:'/agentactivity', component:agentactivity},

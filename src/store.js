@@ -22,6 +22,7 @@ state: {
   purchases:[],
   customers:[],
   vehicles_with_models:[],
+  banners:[],
   addcustomer:false,
   loading:true,
   toggler:true,
@@ -64,6 +65,9 @@ state: {
     },
     FETCH_TOTAL_BOOKED(state, total_booked){
         state.total_booked = total_booked
+    },
+    FETCH_BANNERS(state, banners){
+      state.banners = banners
     },
     FETCH_TOTAL_VEHICLE(state, total_vehicle){
         state.total_vehicle = total_vehicle
@@ -129,6 +133,15 @@ state: {
         }).catch(error => {
           throw new Error(`API ${error}`);
         });
+    },
+    load_banners({commit}){
+      commit('LOAD_STATUS', true);
+      axios.get(url +'/banners').then(result => {
+        commit('FETCH_BANNERS', result.data.banners);
+        commit('LOAD_STATUS', false);
+      }).catch(error => {
+        throw new Error(`API ${error}`);
+      });
     },
     total_vehicle({commit}) {
       commit('LOAD_STATUS', true);

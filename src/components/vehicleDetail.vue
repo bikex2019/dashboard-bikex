@@ -196,6 +196,12 @@
                   <th>Item Name</th>
                    <th>Item Price</th>
                   <th>Labour Cost</th>
+                  <p class="display-flex justify-content-between text-right mt-3">
+                    <span class="pr-5 pl-0 ml-0 pt-2 hand red" v-on:click="delete_ref(refurbish._id)">Delete</span>
+                         <span v-on:click="edit(refurbish)">
+                    <i class="fa fa-pencil px-3 hand" aria-hidden="true"></i>
+                    </span>
+                  </p>
                 </tr>
                 <tr v-for="(ref, index) in refurbish.parts_changed" :key="index">
                   <td>{{ref.serial_number}}</td>
@@ -254,6 +260,99 @@
   </div>
 
 
+<div id="mymodals" class="modals" v-bind:class="{'displayModal':editrefurbish}">
+    <!-- modals content -->
+        <div class="modals-content">
+            <span class="close" v-on:click="closeeditrefurbish">&times;</span>
+            <p>Edit</p>
+            <div>
+                <!-- <form>
+                   <div class="row">
+                      <div class="form-group text-left col-md-3">
+                        <label for="query">Item Name</label>
+                        <input type="text" v-model="name" class="form-control" id="query">
+                    </div>
+
+                    <div class="form-group text-left col-md-3">
+                        <label for="answer">Serial No</label>
+                        <input v-model="slno" class="form-control" id="answer" rows="3">
+                    </div>
+                    <div class="form-group text-left col-md-2">
+                        <label for="answer">Item Price</label>
+                        <input v-model="price" class="form-control" id="answer" rows="3">
+                    </div>
+                    <div class="form-group text-left col-md-2">
+                        <label for="answer">Labour</label>
+                        <input v-model="labour" class="form-control" id="answer" rows="3">
+                    </div>
+                     <div class="form-group text-left col-md-2">
+                        <label for="answer">Total</label>
+                        <input disabled class="form-control" id="answer" rows="3" v-model="grandTotal">
+                    </div>
+                     <div class="form-group text-left col-md-12">
+                        <label for="answer">Comments</label>
+                        <textarea v-model="comments" class="form-control" id="answer" rows="3"></textarea>
+                    </div>
+                   </div>
+                </form> -->
+
+                 <table class="table table-bordered">
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Item Name</th>
+                    <th>Serial No</th>
+                    <th>Item Price</th>
+                    <th>Labour</th>
+                    <th>Total</th>
+                    <th><i class="fa fa-plus" aria-hidden="true" v-on:click="addrow()"></i></th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr  v-for="(d, index) in input" :key="index">
+                    <td class="m-0 p-0">
+                        {{index + 1}}
+                    </td>
+                    <td class="m-0 p-0">
+                        <input type="text" class="input-design" v-model="d.name">
+                    </td>
+                     <td class="m-0 p-0">
+                        <input type="text" class="input-design" v-model="d.serial_number">
+                    </td>
+                     <td class="m-0 p-0">
+                        <input type="number" class="input-design" v-model="d.item_price">
+                    </td>
+                    <td class="m-0 p-0">
+                        <input type="number" class="input-design" v-model="d.labour">
+                    </td>
+                    <td class="m-0 p-0">
+                        {{Number(d.item_price) + Number(d.labour)}}
+                    </td>
+                    <td class="m-0 p-0">
+                         <span style="font-size:25px;cursor:pointer" v-on:click="removerow(index)">&times;</span>
+                    </td>
+                </tr>
+                <tr style="border:none">
+                    <td colspan="3" class="m-0 p-0 text-right pr-3"> <strong>Total:</strong></td>
+                    <td class="m-0 p-0 text-left">Rs.{{itemPrice}} </td>
+                    <td class="m-0 p-0 text-left">Rs.{{total}}</td>
+                    <td colspan="2" class="m-0 p-0 text-left">Rs.{{grandTotal}}</td>
+                </tr>
+            </tbody>
+        </table>
+          <div class="form-group text-left col-md-12">
+                        <label for="answer">Comments</label>
+                        <textarea v-model="comments" class="form-control" id="answer" rows="3"></textarea>
+                    </div>
+
+                <button type="submit" v-on:click="updaterefurb" class="button1 btn btn-primary">
+                    <span v-if="!updateRef">Update Refurbish</span>
+                    <span v-else>loading.</span>
+                </button>
+            </div>
+        </div>
+    </div>
+
 
 
   
@@ -282,6 +381,16 @@ export default {
       upload_load:false,
       acc_id:0,
       expand: false,
+      editrefurbish:false,
+      name:'',
+      slno:'',
+      price:'',
+      labour:'',
+      total_amount:'',
+      ref_edit_id:'',
+      comments:'',
+      updateRef:false,
+      input:[]
     }
   },
   created(){
@@ -317,6 +426,47 @@ export default {
    
   },
   methods:{
+       updaterefurb: function(){
+            this.updateRef = true
+            this.$http.put('https://backend-bikex.herokuapp.com/api/refurbished/'+ this.ref_edit_id,{
+            vehicle_number: this.id,
+            total_cost: this.grandTotal,
+            parts_changed:this.datas,
+            comments:this.comments
+            }).
+            then(response=>{
+            this.editrefurbish= false
+            this.$swal('Refurbishment details has been updated.');
+            this.data = response.body;
+            window.location.reload()
+            }).catch(()=>{
+                this.updateRef =  false
+            })
+        },
+        delete_ref(id){
+          this.loading = true
+            this.$http.delete('https://backend-bikex.herokuapp.com/api/refurbished/'+ id,{
+            }).then(()=>{
+              window.location.reload()
+              this.loading = false
+            }).catch(()=>{
+              this.$swal('Something is wrong! Try Again :(');
+              this.loading = false
+            })
+        },
+            addrow: function(){
+            if(this.input.length == 0){
+                this.lastID = 0
+            }
+            for(var i in this.input){
+                this.lastID = this.input[i].id
+            } 
+            this.input.push({'name':'','serial_number':'','item_price':'','labour':'','id':this.lastID + 1})
+            },
+            removerow(id){
+                this.input.splice(id, 1)    
+            },
+
       view_model(identity){
         this.$router.push('/models/'+identity)
       },
@@ -330,9 +480,45 @@ export default {
             }else{
                 this.acc_id = 0
             }
-        }
+        },
+      closeeditrefurbish(){
+        this.editrefurbish = false
+      },
+      edit(editref){
+        window.console.log(editref)
+        this.editrefurbish = true
+        this.total_amount = editref.total_cost
+        this.ref_edit_id = editref._id
+        this.input = editref.parts_changed
+          // this.name = editref.parts_changed[i].name,
+          // this.price = editref.parts_changed[i].item_price,
+          // this.slno = editref.parts_changed[i].serial_number,
+          // this.labour = editref.parts_changed[i].labour,
+          this.comments = editref.comments
+         
+      }
   },
   computed:{
+    total:function(){
+          var totals = 0;
+          this.datas.forEach((n) => {
+          totals += Number(n.labour);
+          });
+        return totals
+      },
+      itemPrice: function(){
+          var itemsTotal = 0;
+          this.datas.forEach((n) => {
+          itemsTotal += Number(n.item_price);
+          });
+          return itemsTotal
+      },  
+      grandTotal:function(){
+      return this.total + this.itemPrice
+      },
+    datas(){
+      return this.input
+    },
     refurbishCost(){
       var cost = 0 ;
           for(var i in this.refurbish){
@@ -379,6 +565,13 @@ export default {
 
 
 } */
+.hand{
+  cursor: pointer;
+  font-size: 15px;
+}
+.red{
+  color: red
+}
 .no-wrap{
   flex-wrap: wrap
 }
@@ -494,7 +687,11 @@ p{
   z-index: 2;
   cursor: pointer;
 }
-
+.input-design{
+    width: 100% !important;
+    padding: 4px;
+    border: none
+}
 #text{
   position: absolute;
   top: 50%;
@@ -545,5 +742,29 @@ p{
 }
 .border{
    box-shadow: 0 2px 5px 0 rgba(0,0,0,0.06);
+}
+.modals {
+  display: none; /* Hidden by default */
+  position: fixed; /* Stay in place */
+  z-index: 999999; /* Sit on top */
+  padding-top: 10px; /* Location of the box */
+  left: 0;
+  top: 0;
+  width: 100%; /* Full width */
+  height: 100%; /* Full height */
+  overflow: auto; /* Enable scroll if needed */
+  background-color: rgb(0,0,0); /* Fallback color */
+  background-color: rgba(0,0,0,0.4); /* Black w/ opacity */
+}
+.displayModal{
+    display: block !important
+}
+/* modals Content */
+.modals-content {
+  background-color: #fefefe;
+  margin: auto;
+  padding: 20px;
+  border: 1px solid #888;
+  width: 80%;
 }
 </style>

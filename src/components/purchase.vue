@@ -142,6 +142,8 @@
 import VueJsonToCsv from 'vue-json-to-csv'
 import jsPDF from 'jspdf'
 var moment = require('moment');
+var converter = require('number-to-words');
+
 export default {
     data(){
         return{
@@ -229,17 +231,18 @@ export default {
             doc.setFontSize(10);
                 doc.text("Date:", 160, 30);
                 doc.text(`${moment(this.view[0].date).format('LL')}`, 170, 30);
-                doc.text("WELLBORN FLOORINGS PRIVATE LIMITED", 10, 45);
-                doc.text("Bangalore", 10, 50);
-                doc.text(`Dear ${this.view[0].firstname} ${this.view[0].lastname},`, 10, 75);
-                doc.text(`We thank you for buying ${vehicle[0].model_id.make} ${vehicle[0].model_id.modal_name} ${vehicle[0].model_id.engine_cc}CC with vehicle ID : BX${vehicle[0].vehicle_id} bearing Reg No ${vehicle[0].regn_no}, and Chassis No`, 10, 85);
-                doc.text(` ${vehicle[0].chassis_no}.`, 10, 90);
+                // doc.text("WELLBORN FLOORINGS PRIVATE LIMITED", 10, 45);
+                // doc.text("Bangalore", 10, 50);
+                doc.text(`Dear ${this.view[0].firstname} ${this.view[0].lastname},`, 10, 95);
+                doc.text(`We thank you for buying ${vehicle[0].model_id.make} ${vehicle[0].model_id.modal_name} ${vehicle[0].model_id.engine_cc}CC, bearing Reg No ${vehicle[0].regn_no}, and Chassis No ${vehicle[0].chassis_no}.`, 10, 85);
+                // doc.text(` ${vehicle[0].chassis_no}.`, 10, 90);
                 doc.text("The process of change of ownership in the Registration Certificate will be undertaken by us and once the formalities are", 10, 100);
                 doc.text("completed we will provide you the original Registration Certificate duly transferred in to your name. During this period, it will be", 10, 105);
                 doc.text(" your responsibility if the vehicle is misused or any kind of accident happens.", 10, 110);
                 doc.text("Regards,", 10, 130);
                 doc.text("Yours truly,", 10, 135);
-                doc.text("For: BikeX", 10, 155);
+                doc.text("For: Bimal Motors", 10, 155);
+                doc.text("For: Bimal Motors", 10, 155);
                 doc.text("Authorized Signature", 10, 185);
             doc.save(pdfName + '.pdf');
         },
@@ -269,7 +272,7 @@ export default {
           doc.text("Bimal Hero has according to the  request of  the Purchaser agreed to facilitate the sale ", 25, 91);
           doc.text(`of the vehicle, being ${vehicle[0].model_id.make} ${vehicle[0].model_id.modal_name} ${vehicle[0].model_id.engine_cc}CC [make and model] bearing Registration `, 25, 97);
           doc.text(`No. ${vehicle[0].regn_no} (“the Vehicle”).Chassis No ${vehicle[0].chassis_no}`, 25, 103);
-          doc.text(`Vehicle Id ${vehicle[0].vehicle_id}.`, 25, 109);
+          // doc.text(`Vehicle Id ${vehicle[0].vehicle_id}.`, 25, 109);
 
           doc.text("D.", 15, 122);
           doc.text("THE PURCHASER REPRESENTS THAT:", 25, 122);
@@ -298,9 +301,9 @@ export default {
           doc.text("abide by and be bound by the same.", 25, 192);
 
           doc.text("f.", 15, 198);
-          doc.text(`The Purchaser has agreed to pay a sum of Rs. ${vehicle[0].selling_price}/- (Rupees fourty thousands only)`, 25, 198);
-          doc.text("[amount] (“Purchase Value”) towards purchase of the Vehicle, excluding any ", 25, 204);
-          doc.text("charges or fees towards additional services provided by Bimal Hero.", 25, 210);
+          doc.text(`The  Purchaser  has  agreed  to  pay  a  sum  of  Rs. ${vehicle[0].selling_price}/-`, 25, 198);
+          doc.text(`(${converter.toWords(vehicle[0].selling_price)}s only) towards purchase of the Vehicle,`, 25, 204);
+          doc.text("excluding any charges or fees towards additional services provided by Bimal Hero.", 25, 210);
 
           doc.text("g.", 15, 216);
           doc.text("The Purchaser has received the Vehicle, along with the key(s) and all original ", 25, 216);
