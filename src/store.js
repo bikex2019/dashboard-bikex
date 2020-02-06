@@ -26,6 +26,7 @@ state: {
   addcustomer:false,
   loading:true,
   toggler:true,
+  messages:[],
   lastweek:[
     [ 10, 0, 5, 5 ],
     [ 40, 10, 10, 10 ],
@@ -38,6 +39,9 @@ state: {
     },
     LOAD_STATUS(state, value) {
       state.loading = value;
+    },
+    LOAD_MESSAGES(state, messages) {
+      state.messages = messages;
     },
     FETCH_TOTAL_PROCURED(state, procured){
       state.procured_vehicles = procured
@@ -113,6 +117,17 @@ state: {
         throw new Error(`API ${error}`);
       });
     },
+    
+    load_messages({commit}, payload) {
+      commit('LOAD_STATUS', true);
+      window.console.log(payload.c_id)
+      axios.get(url +'/sendmessage/'+ payload.c_id).then(result => {
+        commit('LOAD_MESSAGES', result.data);
+        commit('LOAD_STATUS', false);
+      }).catch(error => {
+        throw new Error(`API ${error}`);
+      });
+  },
     load_live_Vehicles({commit}) {
         axios.get(url +'/fetch/live-vehicle').then(result => {
           commit('FETCH_LIVE_VEHICLES', result.data);
@@ -242,6 +257,14 @@ state: {
           return item._id == id
         });
       },
+
+      message_by_id(state) {
+        return id => state.messages.filter(item =>{
+          return item.customer_id == id
+        });
+      },
+
+
       vehicle_by_id(state) {
         return id => state.procured_vehicles.filter(item =>{
           return item.vehicle_id === id

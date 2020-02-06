@@ -16,7 +16,7 @@
   </div>
     <div class="row mt-5">
       <div class="image-container col-md-6" v-for="(image, index) in display" :key="index">
-        <img :src="image.path" width="100%" @click="openimagepreview(image.path)" >
+        <img :src="image.path" width="100%"  style="cursor:pointer;"  @click="openimagepreview(image.path)" >
         <!-- <p>Visibility: {{image.visibility}}</p> -->
         <div class="container text-center">
             <p class="icon pl-4" v-if="image.visibility == 1">visibility: <i class="fa fa-toggle-on icon" v-on:click="visible(image._id, 0)" aria-hidden="true"></i></p>
@@ -194,6 +194,10 @@ export default {
   border-radius: 50%;
   cursor: pointer;
   border: none
+}
+
+.load{
+  min-height: 60px
 }
 /* .custom{
   border-radius: 50%;
