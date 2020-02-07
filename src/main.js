@@ -9,7 +9,7 @@ import store from "./store";
 import 'sweetalert2/dist/sweetalert2.min.css';
 import VueGraph from 'vue-graph'
 import VueJsonToCsv from 'vue-json-to-csv'
- 
+
 Vue.use(VueGraph)
 Vue.use(require('vue-moment'))
 Vue.use(VueSweetalert2);

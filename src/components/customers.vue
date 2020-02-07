@@ -43,9 +43,21 @@
             </div>
     </div>
 
+    <div class="col-md-11 text-left ml-5 d-flex justify-content-between" style="margin:0 auto" v-if="selected.length > 0">
+      <div class="d-flex">
+        <p><i class="fa fa-paper-plane-o hand my-2" v-on:click="openSendMessage()" style="font-size:13px" aria-hidden="true"></i></p>
+        <p class="pl-2"><i class="fa fa-trash-o hand my-2"  v-on:click="deletecx()" aria-hidden="true" style="font-size:13px"></i></p>
+      </div>
+        <p class="pt-2">
+          <strong>{{selected.length}} item(s) selcted.</strong>
+        </p>
+    </div>
          <table class="table m-0 p-0 col-md-11 ml-5">
+          
         <thead>
+          
         <tr>
+          <th><input type="checkbox" v-model="selectAll" @click="select"></th>
             <th>ID</th>
             <th>NAME</th>
             <th>PHONE</th>
@@ -56,6 +68,9 @@
         </thead>
         <tbody>
             <tr v-for="(customer, index) in paginatedData" :key="index" v-bind:class="{strong: customer.seen == 0,failed:customer.payment_status==0,sucess:customer.payment_status==1}">
+                
+                  
+               <td  class="py-1"><input type="checkbox" :value="customer._id" v-model="selected"></td>
                 <td  class="py-1">{{customer._id}}</td> 
                 <td class="py-1">{{customer.firstname}} {{customer.lastname}}
                   <span v-if="newUser(customer.date).status" class="badge badge-success">New</span>
@@ -90,6 +105,24 @@
             </div>
         </div>
 
+          <div id="mymodals" class="modals" v-bind:class="{'displayModal':sendMessage}">
+    <!-- modals content -->
+        <div class="modals-content">
+            <span class="close" v-on:click="closesendMessage">&times;</span>
+            <div>
+                <form class="mt-4">
+                    <div class="form-group text-left">
+                        <textarea v-model="message" class="form-control" placeholder="type here..." id="answer" rows="3"></textarea>
+                    </div>
+                </form>
+                <button type="submit" v-on:click="sendaMessage" class="button1 btn btn-primary">
+                    <span v-if="!sending">Send</span>
+                    <span v-else>Sending...</span>
+                </button>
+            </div>
+        </div>
+    </div>
+
     </div>
 </template>
 <script>
@@ -98,26 +131,78 @@ import VueJsonToCsv from 'vue-json-to-csv'
 export default {
     data(){
         return{
-            pageNumber: 1,
-            itemperpage:10,
-            search:'',
-            filter:'all',
-            label:{ 
+          pageNumber: 1,
+          itemperpage:10,
+          search:'',
+          filter:'all',
+          label:{ 
               _id: {title: 'ID'} ,firstname: { title: 'First Name' },
               lastname: { title: 'Last Name' }, email:{title: 'Email'}, phone: { title: 'Contact' }, date: { title: 'Date'}
-            }
-        }
-    },
+          },
+          selected: [],
+          selectAll: false,
+          sendMessage: false,
+          message:'',
+          username:'',
+          agent_id:'',
+          sending: false
+    }},
     components:{
               VueJsonToCsv
     },
     created(){
+      let auth = localStorage.getItem('token')
+        this.username = auth
+        this.agent_id = localStorage.getItem('temp')
+        if(!auth){
+            this.$swal('Please Log in.');
+            this.$router.push('/login')
+        }
         this.pageNumber=this.$route.query.page || 1
     },
     mounted(){
               this.$store.dispatch('customers');
     },
     methods:{
+      deletecx(){
+               this.$swal('ohh uhh..not authorized to do so !');
+      },
+      sendaMessage(){
+        this.sending = true
+            this.$http.post('https://backend-bikex.herokuapp.com/api/sendmessage/array',{
+            message:this.message,
+            agent_id:this.agent_id,
+            agent_username:this.username,
+            ids: this.selected
+            }).
+            then(()=>{
+              this.message = ''
+               this.sendMessage = false
+                this.selected = []
+                this.sending = false
+               this.$swal('Message Sent');
+            }).catch(()=>{
+                this.sendMessage = false
+                this.sending = false
+                this.$swal('Something is Wrong!');
+            })
+      },
+      closesendMessage(){
+            this.sendMessage = false
+            this.message = ''
+        },
+        openSendMessage(){
+            this.sendMessage = true
+        },
+
+        select() {
+        this.selected = [];
+        if (!this.selectAll) {
+          for (let i in this.customer) {
+            this.selected.push(this.customer[i]._id);
+          }
+        }
+      },
         filterkey(id){
             this.filter = id
             this.loading = false
@@ -272,7 +357,18 @@ label{
   z-index: 2;
   cursor: pointer;
 }
-
+.hand{
+  cursor: pointer;
+  background-color: rgb(199, 184, 184);
+  border-radius: 50%;
+  padding: 10px;
+  color: black
+}
+.hand:hover{
+  color: black;
+  background-color: rgb(153, 146, 146);
+  transition: ease-in-out
+}
 #text{
   position: absolute;
   top: 50%;
@@ -306,5 +402,30 @@ table{
   border: 1px solid #ffb52f;
   padding: 5px;
   width: 100%
+}
+
+.modals {
+  display: none; /* Hidden by default */
+  position: fixed; /* Stay in place */
+  z-index: 999999; /* Sit on top */
+  padding-top: 10px; /* Location of the box */
+  left: 0;
+  top: 0;
+  width: 100%; /* Full width */
+  height: 100%; /* Full height */
+  overflow: auto; /* Enable scroll if needed */
+  background-color: rgb(0,0,0); /* Fallback color */
+  background-color: rgba(0,0,0,0.4); /* Black w/ opacity */
+}
+.displayModal{
+    display: block !important
+}
+/* modals Content */
+.modals-content {
+  background-color: #fefefe;
+  margin: auto;
+  padding: 20px;
+  border: 1px solid #888;
+  width: 50%;
 }
 </style>

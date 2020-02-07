@@ -213,7 +213,7 @@ export default {
         }
     },
     created(){
-         let auth = localStorage.getItem('token')
+        let auth = localStorage.getItem('token')
         this.username = auth
         this.agent_id = localStorage.getItem('temp')
         if(!auth){
