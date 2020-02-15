@@ -8,7 +8,7 @@
             
                 <select v-model="vehicle_number" class="form-control" required>
                       <option v-if="loading_procured">Still Loading...</option>
-                      <option :value="vehicle.vehicle_id" v-for="(vehicle, index) in all_vehicels" :key="index">{{vehicle.vehicle_id}}-{{vehicle.model_id.make}}-{{vehicle.model_id.modal_name}}</option>
+                      <option :value="vehicle.vehicle_id" v-for="(vehicle, index) in all_vehicels" :key="index">{{vehicle.regn_no}}-{{vehicle.vehicle_id}}-{{vehicle.model_id.make}}-{{vehicle.model_id.modal_name}}</option>
                     </select> 
                   <span class="floating-label" >Vehicle No</span>
                 </div>
