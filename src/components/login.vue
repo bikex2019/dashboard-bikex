@@ -82,6 +82,8 @@ export default {
                 this.response_message = this.data.msg
                 localStorage.setItem('token', this.data.data[0].agent_username)
                 localStorage.setItem('temp', this.data.data[0]._id)
+                localStorage.setItem('part', this.data.data[0].designation)
+                localStorage.setItem('session', JSON.stringify(this.data.data[0]))
                 this.$router.push('/')
                 window.location.reload()
             }else{

@@ -18,8 +18,8 @@
         <img :src="image.path" width="90%">
       </div>
       <div class="container" v-show="loading == false && display.length >0">
-        <button type="button" class="btn mt-4 custom" data-toggle="modal" data-target="#myModal"><i class="fa fa-trash-o" aria-hidden="true"></i></button>
-        <button type="button" v-on:click="displayedit =! displayedit" class="btn mt-4 custom ml-2"><i class="fa fa-pencil" aria-hidden="true"></i></button>
+        <button type="button" v-if="permission.edit_vehicle" class="btn mt-4 custom" data-toggle="modal" data-target="#myModal"><i class="fa fa-trash-o" aria-hidden="true"></i></button>
+        <button type="button" v-if="permission.edit_vehicle" v-on:click="displayedit =! displayedit" class="btn mt-4 custom ml-2"><i class="fa fa-pencil" aria-hidden="true"></i></button>
         <!-- Modal -->
         <div class="modal fade" id="myModal" role="dialog">
           <div class="modal-dialog">
@@ -33,13 +33,13 @@
                 <h4>Are you sure, you want to delete?</h4>
                 <p>Vehicel without Image is not shown in live!</p>
               </div>
-              <div class="modal-footer">
+              <div class="modal-footer" v-if="permission.edit_vehicle">
                 <button type="action-button" class="btn btn-default" data-dismiss="modal" v-on:click="deletedisplay">Delete</button>
               </div>
             </div>    
           </div>
         </div>
-        <div class="content mt-3" v-if="displayedit">
+        <div class="content mt-3" v-if="displayedit && permission.edit_vehicle">
           <input type="file" ref="file" @change="onSelect" class="mt-3">
           <button class="action-button mt-3" v-on:click="edituploadDisplay">Update</button>
         </div>
@@ -47,8 +47,8 @@
       <div v-show="loading == false && display.length == 0">
         <span style="color:red">*Vehicle will be live only if you upload Image.</span>
         <p>Please Upload one.</p>
-        <input type="file" ref="file" @change="onSelect">
-        <div class="button mt-3">
+        <input type="file" ref="file" @change="onSelect" v-if="permission.edit_vehicle">
+        <div class="button mt-3" v-if="permission.edit_vehicle">
           <button class="action-button" v-on:click="uploadDisplay">Upload</button>
         </div>
       </div>
@@ -66,15 +66,15 @@
           <img :src="image" width="auto" height="100px">
         </div>
         <div class="container" v-show="loading == false && uploadedImage.length >0">
-          <button type="button" class="action-button mt-2 mb-2 custom" v-on:click="deleteuploads"><i class="fa fa-trash-o" aria-hidden="true"></i></button>
+          <button type="button" v-if="permission.edit_vehicle" class="action-button mt-2 mb-2 custom" v-on:click="deleteuploads"><i class="fa fa-trash-o" aria-hidden="true"></i></button>
         </div>
       </div>
       <div v-show="loading == false && uploadedImage.length == 0">
         <p>:(</p>
         <p>Sorry You have not uploaded the Image of the vehicle</p>
         <p class="mb-4" style="color:red">Please Upload !</p>
-        <input type="file" id="files" ref="files" multiple v-on:change="handleFilesUpload()">
-        <div class="button mt-3">
+        <input type="file" v-if="permission.edit_vehicle" id="files" ref="files" multiple v-on:change="handleFilesUpload()">
+        <div class="button mt-3" v-if="permission.edit_vehicle">
           <button class="action-button" v-on:click="uploadmultDisplay">Upload</button>
         </div>
       </div>
@@ -280,6 +280,11 @@ export default {
               })   
             },
   },
+  computed:{
+      permission(){
+        return JSON.parse(localStorage.getItem('session'))
+      },
+  }
 
 }
 </script>

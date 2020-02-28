@@ -42,7 +42,10 @@
                 <td class="no-wrap">
                     <div class="m-0 p-0">
                     <button class="button btn round mr-2 m-0" v-on:click="chop(faq._id)"><i class="fa fa-trash-o" aria-hidden="true"></i></button>
-                    <button class="button btn round m-0" v-on:click="editAgent(faq)"><i class="fa fa-pencil" aria-hidden="true"></i></button>
+                    <button class="button btn round mr-2 m-0" v-on:click="editAgent(faq)"><i class="fa fa-pencil" aria-hidden="true"></i></button>
+                    <button class="button btn round m-0" v-on:click="$router.push('/agent_permission/' + faq._id)">
+                    <i class="fa fa-cog" aria-hidden="true"></i>
+                    </button>
                     </div>
                 </td>
             </tr>
@@ -136,7 +139,10 @@
                             <input type="text" v-model="designation" class="inputText form-control" required/>
                             <span class="floating-label">Designation</span>
                         </div>
+
                     </div>
+
+                    
                 </form>
                 <button type="submit" v-on:click="updateAgent" class="custom mb-5">
                     <span v-if="!loading">Update Agent</span>
@@ -172,7 +178,19 @@ export default {
             password:'',
             email:'',
             phone:'',
-            designation:''
+            designation:'',
+            view_vehicle: true,
+            view_customer: false,
+            edit_vehicle: false,
+            view_refurbish: false,
+            view_procured_price: false,
+            perform_offine_sell: false,
+            change_banner: false,
+            view_agent_activity: false,
+            add_customer: false,
+            manage_faq: false,
+            manage_models: false,
+            agent_id:''
 
         }
     },
@@ -187,6 +205,21 @@ export default {
         this.$store.dispatch('agents');
     },
     methods:{
+        permission_view_vehicle(state){
+          this.loading = true
+          this.$http.put('https://backend-bikex.herokuapp.com/api/agents/permission/view_vehicle/'+ this.agent_id,
+          {
+              view_vehicle : state,
+              permissionfor : 'view_vehicle'
+          }).
+            then(()=>{
+                this.loading = false
+                this.$store.dispatch('agents')
+        }).catch(()=>{
+             this.$swal('Something went wrong!');
+             this.loading = false
+        })
+      },
         openModal: function(){
             this.agent_username = ''
             this.phone = ''
@@ -198,11 +231,23 @@ export default {
         editAgent: function(agenttoedit){
             this.editModal = true;
             this.message = ''
+            this.agent_id = agenttoedit._id
             this.agent_username = agenttoedit.agent_username
             this.phone = agenttoedit.phone
             this.email = agenttoedit.email
             this.designation = agenttoedit.designation
             this.idtoedit = agenttoedit._id
+            this.view_vehicle= agenttoedit.view_vehicle,
+            this.view_customer= agenttoedit.view_customer,
+            this.edit_vehicle= agenttoedit.edit_vehicle,
+            this.view_refurbish= agenttoedit.view_refurbish,
+            this.view_procured_price= agenttoedit.view_procured_price,
+            this.perform_offine_sell= agenttoedit.perform_offine_sell,
+            this.change_banner= agenttoedit.change_banner,
+            this.view_agent_activity= agenttoedit.view_agent_activity,
+            this.add_customer= agenttoedit.add_customer,
+            this.manage_faq= agenttoedit.manage_faq,
+            this.manage_models= agenttoedit.manage_models
         },
         closeeditModal: function(){
             this.editModal= false;
@@ -450,6 +495,18 @@ table{
   background-color: #ffb52f;
   color: white
 }
+.icon{
+    font-size: 20px
+}
+.permission p{
+    font-size:15px;
+    font-weight: bold;
+        font-family: 'Montserrat', sans-serif;
+
+}
+/* .ps label{
+    font-size: 13px !important
+} */
 .round{
   border-radius: 50%;
   background: linear-gradient( to left, #ebebeb 45%,     #ffb52f 50% );

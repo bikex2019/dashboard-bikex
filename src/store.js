@@ -21,8 +21,10 @@ state: {
   new_bookings:[],
   purchases:[],
   customers:[],
+  refurbishDetail:[],
   vehicles_with_models:[],
   banners:[],
+  agentbyID:[],
   addcustomer:false,
   loading:true,
   toggler:true,
@@ -85,9 +87,16 @@ state: {
     FETCH_AGENTS(state, agents){
       state.agents = agents
     },
+    LOAD_AGENTBYID(state, agentbyID){
+      state.agentbyID = agentbyID
+    },
     FETCH_NEW_BOOKINGS(state, new_bookings){
       state.new_bookings = new_bookings
+    },
+    FETCH_REFURBISH_DETAILS(state, data){
+      state.refurbishDetail = data
     }
+    
   }, 
   actions: {
     total_vehicle_procured({commit}) {
@@ -128,6 +137,16 @@ state: {
         throw new Error(`API ${error}`);
       });
   },
+  load_agentbyID({commit}, payload) {
+    commit('LOAD_STATUS', true);
+    window.console.log(payload.c_id)
+    axios.get(url +'/agents/'+ payload.c_id).then(result => {
+      commit('LOAD_AGENTBYID', result.data);
+      commit('LOAD_STATUS', false);
+    }).catch(error => {
+      throw new Error(`API ${error}`);
+    });
+},
     load_live_Vehicles({commit}) {
         axios.get(url +'/fetch/live-vehicle').then(result => {
           commit('FETCH_LIVE_VEHICLES', result.data);
@@ -188,6 +207,14 @@ state: {
         throw new Error(`API ${error}`);
       });
     },
+    fetch_refurbish_details({commit}) {
+      axios.get(url +'/refurbished').then(result => {
+        commit('FETCH_REFURBISH_DETAILS', result.data);
+      }).catch(error => {
+        throw new Error(`API ${error}`);
+      });
+    },
+
     purchases({commit}) {
       axios.get(url +'/purchases').then(result => {
         commit('FETCH_PURCHASES', result.data);

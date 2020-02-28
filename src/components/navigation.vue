@@ -9,7 +9,7 @@
         <span class="mr-3" v-on:click="refresh()"><i class="fa fa-refresh" style="color:red"></i></span>
         <span class="mr-3 monte"  v-on:click="go('purchase')">Purchase<span class="badge badge-light" style="color:red">{{purchases.total}}</span></span>
         <!-- <span class="mr-3">Booking<span class="badge badge-light" style="color:red">2</span></span> -->
-        <span class="mr-3 monte" v-on:click="go('sell')">Sell<span class="badge badge-light" style="color:red">{{sell.total}}</span></span>
+        <!-- <span class="mr-3 monte" v-on:click="go('sell')">Sell<span class="badge badge-light" style="color:red">{{sell.total}}</span></span> -->
        <span class="mr-3 monte" v-on:click="go('finance')">Finance<span class="badge badge-light" style="color:red">{{finance.total}}</span></span>
        
        <!-- <div class="d-inline"> 
@@ -36,16 +36,15 @@
 
       <div class="col-md-12 text-left border-bottom pb-0 mb-0 p-0 m-0 d-flex" v-else>
       <p class="p-0 m-0"><router-link to="/" exact-active-class="active" class="bikex-header mb-0 p-0 pl-3 logo">BIKE<span style="color:#ffb52f"> X</span></router-link></p>
-      </div>
-
-      <div class="col-md-12 margin-right text-center border-bottom p-0" v-if="!toggle">
+      </div> 
+      <div class="col-md-12 margin-right text-center border-bottom p-0" v-if="!toggle && permission.view_vehicle">
         <router-link to="/vehicles" exact-active-class="active" class="d-flex navigate-padding">
           <i class='fa fa-bicycle pl-3 pt-1 pr-2' style='font-size:20px;color:#001232'> </i>
           <p class="p-1 m-0 nav">Vehicles</p>
         </router-link>
       </div>
 
-      <div class="col-md-12 margin-right navigate m-0 mr-3 p-0 text-left border-bottom" v-else>
+      <div class="col-md-12 margin-right navigate m-0 mr-3 p-0 text-left border-bottom" v-if="toggle && permission.view_vehicle">
         <p class="p-0 m-0">
         <router-link to="/vehicles" exact-active-class="active"
           class="bikex-header mb-0 p-0 pb-1"><i class='fa fa-bicycle pl-3' style='font-size:20px;color:#001232'></i>
@@ -164,14 +163,14 @@
         </p>
       </div>
 
-      <div class="col-md-12 margin-right text-center border-bottom p-0" v-if="!toggle">
+      <div class="col-md-12 margin-right text-center border-bottom p-0" v-if="!toggle && permission.manage_models">
         <router-link to="/models" exact-active-class="active" class="d-flex navigate-padding">
           <i class='fa fa-motorcycle pl-3 pt-1 pr-2' style='font-size:20px;color:#001232'> </i>
           <p class="p-1 m-0">Models</p>
         </router-link>
       </div>
 
-      <div class="col-md-12 margin-right navigate m-0 mr-3 p-0 text-left border-bottom" v-else>
+      <div class="col-md-12 margin-right navigate m-0 mr-3 p-0 text-left border-bottom" v-if="toggle && permission.manage_models">
         <p class="p-0 m-0">
         <router-link to="/models" exact-active-class="active"
           class="bikex-header mb-0 p-0 pb-1"><i class='fa fa-motorcycle pl-3' style='font-size:20px;color:#001232'></i>
@@ -193,14 +192,14 @@
         </router-link>
         </p>
       </div> -->
-      <div class="col-md-12 margin-right text-center border-bottom p-0" v-if="!toggle">
+      <div class="col-md-12 margin-right text-center border-bottom p-0" v-if="!toggle && permission.manage_faq">
         <router-link to="/faqs" exact-active-class="active" class="d-flex navigate-padding">
           <i class='fa fa-quora pl-3 pt-1 pr-2' style='font-size:20px;color:#001232'> </i>
           <p class="p-1 m-0">Manage FAQ'S</p>
         </router-link>
       </div>
 
-      <div class="col-md-12 margin-right navigate m-0 mr-3 p-0 text-left border-bottom" v-else>
+      <div class="col-md-12 margin-right navigate m-0 mr-3 p-0 text-left border-bottom" v-if="toggle && permission.manage_faq">
         <p class="p-0 m-0">
         <router-link to="/faqs" exact-active-class="active"
           class="bikex-header mb-0 p-0 pb-1"><i class='fa fa-quora pl-3' style='font-size:20px;color:#001232'></i>
@@ -209,14 +208,14 @@
       </div>
 
       
-      <div class="col-md-12 margin-right text-center border-bottom p-0" v-if="!toggle">
+      <div class="col-md-12 margin-right text-center border-bottom p-0" v-if="!toggle && permission.perform_offine_sell">
         <router-link to="/offline-sell" exact-active-class="active" class="d-flex navigate-padding">
           <i class='fa fa-rocket pl-3 pt-1 pr-2' style='font-size:20px;color:#001232'> </i>
           <p class="p-1 m-0">Offline Sell</p>
         </router-link>
       </div>
 
-      <div class="col-md-12 margin-right navigate m-0 mr-3 p-0 text-left border-bottom" v-else>
+      <div class="col-md-12 margin-right navigate m-0 mr-3 p-0 text-left border-bottom" v-if="toggle && permission.perform_offine_sell">
         <p class="p-0 m-0">
         <router-link to="/offline-sell" exact-active-class="active"
           class="bikex-header mb-0 p-0 pb-1"><i class='fa fa-rocket pl-3' style='font-size:20px;color:#001232'></i>
@@ -224,14 +223,14 @@
         </p>
       </div>
 
-       <div class="col-md-12 margin-right text-center border-bottom p-0" v-if="!toggle">
+       <div class="col-md-12 margin-right text-center border-bottom p-0" v-if="!toggle && permission.add_customer">
         <router-link to="/add-customer" exact-active-class="active" class="d-flex navigate-padding">
           <i class='fa fa-user-plus pl-3 pt-1 pr-2' style='font-size:20px;color:#001232'> </i>
           <p class="p-1 m-0">Add Customer</p>
         </router-link>
       </div>
 
-      <div class="col-md-12 margin-right navigate m-0 mr-3 p-0 text-left border-bottom" v-else>
+      <div class="col-md-12 margin-right navigate m-0 mr-3 p-0 text-left border-bottom" v-if="toggle && permission.add_customer">
         <p class="p-0 m-0">
         <router-link to="/add-customer" exact-active-class="active"
           class="bikex-header mb-0 p-0 pb-1"><i class='fa fa-user-plus pl-3' style='font-size:20px;color:#001232'></i>
@@ -239,14 +238,14 @@
         </p>
       </div>
 
-       <div class="col-md-12 margin-right text-center border-bottom p-0" v-if="!toggle">
+       <div class="col-md-12 margin-right text-center border-bottom p-0" v-if="!toggle && permission.view_agent_activity">
         <router-link to="/agentactivity" exact-active-class="active" class="d-flex navigate-padding">
           <i class='fa fa-rss pl-3 pt-1 pr-2' style='font-size:20px;color:#001232'> </i>
           <p class="p-1 m-0">Agent Activity</p>
         </router-link>
       </div>
 
-      <div class="col-md-12 margin-right navigate m-0 mr-3 p-0 text-left border-bottom" v-else>
+      <div class="col-md-12 margin-right navigate m-0 mr-3 p-0 text-left border-bottom" v-if="toggle && permission.view_agent_activity">
         <p class="p-0 m-0">
         <router-link to="/agentactivity" exact-active-class="active"
           class="bikex-header mb-0 p-0 pb-1"><i class='fa fa-rss pl-3' style='font-size:20px;color:#001232'></i>
@@ -254,21 +253,21 @@
         </p>
       </div>
 
-    <div class="col-md-12 margin-right text-center border-bottom p-0" v-if="!toggle && admin">
+    <div class="col-md-12 margin-right text-center border-bottom p-0" v-if=" !toggle && permission.designation==='Admin'">
         <router-link to="/manage-agents" exact-active-class="active" class="d-flex navigate-padding">
           <i class='fas fa-users pl-3 pt-1 pr-2' style='font-size:20px;color:#001232'> </i>
           <p class="p-1 m-0">Manage Agents</p>
         </router-link>
       </div>
 
-      <div class="col-md-12 margin-right navigate m-0 mr-3 p-0 text-left border-bottom" v-if="toggle && admin">
+      <div class="col-md-12 margin-right navigate m-0 mr-3 p-0 text-left border-bottom" v-if="toggle && permission.designation=='Admin'">
         <p class="p-0 m-0">
         <router-link to="/manage-agents" exact-active-class="active"
           class="bikex-header mb-0 p-0 pb-1"><i class='fas fa-users pl-3' style='font-size:20px;color:#001232'></i>
         </router-link>
         </p>
       </div>
-
+<!-- 
     <div class="col-md-12 margin-right text-center border-bottom p-0" v-if="!toggle">
         <router-link to="/refurbishment" exact-active-class="active" class="d-flex navigate-padding">
           <i class='fa fa-cogs pl-3 pt-1 pr-2' style='font-size:20px;color:#001232'> </i>
@@ -282,7 +281,7 @@
           class="bikex-header mb-0 p-0 pb-1"><i class='fa fa-cogs pl-3' style='font-size:20px;color:#001232'></i>
         </router-link>
         </p>
-      </div>
+      </div> -->
 
 <div class="col-md-12 margin-right text-center border-bottom p-0" v-if="!toggle">
         <router-link to="/banners" exact-active-class="active" class="d-flex navigate-padding">
@@ -307,8 +306,7 @@
 import navigation from '../navigation'
 export default {
     data(){
-        return {
-            
+        return {   
             activenow : '',
             finance:'',
             sell:'',
@@ -321,6 +319,7 @@ export default {
       this.$store.dispatch('agents');
       let auth = localStorage.getItem('token')
       this.id = localStorage.getItem('temp')
+
       this.user = auth
         
         if(!auth){
@@ -353,6 +352,12 @@ export default {
       },
       admin(){
           return true
+      },
+      designation(){
+        return localStorage.getItem('part')
+      },
+      permission(){
+        return JSON.parse(localStorage.getItem('session'))
       }
     }, 
     methods:{
@@ -373,6 +378,8 @@ export default {
           logout(){
         localStorage.removeItem('token')
         localStorage.removeItem('temp')
+        localStorage.removeItem('session')
+        localStorage.removeItem('part')
         window.location.reload()
         this.navigation = false
       },

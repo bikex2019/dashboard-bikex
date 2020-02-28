@@ -154,7 +154,7 @@
           </p>
         </button>
           <div class="panel text-left" v-bind:class="{panel100: showpricing}"> 
-            <div class="col-md-12 mt-3 d-flex justify-content-between">
+            <div class="col-md-12 mt-3 d-flex justify-content-between" v-if="permission.view_procured_price">
                <h5>Procured Price</h5>
                <h5>{{procuredcost | currency}}</h5>
              </div>
@@ -166,7 +166,7 @@
                <h5>Selling Price</h5>
                <h5>{{sellingprice | currency}}</h5>
              </div>
-              <div class="col-md-12 mt-3 d-flex justify-content-between">
+              <div class="col-md-12 mt-3 d-flex justify-content-between" v-if="permission.view_procured_price">
                <h5>Margin value</h5>
                <h5 v-bind:class="{positive: marginvalue > 0}" class="red">
                  <span v-if="marginvalue > 0"> + </span>
@@ -196,7 +196,7 @@
                   <th>Item Name</th>
                    <th>Item Price</th>
                   <th>Labour Cost</th>
-                  <p class="display-flex justify-content-between text-right mt-3">
+                  <p class="display-flex justify-content-between text-right mt-3" v-if="permission.view_refurbish">
                     <span class="pr-5 pl-0 ml-0 pt-2 hand red" v-on:click="delete_ref(refurbish._id)">Delete</span>
                          <span v-on:click="edit(refurbish)">
                     <i class="fa fa-pencil px-3 hand" aria-hidden="true"></i>
@@ -272,7 +272,6 @@
                         <label for="query">Item Name</label>
                         <input type="text" v-model="name" class="form-control" id="query">
                     </div>
-
                     <div class="form-group text-left col-md-3">
                         <label for="answer">Serial No</label>
                         <input v-model="slno" class="form-control" id="answer" rows="3">
@@ -414,7 +413,6 @@ export default {
          }).catch(()=>{
            this.loading = false
          })
-
   },
   mounted(){
     let auth = localStorage.getItem('token')
@@ -466,7 +464,6 @@ export default {
             removerow(id){
                 this.input.splice(id, 1)    
             },
-
       view_model(identity){
         this.$router.push('/models/'+identity)
       },
@@ -499,6 +496,9 @@ export default {
       }
   },
   computed:{
+    permission(){
+        return JSON.parse(localStorage.getItem('session'))
+      },
     total:function(){
           var totals = 0;
           this.datas.forEach((n) => {
@@ -544,7 +544,6 @@ export default {
       return this.sellingprice - (this.procuredcost + this.refurbishCost)
     }
   }
-
 }
 </script>
 <style scoped>
@@ -562,8 +561,6 @@ export default {
   color: blue;
   outline: none;
     box-shadow: none;
-
-
 } */
 .hand{
   cursor: pointer;
@@ -586,7 +583,6 @@ export default {
 .wrapper-progressBar {
     width: 100%
 }
-
 .progressBar {
   margin-top: 80px;
 }
@@ -645,7 +641,6 @@ p{
     margin: 0 auto 10px;
     background-color: white
 }
-
 .progressBar li:after {
     content: "";
     position: absolute;
@@ -656,11 +651,9 @@ p{
     left: -50%;
     z-index: -1;
 }
-
 .progressBar li:first-child:after {
     content: none;
 }
-
 .progressBar li.active {
     color: #aa781d;
 }
@@ -674,7 +667,6 @@ p{
 .progressBar .active:after {
     background-color: #ffb52f;
 }
-
 #overlay {
   position: fixed;
   width: 100%;
@@ -720,11 +712,9 @@ p{
   font-weight: bold;
   text-transform: uppercase
 }
-
 /* .active, .accordion:hover {
   border-bottom: 1px solid #ffb52f
 } */
-
 .panel {
   height: 0px;
   font-size: 15px;

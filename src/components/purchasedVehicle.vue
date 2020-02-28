@@ -60,9 +60,10 @@
             <th>MAKE</th>
             <th>DATE</th>
             <th>STATUS</th>
-            <th>TYPE</th>
-            <th>UPLOAD</th>
+            <th v-if="permission.view_procured_price">C PRICE</th>
+            <th>S PRICE</th>
             <th>ACTION</th>
+
         </tr>
         </thead>
         <tbody>
@@ -78,14 +79,29 @@
                 <td v-on:click="see_vehicle(data.vehicle_id)" class="py-1" v-if="data.status == 3"><span style="color:#FFB52F">Live!</span></td>
                 <td v-on:click="see_vehicle(data.vehicle_id)" class="py-1" v-if="data.status == 4"><span style="color:#FFB52F">Booked!</span></td>
                 <td v-on:click="see_vehicle(data.vehicle_id)" class="py-1" v-if="data.status == 5"><span style="color:#FFB52F">Sold!</span></td>
-                <td v-on:click="see_vehicle(data.vehicle_id)" class="py-1">{{data.vehicle_type}}</td>
-                <td v-on:click="see_vehicle(data.vehicle_id)" class="py-1" v-if="data.imageUpload == 0"><span style="color:#FFB52F"><i class="fa fa-times" aria-hidden="true"></i></span></td>
-                <td v-on:click="see_vehicle(data.vehicle_id)" class="py-1" v-if="data.imageUpload == 1"><span style="color:#FFB52F"><i class="fa fa-clock-o" aria-hidden="true"></i></span></td>
-                <td v-on:click="see_vehicle(data.vehicle_id)" class="py-1" v-if="data.imageUpload == 2"><span><i class="fa fa-check" aria-hidden="true"></i></span></td>
-                <td v-on:click="see_vehicle(data.vehicle_id)" class="py-1"  v-if="data.imageUpload == null"><span>-</span></td>
-                <td class="py-1"><button class="button btn btn-primary m-0 p-0 custom-button" v-on:click="editModals(data)"><i class="fa fa-pencil px-1" aria-hidden="true"></i></button>
-                <button class="button btn btn-primary m-0 p-0  custom-button" v-on:click="editStatus(data)"><i class="fa fa-bicycle px-1" aria-hidden="true"></i></button>
-               <button class="button btn btn-primary m-0 p-0  custom-button" v-on:click="goToUpload(data.vehicle_id)"><i class="fa fa-eye px-1" aria-hidden="true"></i></button>
+                                <td v-on:click="see_vehicle(data.vehicle_id)" v-if="permission.view_procured_price" class="py-1">
+                  
+                  <!-- {{data.procured_price | currency}} -->
+                  {{(data.total_cost || 0) + data.procured_price | currency}}
+                <span v-if="data.total_cost">
+                  <i class="fa fa-check" aria-hidden="true"></i>
+                </span>
+                  </td>
+                <td v-on:click="see_vehicle(data.vehicle_id)" class="py-1">{{data.selling_price | currency }}</td>
+                <td class="py-1">
+                            <div class="btn-group dropleft">
+            <button id="tooltip2" type="button" class="btn dropdown-toggle m-0 p-1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+             Action
+            </button>
+            <div class="dropdown-menu">
+              <a class="dropdown-item" v-on:click="see_vehicle(data.vehicle_id)">View Vehicle</a>
+              <a class="dropdown-item" v-on:click="editModals(data)" v-if="permission.edit_vehicle">Edit Vehicle</a>
+              <a class="dropdown-item" v-on:click="editStatus(data)" v-if="permission.edit_vehicle">Change Status</a>
+              <a class="dropdown-item" v-on:click="goToUpload(data.vehicle_id)">View Images</a>
+              <a class="dropdown-item" v-on:click="goto(data.vehicle_id)" v-if="permission.view_refurbish">Refurbishment</a>
+              <!-- <a class="dropdown-item" v-on:click="opensmsModal(data.id, data.customerMobile)">Send SMS</a> -->
+            </div>
+          </div>
                 </td>
             </tr>
         </tbody>
@@ -572,6 +588,9 @@ export default {
           this.pageNumber=this.$route.query.page || 1
     }, 
     methods:{
+      goto(id){
+          this.$router.push({path: '/refurbish', query:{id: id}})
+      },
       goToUpload(id){
            this.$router.push({path:'/uploads/'+ id})
       },
@@ -781,6 +800,9 @@ export default {
         },
     },
     computed:{
+      permission(){
+        return JSON.parse(localStorage.getItem('session'))
+      },
       displayData(){
         const temp = []
         this.procured_vehicels.forEach(x => {
@@ -1096,7 +1118,9 @@ input[type="checkbox"]:checked + label:before {
   position: relative;
   animation: mymove 1s infinite;
 }
-
+.dropdown-toggle, .dropdown-item{
+  font-size: 13px
+}
 @keyframes mymove {
   from {transform: rotate(-45deg);}
   to {transform: rotate(45deg);}

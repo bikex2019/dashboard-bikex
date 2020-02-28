@@ -7,6 +7,8 @@
                     <quickoverview></quickoverview>
                 </div>
                    <div class="col-md-6">
+                               {{session}}
+
                     <reminderTab></reminderTab>
                 </div>
                 <!-- <div class="col-md-3">
@@ -43,7 +45,8 @@ export default {
         // purchasechart
     },
     beforeCreate(){
-        let auth = localStorage.getItem('token')
+
+        let auth = localStorage.getItem('session')
         this.id = localStorage.getItem('temp')
         if(!auth){
             this.$router.push('/login')

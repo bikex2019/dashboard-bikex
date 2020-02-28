@@ -71,9 +71,20 @@
                 <td v-on:click="see_vehicle(data.vehicle_id)" class="py-1" v-if="data.imageUpload == 1"><span style="color:#FFB52F"><i class="fa fa-clock-o" aria-hidden="true"></i></span></td>
                 <td v-on:click="see_vehicle(data.vehicle_id)" class="py-1" v-if="data.imageUpload == 2"><span><i class="fa fa-check" aria-hidden="true"></i></span></td>
                 <td v-on:click="see_vehicle(data.vehicle_id)" class="py-1"  v-if="data.imageUpload == null"><span>-</span></td> -->
-                <td class="py-1"><button class="button btn btn-primary m-0 p-0 custom-button" v-on:click="editModals(data)"><i class="fa fa-pencil px-1" aria-hidden="true"></i></button>
-                <button class="button btn btn-primary m-0 p-0  custom-button" v-on:click="editStatus(data)"><i class="fa fa-bicycle px-1" aria-hidden="true"></i></button>
-               <button class="button btn btn-primary m-0 p-0  custom-button" v-on:click="goToUpload(data.vehicle_id)"><i class="fa fa-eye px-1" aria-hidden="true"></i></button>
+                <td class="py-1">
+                <div class="btn-group dropleft">
+                  <button id="tooltip2" type="button" class="btn dropdown-toggle m-0 p-1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                  Action
+                  </button>
+                  <div class="dropdown-menu">
+                    <a class="dropdown-item" v-on:click="see_vehicle(data.vehicle_id)">View Vehicle</a>
+                    <a class="dropdown-item" v-on:click="editModals(data)" v-if="permission.edit_vehicle">Edit Vehicle</a>
+                    <a class="dropdown-item" v-on:click="editStatus(data)" v-if="permission.edit_vehicle">Change Status</a>
+                    <a class="dropdown-item" v-on:click="goToUpload(data.vehicle_id)">View Images</a>
+                    <a class="dropdown-item" v-on:click="goto(data.vehicle_id)" v-if="permission.view_refurbish">Refurbishment</a>
+                    <!-- <a class="dropdown-item" v-on:click="opensmsModal(data.id, data.customerMobile)">Send SMS</a> -->
+                  </div>
+                </div>
                 </td>
             </tr>
         </tbody>
@@ -386,6 +397,9 @@ export default {
           this.pageNumber=this.$route.query.page || 1
     },
     methods:{
+          goto(id){
+          this.$router.push({path: '/refurbish', query:{id: id}})
+      },
        see_vehicle(identity){
          window.console.log('working')
         this.$router.push('/vehicles/'+ identity)
@@ -587,6 +601,9 @@ export default {
          }
     },
     computed:{
+      permission(){
+        return JSON.parse(localStorage.getItem('session'))
+      },
       loading(){
         return this.$store.state.loading
       },
@@ -837,7 +854,9 @@ input:focus, textarea:focus, select:focus{
   top: 8px;
   transition: 0.2s ease all;
 }
-
+.dropdown-toggle, .dropdown-item{
+  font-size: 13px
+}
 /*Checkboxes styles*/
 input[type="checkbox"] { display: none; }
 

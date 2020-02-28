@@ -30,6 +30,8 @@ import agentactivity from './components/agentactivity'
 import profile from './components/agent-profile'
 import manageAgents from './components/manageAgents'
 import banners from './components/banners'
+import vehicle_refurbish from './components/vehicle-refurb'
+import agent_permission from './components/agent_permission'
 
 
 
@@ -52,9 +54,13 @@ export default[
     {path:'/view-profile/:id', component:viewCustomer},
     {path:'/all-purchase', component:purchased_vehicle},
     {path:'/login', component:login},
+    {path:'/refurbish', component:vehicle_refurbish},
+
+    
     {path:'/uploads/:id', component:uploads},
     {path:'/pending-upload', component:pendingUpload},
     {path:'/fines', component:fines},
+    {path:'/agent_permission/:id', component:agent_permission},
     {path:'/finance', component:finance},
     {path:'/customers', component:customers},
     {path:'/purchase', component:purchase},

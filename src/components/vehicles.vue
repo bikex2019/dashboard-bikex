@@ -30,7 +30,7 @@
                 </div>
                 <div class="col-md-2 p-0 m-0 text-right d-flex justify-content-between">
                     <input type="text" v-model="search" placeholder="search here.." class="search">
-                    <button class="btn round" v-on:click="openModal">
+                    <button v-if="permission.edit_vehicle" class="btn round" v-on:click="openModal">
                       <i class="fa fa-plus" aria-hidden="true"></i>
                     </button>
                 </div>
@@ -47,6 +47,8 @@
             <th>MAKE/MODEL</th>
             <TH>MFG YEAR</TH>
             <th>CHASIS NO</th>
+            <th v-if="permission.view_procured_price">C PRICE</th>
+            <th>S PRICE</th>
             <th>STATUS</th>
             <!-- <th>TYPE</th> -->
             <!-- <th>UPLOAD</th> -->
@@ -60,6 +62,15 @@
                 <td v-on:click="see_model(data.model_id)" class="py-1 under">{{data.make}} {{data.modal_name}}</td>
                 <td v-on:click="see_vehicle(data.vehicle_id)" class="py-1">{{data.manufacture_year | moment('calendar')}}</td>
                 <td v-on:click="see_vehicle(data.vehicle_id)" class="py-1">{{data.chassis_no}}</td>
+                <td v-on:click="see_vehicle(data.vehicle_id)" v-if="permission.view_procured_price" class="py-1">
+                  
+                  <!-- {{data.procured_price | currency}} -->
+                  {{(data.total_cost || 0) + data.procured_price | currency}}
+                <span v-if="data.total_cost">
+                  <i class="fa fa-check" aria-hidden="true"></i>
+                </span>
+                  </td>
+                <td v-on:click="see_vehicle(data.vehicle_id)" class="py-1">{{data.selling_price | currency }}</td>
                 <td v-on:click="see_vehicle(data.vehicle_id)" class="py-1" v-if="data.status == 0"><span style="color:green">Procured</span></td>
                 <td v-on:click="see_vehicle(data.vehicle_id)" class="py-1" v-if="data.status == 1"><span style="color:brown">Under-Refurbish</span></td>
                 <td v-on:click="see_vehicle(data.vehicle_id)" class="py-1" v-if="data.status == 2"><span style="color:purple">In Stock</span></td>
@@ -71,10 +82,25 @@
                 <td v-on:click="see_vehicle(data.vehicle_id)" class="py-1" v-if="data.imageUpload == 1"><span style="color:#FFB52F"><i class="fa fa-clock-o" aria-hidden="true"></i></span></td>
                 <td v-on:click="see_vehicle(data.vehicle_id)" class="py-1" v-if="data.imageUpload == 2"><span><i class="fa fa-check" aria-hidden="true"></i></span></td>
                 <td v-on:click="see_vehicle(data.vehicle_id)" class="py-1"  v-if="data.imageUpload == null"><span>-</span></td> -->
-                <td class="py-1"><button class="button btn btn-primary m-0 p-0 custom-button" v-on:click="editModals(data)"><i class="fa fa-pencil px-1" aria-hidden="true"></i></button>
-                <button class="button btn btn-primary m-0 p-0  custom-button" v-on:click="editStatus(data)"><i class="fa fa-bicycle px-1" aria-hidden="true"></i></button>
-               <button class="button btn btn-primary m-0 p-0  custom-button" v-on:click="goToUpload(data.vehicle_id)"><i class="fa fa-eye px-1" aria-hidden="true"></i></button>
-                </td>
+                <td class="py-1">
+
+
+          <div class="btn-group dropleft">
+            <button id="tooltip2" type="button" class="btn dropdown-toggle m-0 p-1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+             Action
+            </button>
+            <div class="dropdown-menu">
+              <a class="dropdown-item" v-on:click="see_vehicle(data.vehicle_id)">View Vehicle</a>
+              <a class="dropdown-item" v-on:click="editModals(data)" v-if="permission.edit_vehicle">Edit Vehicle</a>
+              <a class="dropdown-item" v-on:click="editStatus(data)" v-if="permission.edit_vehicle">Change Status</a>
+              <a class="dropdown-item" v-on:click="goToUpload(data.vehicle_id)">View Images</a>
+              <a class="dropdown-item" v-on:click="goto(data.vehicle_id)" v-if="permission.view_refurbish">Refurbishment</a>
+              <!-- <a class="dropdown-item" v-on:click="opensmsModal(data.id, data.customerMobile)">Send SMS</a> -->
+            </div>
+          </div>
+
+
+              </td>
             </tr>
         </tbody>
           <!-- <div id="overlay" v-if="loading">
@@ -399,20 +425,20 @@
               <div class="col-md-12 mb-4 text-left d-flex">
                  <h5 class="col-sm-4 mb-4 p-0 font-weight-bold text-left">Documents Collected:</h5>
 
-                <input type="checkbox" v-model="rc_card" id="box-1">
-                <label for="box-1" class="mr-3">RC card</label>
+                <input type="checkbox" v-model="rc_card" id="box-10">
+                <label for="box-10" class="mr-3">RC card</label>
 
-                 <input type="checkbox" v-model="insurance" id="box-2">
-                <label for="box-2" class="mr-3">Insurance</label>
+                 <input type="checkbox" v-model="insurance" id="box-20">
+                <label for="box-20" class="mr-3">Insurance</label>
 
-                 <input type="checkbox" v-model="b_extract" id="box-4">
-                <label for="box-4" class="mr-3">B Extract</label>
+                 <input type="checkbox" v-model="b_extract" id="box-40">
+                <label for="box-40" class="mr-3">B Extract</label>
 
-                 <input type="checkbox" v-model="hypothecation" id="box-5">
-                <label for="box-5" class="mr-3">Hypothecation</label>
+                 <input type="checkbox" v-model="hypothecation" id="box-50">
+                <label for="box-50" class="mr-3">Hypothecation</label>
 
-                <input type="checkbox" v-model="noc" id="box-6">
-                <label for="box-6" class="mr-3">NOC</label>
+                <input type="checkbox" v-model="noc" id="box-60">
+                <label for="box-60" class="mr-3">NOC</label>
 
               </div>
               
@@ -571,11 +597,14 @@ export default {
         }
        this.$store.dispatch('total_vehicle_procured');
         this.$store.dispatch('load_models');
-
+  this.$store.dispatch('fetch_refurbish_details')
         this.pageNumber=this.$route.query.page || 1
         this.search=this.$route.query.search || ''
     },
     methods:{
+      goto(id){
+          this.$router.push({path: '/refurbish', query:{id: id}})
+      },
        see_vehicle(identity){
          window.console.log('working')
         this.$router.push('/vehicles/'+ identity)
@@ -817,11 +846,20 @@ export default {
         }
     },
     computed:{
+      permission(){
+        return JSON.parse(localStorage.getItem('session'))
+      },
+      designation(){
+        return localStorage.getItem('part')
+      },
       loading(){
         return this.$store.state.loading
       },
       procured_vehicels(){
          return this.$store.state.procured_vehicles;
+      },
+      refurbish_details(){
+         return this.$store.state.refurbishDetail;
       },
       modals(){
          return this.$store.state.models;
@@ -837,6 +875,17 @@ export default {
         })
       return temp
       },
+      // addingRefurb(){
+      //   const temp = []
+      //   this.displayData.forEach(x => {
+      //       this.refurbish_details.forEach(y => {
+      //       if (x.vehicle_id === y.vehicle_number) {
+      //           temp.push({ ...x, total_cost: y.total_cost})
+      //       }
+      //       })
+      //   })
+      // return temp
+      // },
       filteredmodels(){
          var m = this.modals.filter(datas=>{
            return datas.make == this.make
@@ -870,7 +919,7 @@ export default {
       },
       filteredList() {
         return this.p.filter(post => {
-        return (post.vehicle_number.toLowerCase().includes(this.search.toLowerCase()) 
+        return (post.chassis_no.toLowerCase().includes(this.search.toLowerCase()) 
         ||
         post.vehicle_id.toString().includes(this.search.toLowerCase())
         )
@@ -1146,6 +1195,9 @@ input[type="checkbox"]:checked + label:before {
 table{
   border-collapse: separate;
     border-spacing: 0 1em;
+}
+.dropdown-toggle, .dropdown-item{
+  font-size: 13px
 }
 @keyframes mymove {
   from {transform: rotate(-45deg);}

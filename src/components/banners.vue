@@ -12,13 +12,13 @@
   </div>
 
   <div class="col-md-12 text-right">
-      <button class="custom" v-on:click="openaddbanner()">ADD BANNER</button>
+      <button class="custom" v-if="permission.change_banner" v-on:click="openaddbanner()">ADD BANNER</button>
   </div>
     <div class="row mt-5">
-      <div class="image-container col-md-6" v-for="(image, index) in display" :key="index">
+      <div class="image-container col-md-4 mt-4" v-for="(image, index) in display" :key="index">
         <img :src="image.path" width="100%"  style="cursor:pointer;"  @click="openimagepreview(image.path)" >
         <!-- <p>Visibility: {{image.visibility}}</p> -->
-        <div class="container text-center">
+        <div class="container text-center" v-if="permission.change_banner">
             <p class="icon pl-4" v-if="image.visibility == 1">visibility: <i class="fa fa-toggle-on icon" v-on:click="visible(image._id, 0)" aria-hidden="true"></i></p>
             <p class="icon pl-4" v-else>visibility: <i class="fa fa-toggle-off icon" v-on:click="visible(image._id, 1)" aria-hidden="true"></i></p>
             <p class="icon ml-4" v-on:click="deletedisplay(image._id)"><i class="fa fa-trash-o" aria-hidden="true"></i></p>
@@ -109,7 +109,11 @@ export default {
       },
       display(){
           return this.$store.state.banners
+      },
+      permission(){
+        return JSON.parse(localStorage.getItem('session'))
       }
+      
   },
   methods:{
     closeimagepreview(){
