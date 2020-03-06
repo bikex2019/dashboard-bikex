@@ -162,6 +162,10 @@
                <h5>Refurbishment Cost</h5>
                <h5>{{refurbishCost | currency}}</h5>
              </div>
+            <div class="col-md-12 mt-3 d-flex justify-content-between">
+               <h5>Registration and Transfer Cost</h5>
+               <h5>{{registration_cost | currency}}</h5>
+             </div>
              <div class="col-md-12 mt-3 d-flex justify-content-between">
                <h5>Selling Price</h5>
                <h5>{{sellingprice | currency}}</h5>
@@ -540,8 +544,15 @@ export default {
           }
           return cost 
     },
+    registration_cost(){
+       var cost = 0 ;
+          for(var i in this.vehicles){
+            cost += this.vehicles[i].registration_cost
+          }
+          return cost 
+    },
     marginvalue(){
-      return this.sellingprice - (this.procuredcost + this.refurbishCost)
+      return this.sellingprice - (this.procuredcost + this.refurbishCost + this.registration_cost)
     }
   }
 }

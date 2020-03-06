@@ -56,7 +56,7 @@ export default {
         }
     },
     created(){
-        let auth = localStorage.getItem('token')
+        let auth = localStorage.getItem('session')
         if(auth){
             this.$swal({
                 position: 'top-end',

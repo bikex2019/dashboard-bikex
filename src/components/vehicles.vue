@@ -316,6 +316,10 @@
                 <input type="number" v-model="selling_price" class="inputText form-control" required/>
                 <span class="floating-label">Selling Price</span>
               </div> 
+              <div class="col-md-4 mb-4">
+                <input type="number" v-model="registration_cost" class="inputText form-control" required/>
+                <span class="floating-label">Registration/Transfer Cost</span>
+              </div>
 
            
             </div>             
@@ -493,10 +497,14 @@
                 <input type="number" v-model="procured_price" class="inputText form-control" required/>
                 <span class="floating-label">Procured Price</span>
               </div> 
-               <div class="col-md-4 mb-4">
+              <div class="col-md-4 mb-4">
                 <input type="number" v-model="selling_price" class="inputText form-control" required/>
                 <span class="floating-label">Selling Price</span>
-              </div> 
+              </div>
+              <div class="col-md-4 mb-4">
+                <input type="number" v-model="registration_cost" class="inputText form-control" required/>
+                <span class="floating-label">Registration/Transfer Cost</span>
+              </div>
               <hr>
             </div>             
                 </form>
@@ -562,6 +570,7 @@ export default {
               status:0,
               statusModel:'',
               editStatusid:'',
+              registration_cost:'',
               modaltable_response:[],
               loadonadd:false,
               selectedFiles:null,
@@ -668,6 +677,7 @@ export default {
               procured_date:this.procured_date ,
               procured_price:this.procured_price ,
               selling_price:this.selling_price ,
+              registration_cost:this.registration_cost,
               
             }).
             then(response=>{
@@ -712,6 +722,7 @@ export default {
               procured_date:this.procured_date ,
               procured_price:this.procured_price ,
               selling_price:this.selling_price ,
+              registration_cost:this.registration_cost,
               updated: this.date
             }).
             then(response=>{
@@ -782,6 +793,7 @@ export default {
             this.procured_date = moment(vehicleToEdit.procured_date).format("YYYY-MM-DD");
             this.procured_price = vehicleToEdit.procured_price
             this.selling_price = vehicleToEdit.selling_price
+            this.registration_cost = vehicleToEdit.registration_cost
         },
          editStatus: function(vehicleEdit){
            window.console.log(vehicleEdit)
@@ -922,6 +934,8 @@ export default {
         return (post.chassis_no.toLowerCase().includes(this.search.toLowerCase()) 
         ||
         post.vehicle_id.toString().includes(this.search.toLowerCase())
+        ||
+        post.vehicle_number.toLowerCase().includes(this.search.toLowerCase())
         )
       })
     },
