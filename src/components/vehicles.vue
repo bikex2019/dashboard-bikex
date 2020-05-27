@@ -188,7 +188,11 @@
                 <input type="text" v-model="color" class="inputText form-control" required/>
                 <span class="floating-label">Color</span>
               </div>
-                  <div class="col-md-4 mb-4">
+              <div class="col-md-4 mb-4">
+                <input type="text" v-model="km_reading" class="inputText form-control" required/>
+                <span class="floating-label">KM Reading</span>
+              </div>
+              <div class="col-md-4 mb-4">
                 <input type="number" v-model="fines" class="inputText form-control" required/>
                 <span class="floating-label">Fines (if any)</span>
               </div>
@@ -375,6 +379,10 @@
               <div class="col-md-4 mb-4">
                 <input type="text" v-model="color" class="inputText form-control" required/>
                 <span class="floating-label">Color</span>
+              </div>
+              <div class="col-md-4 mb-4">
+                <input type="text" v-model="km_reading" class="inputText form-control" required/>
+                <span class="floating-label">Km Reading</span>
               </div>
                   <div class="col-md-4 mb-4">
                 <input type="number" v-model="fines" class="inputText form-control" required/>
@@ -571,6 +579,7 @@ export default {
               statusModel:'',
               editStatusid:'',
               registration_cost:'',
+              km_reading:'',
               modaltable_response:[],
               loadonadd:false,
               selectedFiles:null,
@@ -678,6 +687,7 @@ export default {
               procured_price:this.procured_price ,
               selling_price:this.selling_price ,
               registration_cost:this.registration_cost,
+              km_reading:this.km_reading,
               
             }).
             then(response=>{
@@ -723,6 +733,7 @@ export default {
               procured_price:this.procured_price ,
               selling_price:this.selling_price ,
               registration_cost:this.registration_cost,
+              km_reading:this.km_reading,
               updated: this.date
             }).
             then(response=>{
@@ -794,6 +805,7 @@ export default {
             this.procured_price = vehicleToEdit.procured_price
             this.selling_price = vehicleToEdit.selling_price
             this.registration_cost = vehicleToEdit.registration_cost
+            this.km_reading = vehicleToEdit.km_reading
         },
          editStatus: function(vehicleEdit){
            window.console.log(vehicleEdit)

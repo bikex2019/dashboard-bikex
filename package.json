@@ -16,6 +16,8 @@
     "lodash": "^4.17.15",
     "number-to-words": "^1.2.4",
     "pdfmake": "^0.1.63",
+    "qrcode": "^1.4.4",
+    "qrcode.vue": "^1.7.0",
     "vue": "^2.6.10",
     "vue-chartjs": "^3.4.2",
     "vue-graph": "^0.8.7",

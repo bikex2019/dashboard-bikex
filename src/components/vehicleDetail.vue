@@ -1,13 +1,19 @@
 <template>
 <div class="upload col-md-12" style="margin:0 auto">
-  <div class="col-md-12 mt-5 m-0 p-0">
+  <div class="col-md-12 mt-5 mb-4 text-left">
+           <button @click="$router.go(-1)" class="backbutton">
+            <i class="fa fa-angle-left p-1" aria-hidden="true"></i>
+             </button>
+  </div>
     <div class="row col-md-12 m-0 p-0">
-      <div class="col-md-11 d-flex justify-content-between">
-       <button @click="$router.go(-1)" class="backbutton"><i class="fa fa-long-arrow-left p-2" aria-hidden="true"></i></button>
+      <div class="col-md-11 d-flex justify-content-between" style="margin:0 auto">
+          <div class="d-flex justify-content-between">
+             <qrcode-vue id="canvas" :value="value"></qrcode-vue>
+             <p class="pl-4 pt-4 hand" v-on:click="downloadQR"><i class="fa fa-download" aria-hidden="true" style="font-size:25px"></i></p>
+          </div>
         <p class="pl-3 pt-2" style="font-size:15px"><STRONG>VEHICLE ID:</STRONG> BX{{id}}</p>
       </div>
     </div>
-  </div>
   <div class="table col-md-11" style="margin:0 auto">
         <div class="col-md-12 m-0 p-0 text-left">
       <div class="container col-md-12 m-0 p-0 mb-3">
@@ -41,6 +47,7 @@
           <p><label>Chassis No:</label> {{vehicledetail.chassis_no}}</p>
           <p><label>Manufacture Year:</label> {{vehicledetail.manufacture_year| moment("MMMM Do YYYY")}}</p>
           <p><label>Fines:</label> {{vehicledetail.fines}}</p>
+          <p><label>KM Reading:</label> {{vehicledetail.km_reading}} km</p>
         </div>
 
        <div class="border p-2 mt-3">
@@ -364,6 +371,9 @@
 </template>
 
 <script>
+import QrcodeVue from 'qrcode.vue'
+import jsPDF from 'jspdf'
+
 export default {
   data(){
     return{
@@ -396,6 +406,9 @@ export default {
       input:[]
     }
   },
+    components: {
+    QrcodeVue,
+  },
   created(){
      this.id = this.$route.params.id
      this.$http.get('https://backend-bikex.herokuapp.com/api/upload-display/'+ this.id)
@@ -412,7 +425,6 @@ export default {
     this.$http.get('https://backend-bikex.herokuapp.com/api/refurbished/'+ this.id)
           .then(response=>{
           this.refurbish = response.body
-          window.console.log(this.refurbish)
           this.loading = false
          }).catch(()=>{
            this.loading = false
@@ -425,9 +437,26 @@ export default {
             this.$swal('Please Log in.');
             this.$router.push('/login')
         }
+            
+    // window.console.log(x)
    
   },
   methods:{
+    downloadQR(){
+            var image = window.document.getElementById('myCanvas').toDataURL("image/png")
+            let pdfName = `BIKEX-QR-BX${this.id}`; 
+            var doc = new jsPDF();
+            doc.setFontSize(20);
+            doc.text("BIKEX", 105, 80, null, null, "center");
+            // doc.setTextColor("blue");
+            doc.setFontSize(12);
+            // doc.text("WE VALUE TIME", 105, 90, null, null, "center");
+            doc.setTextColor(100);
+            doc.text("Scan and get the Specification.", 105, 100, null, null, "center");
+            doc.text(`BX${this.id}`, 105, 110, null, null, "center");
+            doc.addImage(image, "JPEG", 69, 120, 70, 70);
+            doc.save(pdfName + '.pdf');
+          },
        updaterefurb: function(){
             this.updateRef = true
             this.$http.put('https://backend-bikex.herokuapp.com/api/refurbished/'+ this.ref_edit_id,{
@@ -486,7 +515,6 @@ export default {
         this.editrefurbish = false
       },
       edit(editref){
-        window.console.log(editref)
         this.editrefurbish = true
         this.total_amount = editref.total_cost
         this.ref_edit_id = editref._id
@@ -500,6 +528,9 @@ export default {
       }
   },
   computed:{
+    value(){
+      return `https://bikex-store.firebaseapp.com/${this.id}`
+    },
     permission(){
         return JSON.parse(localStorage.getItem('session'))
       },
