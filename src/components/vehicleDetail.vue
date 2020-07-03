@@ -81,7 +81,7 @@
        </div>
        <div class="border p-2 mt-3">
             <p><label>Remarks:</label> {{vehicledetail.remarks}}</p>
-          </div>
+        </div>
           <!-- <p><label>Procured Price:</label> {{vehicledetail.procured_price | currency}}</p> -->
       </div>
        <div class="col-md-4 text-left"  v-for="(vehicledetail, index) in vehicles" :key="index">
@@ -147,6 +147,34 @@
     </div>
   </div>
 
+  <div class="col-md-12 text-left m-0 p-0">
+    <h6>Documents</h6>
+    <div class="col-md-2 d-flex justify-content-between permission" v-for="(data, index) in vehicles" :key="index">
+      <p>Form 26</p>
+      {{data.form_26}}
+        <p class="icon" v-if="data.form_26">
+        <i style="color:blue" v-on:click="form_26(false)" class="fa fa-toggle-on icon" aria-hidden="true"></i>
+        <!-- <img v-on:click="form_26(false)" class="m-0 p-0" src="../assets/switchon.svg" width="35px"> -->
+        </p>
+        <p class="icon" v-else>
+        <i style="color:red" v-on:click="form_26(true)" class="fa fa-toggle-off icon" aria-hidden="true"></i>
+        <!-- <img v-on:click="form_26(true)" class="m-0 p-0" src="../assets/switchoff.svg" width="35px"> -->
+      </p>
+    </div>
+    <div class="col-md-2 d-flex justify-content-between permission" v-for="(data, index) in vehicles" :key="index">
+      <p>Form 26</p>
+        <p class="icon" v-if="data.form_26">
+        <i style="color:blue" v-on:click="form_26(false)" class="fa fa-toggle-on icon" aria-hidden="true"></i>
+        <!-- <img v-on:click="form_26(false)" class="m-0 p-0" src="../assets/switchon.svg" width="35px"> -->
+        </p>
+        <p class="icon" v-else>
+        <i style="color:red" v-on:click="form_26(true)" class="fa fa-toggle-off icon" aria-hidden="true"></i>
+        <!-- <img v-on:click="form_26(true)" class="m-0 p-0" src="../assets/switchoff.svg" width="35px"> -->
+      </p>
+    </div>
+
+  </div>
+
 
   <div class="col-md-12 mt-5 mb-5 m-0 p-0 text-left">
       <div class="container col-md-12 m-0 p-0 mb-3">
@@ -187,7 +215,7 @@
           </div>
       </div>
   <div class="col-md- mt-5 mb-5 text-left">
-    <h5>Refurbishment Details:</h5>
+    <h6>Refurbishment Details:</h6>
       <div class="container col-md-12 m-0 p-0 mb-3" v-for="(refurbish, index) in refurbish" :key="index">
         <button class="accordion" v-on:click="openaccord(refurbish._id)">
           <span class="mr-5">Date: {{refurbish.date | moment("MMMM Do YYYY")}}</span>
@@ -442,6 +470,28 @@ export default {
    
   },
   methods:{
+    form_26(state){
+          this.loading =true
+          this.$http.put('https://backend-bikex.herokuapp.com/api/procurements/form_26/'+ this.$route.params.id,
+          {
+              form_26 : state,
+          }).
+            then(()=>{
+             this.reload()
+        }).catch(()=>{          
+              this.$swal('Something went wrong!');
+              this.loading = false
+        })
+    },
+    reload(){
+       this.$http.get('https://backend-bikex.herokuapp.com/api/fetch/procured-vehicle/'+ this.id)
+                .then(response=>{
+                this.vehicles = response.body
+                this.loading = false
+              }).catch(()=>{
+                this.loading = false
+              })
+    },
     downloadQR(){
             var image = window.document.getElementById('myCanvas').toDataURL("image/png")
             let pdfName = `BIKEX-QR-BX${this.id}`; 
@@ -597,6 +647,12 @@ export default {
   cursor: pointer;
   border: none
 }
+
+.icon{
+    font-size: 20px;
+    cursor: pointer;
+}
+
 /* .custom{
   border-radius: 50%;
   background-color: aliceblue;
