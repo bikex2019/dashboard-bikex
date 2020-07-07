@@ -23,7 +23,7 @@
                    <p><strong>Vehicle Details:</strong></p>
                    <div class="row">
                         <div class="col-md-5 mb-4 d-flex">
-                        <select class="inputText form-control" style="width:70%" v-model="customer_id" required>
+                        <select class="inputText form-control" style="width:50%" v-model="customer_id" required>
                         <option :value="customer._id" v-for="(customer, index) in customers" :key="index">{{customer.firstname}} {{customer.lastname}}-{{customer._id}}</option>
                         </select>
                          <span class="floating-label">Customer</span>
@@ -269,6 +269,9 @@ export default {
 </script>
 
 <style scoped>
+.offline-sell{
+  font-size: 15px
+}
 .no-wrap{
     overflow: hidden;
 white-space: nowrap; /* Don't forget this one */
@@ -404,7 +407,6 @@ input[type="checkbox"]:checked + label:before {
   overflow: auto; /* Enable scroll if needed */
   background-color: rgb(0,0,0); /* Fallback color */
   background-color: rgba(0,0,0,0.4); /* Black w/ opacity */
-  font-family: 'Montserrat', sans-serif;
 
 }
 .displayModal{

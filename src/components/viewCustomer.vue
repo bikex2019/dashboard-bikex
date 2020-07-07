@@ -49,7 +49,7 @@
                                             </div>
                                             <div class="col-md-6 m-0 p-0 text-left">
                                                 <p class="head2 m-0 p-0">1024</p>
-                                                <p class="m-0 p-0">points</p>
+                                                <p class="m-0 p-0 label">points</p>
                                             </div>
                                         </div>
                                     </div>
@@ -69,7 +69,7 @@
                                         </div>
                                         <div class="col-md-8 m-0 p-0 text-left">
                                         <p class="head2 m-0 p-0">500</p>
-                                        <p class="m-0 p-0">rewards redeemed</p>
+                                        <p class="m-0 p-0 label">rewards redeemed</p>
                                         </div>
                                        </div>
                                     </div>
@@ -86,7 +86,7 @@
                                         </div>
                                         <div class="col-md-8 m-0 p-0 text-left">
                                         <p class="head2 m-0 p-0">{{rupees | currency}}</p>
-                                        <p class="m-0 p-0">of transaction made</p>
+                                        <p class="m-0 p-0 label">of transaction made</p>
                                         </div>
                                        </div>
                                     </div>
@@ -104,7 +104,7 @@
                                             </div>
                                             <div class="col-md-6 m-0 p-0 text-left">
                                                 <p class="head2 m-0 p-0">{{messages.length}}</p>
-                                                <p class="m-0 p-0">messages</p>
+                                                <p class="m-0 p-0 label">messages</p>
                                             </div>
                                         </div>
                                     </div>
@@ -124,7 +124,7 @@
                                             </div>
                                             <div class="col-md-6 m-0 p-0 text-left">
                                                 <p class="head2 m-0 p-0">17</p>
-                                                <p class="m-0 p-0">emails</p>
+                                                <p class="m-0 p-0 label">emails</p>
                                             </div>
                                         </div>
                                     </div>
@@ -144,7 +144,7 @@
                                         </div>
                                         <div class="col-md-8 m-0 p-0 text-left">
                                         <p class="head2 m-0 p-0">3</p>
-                                        <p class="m-0 p-0">vehicles transact</p>
+                                        <p class="m-0 p-0 label">vehicles transact</p>
                                         </div>
                                        </div>
                                     </div>
@@ -164,7 +164,7 @@
         <div class="modals-content">
             <span class="close" v-on:click="closesendMessage">&times;</span>
                 
-                <div class="col-md-12 mt-5 m-0 p-0">
+                <div class="col-md-12 messages mt-5 m-0 p-0">
 
                    <div class="col-md-10 mb-3  text-left border" v-for="(datas, index) in messages" :key="index">
                        <p>{{datas.message}}</p>
@@ -273,16 +273,48 @@ export default {
 }
 </script>
 <style scoped>
+
+/* width */
+::-webkit-scrollbar {
+  width: 3px;
+}
+
+/* Track */
+::-webkit-scrollbar-track {
+  box-shadow: inset 0 0 1px grey;
+  border-radius: 10px;
+  display: none
+}
+
+/* Handle */
+::-webkit-scrollbar-thumb {
+  background: red;
+}
+
+/* Handle on hover */
+::-webkit-scrollbar-thumb:hover {
+  background: red;
+}
+
+.messages{
+    height: 310px;
+    overflow: scroll;
+    border: 1px solid rgb(206,212,218);
+    padding: 10px !important
+}
 .label{
     font-size:12px;
     color:gray
 }
 .head{
     font-weight: 500;
-    font-size: 15px;
+    font-size: 12px;
+}
+.leads{
+    font-size: 13px;
 }
 .head2{
-    font-size: 20px;
+    font-size: 18px;
     font-weight: 500;
 }
 .hand{

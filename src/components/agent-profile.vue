@@ -231,10 +231,8 @@ export default {
 }
 </script>
 <style scoped>
-@import url('https://fonts.googleapis.com/css?family=Montserrat&display=swap');
 
 .agent-profile{
-        font-family: 'Montserrat', sans-serif;
 }
 
 .custom{

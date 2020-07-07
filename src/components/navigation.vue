@@ -502,7 +502,6 @@ border-bottom: 1px solid gray
   transition: 0.3s;
 }
 .monte{
-      font-family: 'Montserrat', sans-serif;
       font-size: 12px;
 }
 .dropbtn {

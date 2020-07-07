@@ -134,7 +134,6 @@ export default {
     cursor: pointer;
 }
 .notification{
-    font-family: 'Montserrat', sans-serif;
     font-size: 12px;
      width: 100%;
   height: 200px;
@@ -228,7 +227,6 @@ label{
     border-left: 4px solid #ffb52f;
     padding-left: 7px;
     padding-top: 3px;
-    font-family: 'Montserrat', sans-serif;
 }
 table{
   border-collapse: separate;

@@ -276,17 +276,14 @@ export default {
 }
 </script>
 <style scoped>
-@import url('https://fonts.googleapis.com/css?family=Montserrat&display=swap');
 
 .table td{
     padding: 5px;
     margin: 0;
     font-size: 14px;
-    font-family: 'Montserrat', sans-serif;
 }
 .faqs{
     margin: 0 auto;
-    font-family: 'Montserrat', sans-serif;
     font-size: 12px;
 }
 .button{
@@ -381,7 +378,6 @@ table{
     border-left: 4px solid #ffb52f;
     padding-left: 7px;
     padding-top: 3px;
-    font-family: 'Montserrat', sans-serif;
 }
 .search{
   border-radius: 10px;

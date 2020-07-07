@@ -47,13 +47,13 @@ export default {
 </script>
 
 <style scoped>
-@import url('https://fonts.googleapis.com/css2?family=Jost:wght@500&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Exo+2:wght@100;300;500&display=swap');
 #app {
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
     text-align: center;
     color: #2c3e50;
-    font-family: 'Jost', sans-serif;
+    font-family: 'Exo 2', sans-serif;
 }
 .custom{
   padding-left: 68px;

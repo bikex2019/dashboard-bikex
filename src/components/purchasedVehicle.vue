@@ -886,17 +886,14 @@ export default {
 }
 </script>
 <style scoped>
-@import url('https://fonts.googleapis.com/css?family=Montserrat&display=swap');
 .search_placeholder{
   font-size: 12px;
   text-align: center;
-  font-family: 'Montserrat', sans-serif;
 }
 .fa, .fas {
     cursor: pointer;
 }
 .centres{
-    font-family: 'Montserrat', sans-serif;
     font-size: 12px;
 
 }
@@ -949,7 +946,6 @@ label{
   overflow: auto; /* Enable scroll if needed */
   background-color: rgb(0,0,0); /* Fallback color */
   background-color: rgba(0,0,0,0.4); /* Black w/ opacity */
-  font-family: 'Montserrat', sans-serif;
 
 }
 .displayModal{
@@ -1192,7 +1188,6 @@ input[type="checkbox"]:checked + label:before {
     border-left: 4px solid #ffb52f;
     padding-left: 7px;
     padding-top: 3px;
-    font-family: 'Montserrat', sans-serif;
 }
 table{
   border-collapse: separate;

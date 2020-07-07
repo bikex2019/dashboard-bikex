@@ -377,17 +377,14 @@ export default {
 }
 </script>
 <style scoped>
-@import url('https://fonts.googleapis.com/css?family=Montserrat&display=swap');
 
 .table td{
-    padding: 5px;
+    padding: 3px;
     margin: 0;
     font-size: 14px;
-    font-family: 'Montserrat', sans-serif;
 }
 .faqs{
     margin: 0 auto;
-    font-family: 'Montserrat', sans-serif;
     font-size: 12px;
 }
 .button{

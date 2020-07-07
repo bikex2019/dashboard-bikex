@@ -1,22 +1,22 @@
 <template>
-<div class="upload col-md-12" style="margin:0 auto">
-  <div class="col-md-12 mt-5 mb-4 text-left">
-           <button @click="$router.go(-1)" class="backbutton">
-            <i class="fa fa-angle-left p-1" aria-hidden="true"></i>
-             </button>
+<div class="upload font-standard col-md-12 m-0 p-0 p-0" style="margin:0 auto">
+  <div class="col-md-11 pl-2 p-0 mt-5 mb-4 text-left" style="margin:0 auto">
+          <button @click="$router.go(-1)" class="backbutton">
+          <i class="fa fa-angle-left p-1" aria-hidden="true"></i>
+          </button> 
   </div>
-    <div class="row col-md-12 m-0 p-0">
+    <div class="row col-md-12 m-0 p-0 m-0 p-0">
       <div class="col-md-11 d-flex justify-content-between" style="margin:0 auto">
           <div class="d-flex justify-content-between">
              <qrcode-vue id="canvas" :value="value"></qrcode-vue>
              <p class="pl-4 pt-4 hand" v-on:click="downloadQR"><i class="fa fa-download" aria-hidden="true" style="font-size:25px"></i></p>
           </div>
-        <p class="pl-3 pt-2" style="font-size:15px"><STRONG>VEHICLE ID:</STRONG> BX{{id}}</p>
+        <p class="pl-3 pt-2" style="">VEHICLE ID: BX{{id}}</p>
       </div>
     </div>
   <div class="table col-md-11" style="margin:0 auto">
-        <div class="col-md-12 m-0 p-0 text-left">
-      <div class="container col-md-12 m-0 p-0 mb-3">
+        <div class="col-md-12 m-0 p-0 m-0 p-0 text-left">
+      <div class="container col-md-12 m-0 p-0 m-0 p-0 mb-3">
         <button class="accordion" v-on:click="showvehicledetail = ! showvehicledetail">
           <span class="mr-5">Vehicle Details</span>
           <p class="pull-right m-0 p-0" v-if="showvehicledetail">
@@ -28,11 +28,11 @@
         </button>
           <div class="panel text-left" v-bind:class="{panel100: showvehicledetail}"> 
             <div class="row detail m-0 p-0 mt-3"  v-for="(vehicledetail, index) in vehicles" :key="index">
-              <div class="col-md-12 mb-3 d-flex justify-content-between">
-                  <h4 class="m-0 p-0 mb-3 vehicle">
-                    <strong>{{vehicledetail.model_id.make}} {{vehicledetail.model_id.modal_name}} {{vehicledetail.model_id.engine_cc}}CC</strong>
-                  </h4>
-                  <p><label>ID:</label> {{vehicledetail._id}}</p>
+              <div class="col-md-12 m-0 p-0 mb-3">
+                <p class="m-0 p-0 vehicle">
+                   <strong>{{vehicledetail.model_id.make}} {{vehicledetail.model_id.modal_name}} {{vehicledetail.model_id.engine_cc}}CC</strong>
+                </p>
+                <p><label>ID:</label> {{vehicledetail._id}}</p>
               </div>
       <div class="col-md-4 text-left" >
         <div class="border p-2">
@@ -50,35 +50,34 @@
           <p><label>KM Reading:</label> {{vehicledetail.km_reading}} km</p>
         </div>
 
-       <div class="border p-2 mt-3">
-             <div class="d-flex justify-content-between">
-               <p><label>RC:</label>
-           <span v-if="vehicledetail.rc_card" class="pl-3" style="color:green"><i class="fa fa-check" aria-hidden="true"></i></span>
-           <span v-else class="pl-3" style="color:red"><i class="fa fa-times" aria-hidden="true"></i></span>
-           </p>
-          <p><label>Insurance:</label>
-           <span v-if="vehicledetail.insurance" class="pl-3" style="color:green"><i class="fa fa-check" aria-hidden="true"></i></span>
-           <span v-else class="pl-3" style="color:red"><i class="fa fa-times" aria-hidden="true"></i></span>
-           </p>
-             </div>
+      <!-- <div class="border p-2 mt-3">
+          <div class="d-flex justify-content-between">
+            <p><label>RC:</label>
+            <span v-if="vehicledetail.rc_card" class="pl-3" style="color:green"><i class="fa fa-check" aria-hidden="true"></i></span>
+            <span v-else class="pl-3" style="color:red"><i class="fa fa-times" aria-hidden="true"></i></span>
+            </p>
+            <p><label>Insurance:</label>
+            <span v-if="vehicledetail.insurance" class="pl-3" style="color:green"><i class="fa fa-check" aria-hidden="true"></i></span>
+            <span v-else class="pl-3" style="color:red"><i class="fa fa-times" aria-hidden="true"></i></span>
+            </p>
+          </div>
           <div class="d-flex justify-content-between">
             <p><label>B Extract:</label>
-           <span v-if="vehicledetail.b_extract" class="pl-3" style="color:green"><i class="fa fa-check" aria-hidden="true"></i></span>
-           <span v-else class="pl-3" style="color:red"><i class="fa fa-times" aria-hidden="true"></i></span>
-           </p>
-          <p><label>Hypothecation:</label>
-           <span v-if="vehicledetail.hypothecation" class="pl-3" style="color:green"><i class="fa fa-check" aria-hidden="true"></i></span>
-           <span v-else class="pl-3" style="color:red"><i class="fa fa-times" aria-hidden="true"></i></span>
-           </p>
+            <span v-if="vehicledetail.b_extract" class="pl-3" style="color:green"><i class="fa fa-check" aria-hidden="true"></i></span>
+            <span v-else class="pl-3" style="color:red"><i class="fa fa-times" aria-hidden="true"></i></span>
+            </p>
+            <p><label>Hypothecation:</label>
+            <span v-if="vehicledetail.hypothecation" class="pl-3" style="color:green"><i class="fa fa-check" aria-hidden="true"></i></span>
+            <span v-else class="pl-3" style="color:red"><i class="fa fa-times" aria-hidden="true"></i></span>
+            </p>
           </div>
           <div class="d-flex justify-content-between">
             <p><label>NOC:</label>
-           <span v-if="vehicledetail.noc" class="pl-3" style="color:green"><i class="fa fa-check" aria-hidden="true"></i></span>
-           <span v-else class="pl-3" style="color:red"><i class="fa fa-times" aria-hidden="true"></i></span>
-           </p>
-          </div>
-          
-       </div>
+            <span v-if="vehicledetail.noc" class="pl-3" style="color:green"><i class="fa fa-check" aria-hidden="true"></i></span>
+            <span v-else class="pl-3" style="color:red"><i class="fa fa-times" aria-hidden="true"></i></span>
+            </p>
+          </div>  
+      </div> -->
        <div class="border p-2 mt-3">
             <p><label>Remarks:</label> {{vehicledetail.remarks}}</p>
         </div>
@@ -135,51 +134,164 @@
         </div>
         <div class="col-md-4 image-container text-center " v-for="(image, index) in display" :key="index">
         <img :src="image.path" width="90%">
-         <p v-on:click="view_upload(id)" class="under mt-4" style="cursor:pointer">Update Image</p>
+         <button v-on:click="view_upload(id)" class="bikex-button mt-4" style="cursor:pointer">Update Image</button>
         </div>
 
-        <div v-show="loading == false && display.length == 0" class="text-center">
-          <span style="color:red">*No Image Uploaded..</span>
-          <p v-on:click="view_upload(id)" class="mt-4 under" style="cursor:pointer">Add Images</p>
+        <div v-show="loading == false && display.length == 0" class="col-md-4 text-center">
+          <p style="color:red">*No Image Uploaded.</p>
+          <button v-on:click="view_upload(id)" class="mt-4 bikex-button" style="cursor:pointer">Add Images</button>
         </div>
     </div>
       </div>
     </div>
   </div>
 
-  <div class="col-md-12 text-left m-0 p-0">
-    <h6>Documents</h6>
+  <!-- <div class="col-md-12 m-0 p-0 m-0 p-0 my-3 text-left">
+    <p><strong>Documents</strong></p>
+    <hr>
+  </div> -->
+  <button class="accordion" v-on:click="showDocuments = !showDocuments">
+          <span class=""><strong>Documents</strong></span>
+         
+          <p class="pull-right m-0 p-0" v-if="showDocuments">
+          <i class="fa fa-angle-up" aria-hidden="true"></i>
+          </p>
+          <p class="pull-right m-0 p-0" v-else>
+           <i class="fa fa-angle-down" aria-hidden="true"></i>
+          </p>
+        </button>
+  <div class="col-md-12 m-0 p-0 row text-left pt-3 p-0" v-if="showDocuments">
     <div class="col-md-2 d-flex justify-content-between permission" v-for="(data, index) in vehicles" :key="index">
       <p>Form 26</p>
-      {{data.form_26}}
-        <p class="icon" v-if="data.form_26">
-        <i style="color:blue" v-on:click="form_26(false)" class="fa fa-toggle-on icon" aria-hidden="true"></i>
+        <p class="icon ml-2 p-0 m-0" v-if="data.form_26">
+        <i style="color:red" v-on:click="form_26(false)" class="fa fa-toggle-on icon ml-2 p-0 m-0" aria-hidden="true"></i>
         <!-- <img v-on:click="form_26(false)" class="m-0 p-0" src="../assets/switchon.svg" width="35px"> -->
         </p>
-        <p class="icon" v-else>
-        <i style="color:red" v-on:click="form_26(true)" class="fa fa-toggle-off icon" aria-hidden="true"></i>
+        <p class="icon ml-2 p-0 m-0" v-else>
+        <i style="color:red" v-on:click="form_26(true)" class="fa fa-toggle-off icon ml-2 p-0 m-0" aria-hidden="true"></i>
         <!-- <img v-on:click="form_26(true)" class="m-0 p-0" src="../assets/switchoff.svg" width="35px"> -->
       </p>
     </div>
     <div class="col-md-2 d-flex justify-content-between permission" v-for="(data, index) in vehicles" :key="index">
-      <p>Form 26</p>
-        <p class="icon" v-if="data.form_26">
-        <i style="color:blue" v-on:click="form_26(false)" class="fa fa-toggle-on icon" aria-hidden="true"></i>
-        <!-- <img v-on:click="form_26(false)" class="m-0 p-0" src="../assets/switchon.svg" width="35px"> -->
+      <p>Form 28</p>
+        <p class="icon ml-2 p-0 m-0" v-if="data.form_28">
+        <i style="color:red" v-on:click="form_28(false)" class="fa fa-toggle-on icon ml-2 p-0 m-0" aria-hidden="true"></i>
+        <!-- <img v-on:click="form_28(false)" class="m-0 p-0" src="../assets/switchon.svg" width="35px"> -->
         </p>
-        <p class="icon" v-else>
-        <i style="color:red" v-on:click="form_26(true)" class="fa fa-toggle-off icon" aria-hidden="true"></i>
+        <p class="icon ml-2 p-0 m-0" v-else>
+        <i style="color:red" v-on:click="form_28(true)" class="fa fa-toggle-off icon ml-2 p-0 m-0" aria-hidden="true"></i>
+        <!-- <img v-on:click="form_28(true)" class="m-0 p-0" src="../assets/switchoff.svg" width="35px"> -->
+      </p>
+    </div>
+    <div class="col-md-2 d-flex justify-content-between permission" v-for="(data, index) in vehicles" :key="index">
+      <p>Form 29</p>
+        <p class="icon ml-2 p-0 m-0" v-if="data.form_29">
+        <i style="color:red" v-on:click="form_29(false)" class="fa fa-toggle-on icon ml-2 p-0 m-0" aria-hidden="true"></i>
+        <!-- <img v-on:click="form_29(false)" class="m-0 p-0" src="../assets/switchon.svg" width="35px"> -->
+        </p>
+        <p class="icon ml-2 p-0 m-0" v-else>
+        <i style="color:red" v-on:click="form_29(true)" class="fa fa-toggle-off icon ml-2 p-0 m-0" aria-hidden="true"></i>
         <!-- <img v-on:click="form_26(true)" class="m-0 p-0" src="../assets/switchoff.svg" width="35px"> -->
+      </p>
+    </div>
+    <div class="col-md-2 d-flex justify-content-between permission" v-for="(data, index) in vehicles" :key="index">
+      <p>Form 30</p>
+        <p class="icon ml-2 p-0 m-0" v-if="data.form_30">
+        <i style="color:red" v-on:click="form_30(false)" class="fa fa-toggle-on icon ml-2 p-0 m-0" aria-hidden="true"></i>
+        <!-- <img v-on:click="form_30(false)" class="m-0 p-0" src="../assets/switchon.svg" width="35px"> -->
+        </p>
+        <p class="icon ml-2 p-0 m-0" v-else>
+        <i style="color:red" v-on:click="form_30(true)" class="fa fa-toggle-off icon ml-2 p-0 m-0" aria-hidden="true"></i>
+        <!-- <img v-on:click="form_28(true)" class="m-0 p-0" src="../assets/switchoff.svg" width="35px"> -->
+      </p>
+    </div>
+    <div class="col-md-2 d-flex justify-content-between permission" v-for="(data, index) in vehicles" :key="index">
+      <p>Form 34</p>
+        <p class="icon ml-2 p-0 m-0" v-if="data.form_34">
+        <i style="color:red" v-on:click="form_34(false)" class="fa fa-toggle-on icon ml-2 p-0 m-0" aria-hidden="true"></i>
+        <!-- <img v-on:click="form_34(false)" class="m-0 p-0" src="../assets/switchon.svg" width="35px"> -->
+        </p>
+        <p class="icon ml-2 p-0 m-0" v-else>
+        <i style="color:red" v-on:click="form_34(true)" class="fa fa-toggle-off icon ml-2 p-0 m-0" aria-hidden="true"></i>
+        <!-- <img v-on:click="form_26(true)" class="m-0 p-0" src="../assets/switchoff.svg" width="35px"> -->
+      </p>
+    </div>
+    <div class="col-md-2 d-flex justify-content-between permission" v-for="(data, index) in vehicles" :key="index">
+      <p>Form 35</p>
+        <p class="icon ml-2 p-0 m-0" v-if="data.form_35">
+        <i style="color:red" v-on:click="form_35(false)" class="fa fa-toggle-on icon ml-2 p-0 m-0" aria-hidden="true"></i>
+        <!-- <img v-on:click="form_35(false)" class="m-0 p-0" src="../assets/switchon.svg" width="35px"> -->
+        </p>
+        <p class="icon ml-2 p-0 m-0" v-else>
+        <i style="color:red" v-on:click="form_35(true)" class="fa fa-toggle-off icon ml-2 p-0 m-0" aria-hidden="true"></i>
+        <!-- <img v-on:click="form_35(true)" class="m-0 p-0" src="../assets/switchoff.svg" width="35px"> -->
+      </p>
+    </div>
+
+    <div class="col-md-2 d-flex justify-content-between permission" v-for="(data, index) in vehicles" :key="index">
+      <p>RC</p>
+      {{data.rc}}
+        <p class="icon ml-2 p-0 m-0" v-if="data.rc_card">
+        <i style="color:red" v-on:click="rc_card(false)" class="fa fa-toggle-on icon ml-2 p-0 m-0" aria-hidden="true"></i>
+        <!-- <img v-on:click="rc_card(false)" class="m-0 p-0" src="../assets/switchon.svg" width="35px"> -->
+        </p>
+        <p class="icon ml-2 p-0 m-0" v-else>
+        <i style="color:red" v-on:click="rc_card(true)" class="fa fa-toggle-off icon ml-2 p-0 m-0" aria-hidden="true"></i>
+        <!-- <img v-on:click="rc_card(true)" class="m-0 p-0" src="../assets/switchoff.svg" width="35px"> -->
+      </p>
+    </div>
+    <div class="col-md-2 d-flex justify-content-between permission" v-for="(data, index) in vehicles" :key="index">
+      <p>Insurance</p>
+        <p class="icon ml-2 p-0 m-0" v-if="data.insurance">
+        <i style="color:red" v-on:click="insurance(false)" class="fa fa-toggle-on icon ml-2 p-0 m-0" aria-hidden="true"></i>
+        <!-- <img v-on:click="insurance(false)" class="m-0 p-0" src="../assets/switchon.svg" width="35px"> -->
+        </p>
+        <p class="icon ml-2 p-0 m-0" v-else>
+        <i style="color:red" v-on:click="insurance(true)" class="fa fa-toggle-off icon ml-2 p-0 m-0" aria-hidden="true"></i>
+        <!-- <img v-on:click="insurance(true)" class="m-0 p-0" src="../assets/switchoff.svg" width="35px"> -->
+      </p>
+    </div>
+    <div class="col-md-2 d-flex justify-content-between permission" v-for="(data, index) in vehicles" :key="index">
+      <p>B-Extract</p>
+        <p class="icon ml-2 p-0 m-0" v-if="data.b_extract">
+        <i style="color:red" v-on:click="b_extract(false)" class="fa fa-toggle-on icon ml-2 p-0 m-0" aria-hidden="true"></i>
+        <!-- <img v-on:click="b_extract(false)" class="m-0 p-0" src="../assets/switchon.svg" width="35px"> -->
+        </p>
+        <p class="icon ml-2 p-0 m-0" v-else>
+        <i style="color:red" v-on:click="b_extract(true)" class="fa fa-toggle-off icon ml-2 p-0 m-0" aria-hidden="true"></i>
+        <!-- <img v-on:click="b_extract(true)" class="m-0 p-0" src="../assets/switchoff.svg" width="35px"> -->
+      </p>
+    </div>
+    <div class="col-md-2 d-flex justify-content-between permission" v-for="(data, index) in vehicles" :key="index">
+      <p>Hypothecation</p>
+        <p class="icon ml-2 p-0 m-0" v-if="data.hypothecation">
+        <i style="color:red" v-on:click="hypothecation(false)" class="fa fa-toggle-on icon ml-2 p-0 m-0" aria-hidden="true"></i>
+        <!-- <img v-on:click="hypothecation(false)" class="m-0 p-0" src="../assets/switchon.svg" width="35px"> -->
+        </p>
+        <p class="icon ml-2 p-0 m-0" v-else>
+        <i style="color:red" v-on:click="hypothecation(true)" class="fa fa-toggle-off icon ml-2 p-0 m-0" aria-hidden="true"></i>
+        <!-- <img v-on:click="hypothecation(true)" class="m-0 p-0" src="../assets/switchoff.svg" width="35px"> -->
+      </p>
+    </div>
+    <div class="col-md-2 d-flex justify-content-between permission" v-for="(data, index) in vehicles" :key="index">
+      <p>NOC</p>
+        <p class="icon ml-2 p-0 m-0" v-if="data.noc">
+        <i style="color:red" v-on:click="NOC(false)" class="fa fa-toggle-on icon ml-2 p-0 m-0" aria-hidden="true"></i>
+        <!-- <img v-on:click="NOC(false)" class="m-0 p-0" src="../assets/switchon.svg" width="35px"> -->
+        </p>
+        <p class="icon ml-2 p-0 m-0" v-else>
+        <i style="color:red" v-on:click="NOC(true)" class="fa fa-toggle-off icon ml-2 p-0 m-0" aria-hidden="true"></i>
+        <!-- <img v-on:click="NOC(true)" class="m-0 p-0" src="../assets/switchoff.svg" width="35px"> -->
       </p>
     </div>
 
   </div>
 
 
-  <div class="col-md-12 mt-5 mb-5 m-0 p-0 text-left">
-      <div class="container col-md-12 m-0 p-0 mb-3">
+  <div class="col-md-12 m-0 p-0 mt-5 mb-5 m-0 p-0 text-left">
+      <div class="container col-md-12 m-0 p-0 m-0 p-0 mb-3">
         <button class="accordion" v-on:click="showpricing = !showpricing">
-          <span class="mr-5">Pricing Breakdown</span>
+          <span class=""><strong>Pricing Breakdown</strong></span>
          
           <p class="pull-right m-0 p-0" v-if="showpricing">
           <i class="fa fa-angle-up" aria-hidden="true"></i>
@@ -188,35 +300,35 @@
            <i class="fa fa-angle-down" aria-hidden="true"></i>
           </p>
         </button>
-          <div class="panel text-left" v-bind:class="{panel100: showpricing}"> 
-            <div class="col-md-12 mt-3 d-flex justify-content-between" v-if="permission.view_procured_price">
-               <h5>Procured Price</h5>
-               <h5>{{procuredcost | currency}}</h5>
+          <div class="panel text-left pt-2" v-bind:class="{panel100: showpricing}"> 
+            <div class="col-md-12 m-0 p-0 d-flex justify-content-between" v-if="permission.view_procured_price">
+               <p class="m-0 p-1">Procured Price</p>
+               <p class="m-0 p-1">{{procuredcost | currency}}</p>
              </div>
-             <div class="col-md-12 mt-3 d-flex justify-content-between">
-               <h5>Refurbishment Cost</h5>
-               <h5>{{refurbishCost | currency}}</h5>
+             <div class="col-md-12 m-0 p-0 d-flex justify-content-between">
+               <p class="m-0 p-1">Refurbishment Cost</p>
+               <p class="m-0 p-1">{{refurbishCost | currency}}</p>
              </div>
-            <div class="col-md-12 mt-3 d-flex justify-content-between">
-               <h5>Registration and Transfer Cost</h5>
-               <h5>{{registration_cost | currency}}</h5>
+            <div class="col-md-12 m-0 p-0 d-flex justify-content-between">
+               <p class="m-0 p-1">Registration and Transfer Cost</p>
+               <p class="m-0 p-1">{{registration_cost | currency}}</p>
              </div>
-             <div class="col-md-12 mt-3 d-flex justify-content-between">
-               <h5>Selling Price</h5>
-               <h5>{{sellingprice | currency}}</h5>
+             <div class="col-md-12 m-0 p-0 d-flex justify-content-between">
+               <p class="m-0 p-1">Selling Price</p>
+               <p class="m-0 p-1">{{sellingprice | currency}}</p>
              </div>
-              <div class="col-md-12 mt-3 d-flex justify-content-between" v-if="permission.view_procured_price">
-               <h5>Margin value</h5>
-               <h5 v-bind:class="{positive: marginvalue > 0}" class="red">
+              <div class="col-md-12 m-0 p-0 d-flex justify-content-between" v-if="permission.view_procured_price">
+               <p class="m-0 p-1">Margin value</p>
+               <p v-bind:class="{positive: marginvalue > 0}" class="red">
                  <span v-if="marginvalue > 0"> + </span>
                   {{marginvalue | currency}}
-                 </h5>
+                 </p>
              </div>
           </div>
       </div>
   <div class="col-md- mt-5 mb-5 text-left">
-    <h6>Refurbishment Details:</h6>
-      <div class="container col-md-12 m-0 p-0 mb-3" v-for="(refurbish, index) in refurbish" :key="index">
+    <p><strong>Refurbishment Details:</strong></p>
+      <div class="container col-md-12 m-0 p-0 m-0 p-0 mb-3" v-for="(refurbish, index) in refurbish" :key="index">
         <button class="accordion" v-on:click="openaccord(refurbish._id)">
           <span class="mr-5">Date: {{refurbish.date | moment("MMMM Do YYYY")}}</span>
           <span class="pl-5">Amount: {{refurbish.total_cost | currency}}</span>
@@ -229,13 +341,13 @@
           </p>
         </button>
           <div class="panel text-left" v-bind:class="{panel100: acc_id == refurbish._id}"> 
-             <table class="col-md-12 table">
+             <table class="col-md-12 m-0 p-0 table">
                 <tr>
                   <th>Sl. No</th>
                   <th>Item Name</th>
                    <th>Item Price</th>
                   <th>Labour Cost</th>
-                  <p class="display-flex justify-content-between text-right mt-3" v-if="permission.view_refurbish">
+                  <p class="display-flex justify-content-between text-right" v-if="permission.view_refurbish">
                     <span class="pr-5 pl-0 ml-0 pt-2 hand red" v-on:click="delete_ref(refurbish._id)">Delete</span>
                          <span v-on:click="edit(refurbish)">
                     <i class="fa fa-pencil px-3 hand" aria-hidden="true"></i>
@@ -249,7 +361,7 @@
                   <td>{{ref.labour |currency}}</td>
                 </tr>
            </table>
-          <div class="col-md-12 text-left d-flex">
+          <div class="col-md-12 m-0 p-0 text-left d-flex">
             <h6><strong>Comments:</strong></h6>
             <h7 class="pl-3"> {{refurbish.comments}}</h7>
           </div>
@@ -261,8 +373,8 @@
   </div>
   </div>
 
-  <div class="container text-left m-0 p-0 col-md-12">
-    <h5>Vehicle Life History:</h5>
+  <div class="container text-left m-0 p-0 col-md-12 m-0 p-0">
+    <p><strong>Vehicle Life History:</strong></p>
     <ul class="progressBar" v-for="(vehicle, index) in vehicles" :key="index">
       <li v-bind:class="{active : vehicle.procured_date}">Procured
         <p v-if="vehicle.procured_date">{{vehicle.procured_date | moment("MMMM Do YYYY")}}</p>
@@ -327,7 +439,7 @@
                         <label for="answer">Total</label>
                         <input disabled class="form-control" id="answer" rows="3" v-model="grandTotal">
                     </div>
-                     <div class="form-group text-left col-md-12">
+                     <div class="form-group text-left col-md-12 m-0 p-0">
                         <label for="answer">Comments</label>
                         <textarea v-model="comments" class="form-control" id="answer" rows="3"></textarea>
                     </div>
@@ -367,7 +479,7 @@
                         {{Number(d.item_price) + Number(d.labour)}}
                     </td>
                     <td class="m-0 p-0">
-                         <span style="font-size:25px;cursor:pointer" v-on:click="removerow(index)">&times;</span>
+                         <span style="cursor:pointer" v-on:click="removerow(index)">&times;</span>
                     </td>
                 </tr>
                 <tr style="border:none">
@@ -378,7 +490,7 @@
                 </tr>
             </tbody>
         </table>
-          <div class="form-group text-left col-md-12">
+          <div class="form-group text-left col-md-12 m-0 p-0">
                         <label for="answer">Comments</label>
                         <textarea v-model="comments" class="form-control" id="answer" rows="3"></textarea>
                     </div>
@@ -411,6 +523,7 @@ export default {
       message:'',
       showvehicledetail:true,
       showpricing:true,
+      showDocuments:true,
       image:'',
       images:'a',
       id:'',
@@ -475,6 +588,137 @@ export default {
           this.$http.put('https://backend-bikex.herokuapp.com/api/procurements/form_26/'+ this.$route.params.id,
           {
               form_26 : state,
+          }).
+            then(()=>{
+             this.reload()
+        }).catch(()=>{          
+              this.$swal('Something went wrong!');
+              this.loading = false
+        })
+    },
+    form_28(state){
+          this.loading =true
+          this.$http.put('https://backend-bikex.herokuapp.com/api/procurements/form_28/'+ this.$route.params.id,
+          {
+              form_28 : state,
+          }).
+            then(()=>{
+             this.reload()
+        }).catch(()=>{          
+              this.$swal('Something went wrong!');
+              this.loading = false
+        })
+    },
+    form_29(state){
+          this.loading =true
+          this.$http.put('https://backend-bikex.herokuapp.com/api/procurements/form_29/'+ this.$route.params.id,
+          {
+              form_29 : state,
+          }).
+            then(()=>{
+             this.reload()
+        }).catch(()=>{          
+              this.$swal('Something went wrong!');
+              this.loading = false
+        })
+    },
+    form_30(state){
+          this.loading =true
+          this.$http.put('https://backend-bikex.herokuapp.com/api/procurements/form_30/'+ this.$route.params.id,
+          {
+              form_30 : state,
+          }).
+            then(()=>{
+             this.reload()
+        }).catch(()=>{          
+              this.$swal('Something went wrong!');
+              this.loading = false
+        })
+    },
+    form_34(state){
+          this.loading =true
+          this.$http.put('https://backend-bikex.herokuapp.com/api/procurements/form_34/'+ this.$route.params.id,
+          {
+              form_34 : state,
+          }).
+            then(()=>{
+             this.reload()
+        }).catch(()=>{          
+              this.$swal('Something went wrong!');
+              this.loading = false
+        })
+    },
+    form_35(state){
+          this.loading =true
+          this.$http.put('https://backend-bikex.herokuapp.com/api/procurements/form_35/'+ this.$route.params.id,
+          {
+              form_35 : state,
+          }).
+            then(()=>{
+             this.reload()
+        }).catch(()=>{          
+              this.$swal('Something went wrong!');
+              this.loading = false
+        })
+    },
+    hypothecation(state){
+          this.loading =true
+          this.$http.put('https://backend-bikex.herokuapp.com/api/procurements/hypothecation/'+ this.$route.params.id,
+          {
+              hypothecation : state,
+          }).
+            then(()=>{
+             this.reload()
+        }).catch(()=>{          
+              this.$swal('Something went wrong!');
+              this.loading = false
+        })
+    },
+    NOC(state){
+          this.loading =true
+          this.$http.put('https://backend-bikex.herokuapp.com/api/procurements/noc/'+ this.$route.params.id,
+          {
+              noc : state,
+          }).
+            then(()=>{
+             this.reload()
+        }).catch(()=>{          
+              this.$swal('Something went wrong!');
+              this.loading = false
+        })
+    },
+    insurance(state){
+          this.loading =true
+          this.$http.put('https://backend-bikex.herokuapp.com/api/procurements/insurance/'+ this.$route.params.id,
+          {
+              insurance : state,
+          }).
+            then(()=>{
+             this.reload()
+        }).catch(()=>{          
+              this.$swal('Something went wrong!');
+              this.loading = false
+        })
+    },
+    rc_card(state){
+          this.loading =true
+          window.console.log(state)
+          this.$http.put('https://backend-bikex.herokuapp.com/api/procurements/rc_card/'+ this.$route.params.id,
+          {
+              rc_card : state,
+          }).
+            then(()=>{
+             this.reload()
+        }).catch(()=>{          
+              this.$swal('Something went wrong!');
+              this.loading = false
+        })
+    },
+    b_extract(state){
+          this.loading =true
+          this.$http.put('https://backend-bikex.herokuapp.com/api/procurements/b_extract/'+ this.$route.params.id,
+          {
+              b_extract : state,
           }).
             then(()=>{
              this.reload()
@@ -640,6 +884,17 @@ export default {
 </script>
 <style scoped>
 @import url('https://fonts.googleapis.com/css?family=Montserrat&display=swap');
+
+.head{
+  font-weight: 600;
+  font-weight: 17px
+}
+.bikex-button{
+  background-color: rgb(254,32,32);
+  border: none;
+  color: white;
+  padding: 10px 15px
+}
 .backbutton{
   background-color: black;
   color: whitesmoke;
@@ -647,9 +902,11 @@ export default {
   cursor: pointer;
   border: none
 }
-
+.font-standard{
+  font-size: 15px;
+  font-weight: 400
+}
 .icon{
-    font-size: 20px;
     cursor: pointer;
 }
 
@@ -660,9 +917,12 @@ export default {
   outline: none;
     box-shadow: none;
 } */
+.permission p{
+  /* font-size: 15px */
+}
 .hand{
   cursor: pointer;
-  font-size: 15px;
+  /* font-size: 15px; */
 }
 .red{
   color: red
@@ -685,21 +945,21 @@ export default {
   margin-top: 80px;
 }
 .detail label{
-  font-weight: bold
+  /* font-weight: bold */
 }
 .detail p{
   margin: 0;
   padding: 1px;
-  font-family: 'Montserrat', sans-serif;
-  font-size: 15px;
+  /* font-family: 'Montserrat', sans-serif; */
+  /* font-size: 15px; */
 }
 .action-button{
     border: 1.5px solid #ffb52f;
     background-color: white;
     color: #000a1b;
     cursor: pointer;
-    font-size: 14px;
-    font-weight: 600;
+    /* font-size: 14px; */
+    /* font-weight: 600; */
     height: inherit;
     letter-spacing: 1px;
     padding: 10px 20px;
@@ -715,7 +975,7 @@ export default {
     text-align: center;
 }
 p{
-  font-size: 11px;
+  /* font-size: 11px; */
 }
 .under{
   color: #1613e6
@@ -799,15 +1059,15 @@ p{
   border: none;
   text-align: left;
   outline: none;
-  font-size: 15px;
-  font-weight: bold;
+  /* font-size: 15px; */
+  /* font-weight: bold; */
   transition: 0.2s;
   border-bottom: 1px solid rgb(138, 117, 117,0.2)
 }
 .head{
   color: #444;
-  font-size: 15px;
-  font-weight: bold;
+  /* font-size: 15px; */
+  /* font-weight: bold; */
   text-transform: uppercase
 }
 /* .active, .accordion:hover {
@@ -815,9 +1075,9 @@ p{
 } */
 .panel {
   height: 0px;
-  font-size: 15px;
+  /* font-size: 15px; */
   background-color: rgb(255, 255, 255);
-  font-family: 'Montserrat', sans-serif;
+  /* font-family: 'Montserrat', sans-serif; */
   overflow: hidden;
 }
 .panel100{

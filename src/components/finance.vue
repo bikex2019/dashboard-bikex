@@ -36,7 +36,7 @@
                 </div>
             </div>
     </div>
-        <table class="table table-striped table-bordered col-md-11 ml-4">
+        <table class="table table-striped col-md-11 ml-4">
         <thead>
             <tr>
             <th>Name</th>
@@ -203,7 +203,6 @@ export default {
   border-radius: 6px;
 }
 .notification{
-        font-family: 'Montserrat', sans-serif;
     font-size: 12px;
 }
 .custom-button {
@@ -292,7 +291,6 @@ table{
     border-left: 4px solid #ffb52f;
     padding-left: 7px;
     padding-top: 3px;
-    font-family: 'Montserrat', sans-serif;
 }
 .search{
   border-radius: 10px;
