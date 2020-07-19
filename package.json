@@ -13,7 +13,7 @@
     "core-js": "^3.3.2",
     "hchs-vue-charts": "^1.2.8",
     "jspdf": "^1.5.3",
-    "lodash": "^4.17.15",
+    "lodash": "^4.17.19",
     "number-to-words": "^1.2.4",
     "pdfmake": "^0.1.63",
     "qrcode": "^1.4.4",
