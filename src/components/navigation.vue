@@ -71,6 +71,7 @@
         <router-link to="/procured-vehicle" exact-active-class="active" class="d-flex navigate-padding">
           <i class='fa fa-anchor pl-3 pt-1 pr-3' style='font-size:20px;color:#001232'> </i>
           <p class="p-1 m-0">Procured</p>
+          
         </router-link>
       </div>
 
@@ -283,7 +284,7 @@
         </p>
       </div> -->
 
-<div class="col-md-12 margin-right text-center border-bottom p-0" v-if="!toggle">
+    <div class="col-md-12 margin-right text-center border-bottom p-0" v-if="!toggle">
         <router-link to="/banners" exact-active-class="active" class="d-flex navigate-padding">
           <i class='fa fa-picture-o pl-3 pt-1 pr-3' style='font-size:18px;color:#001232'> </i>
           <p class="p-1 m-0">Banners</p>
@@ -298,7 +299,26 @@
         </p>
       </div>
 
+      <div class="col-md-12 margin-right text-center border-bottom p-0" v-if="!toggle">
+        <router-link to="/campaign" exact-active-class="active" class="d-flex navigate-padding">
+          <i class='fa fa-share-square pl-3 pt-1 pr-3' style='font-size:18px;color:#001232'> </i>
+          <p class="p-1 m-0">Social</p>
+        </router-link>
+      </div>
+
+      <div class="col-md-12 margin-right navigate m-0 mr-3 p-0 text-left border-bottom" v-else>
+        <p class="p-0 m-0">
+        <router-link to="/campaign" exact-active-class="active"
+          class="bikex-header mb-0 p-0 pb-1"><i class='fa fa-share-square pl-3' style='font-size:20px;color:#001232'></i>
+        </router-link>
+        </p>
+      </div>
+
+
+
     </div>
+
+    
 </div>
 </template>
 
@@ -401,6 +421,11 @@ export default {
     background-color: #fbfbfb;
     color: #007bff;
 } */
+
+::-webkit-scrollbar {
+  display: none;
+}
+
 .active{
     -webkit-box-shadow: inset 0.1875rem 0 0 #ffb52f;
     box-shadow: inset 0.1875rem 0 0 #ffb52f;

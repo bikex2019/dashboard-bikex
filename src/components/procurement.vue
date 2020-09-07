@@ -363,7 +363,7 @@
             <div class="form row">
               <div class="col-md-4 mb-4">
                 <textarea type="text" v-model="vehicle_history" class="inputText form-control" required/>
-                 <span class="floating-label">Vehicel History*</span>
+                 <span class="floating-label">Vehicle History*</span>
               </div>
               <div class="col-md-4 mb-4">
                 <input type="date" v-model="procured_date" class="inputText form-control"/>
@@ -513,7 +513,7 @@ export default {
             })   
             },
             updateForm: function(){
-            this.$http.put('http://localhost:8080/api/procurements/'+ this.idtoedit,{
+            this.$http.put('http://localhost:8080/api/procurements/update'+ this.idtoedit,{
                 vehicle_number:this.vehicle_number,
                 source: this.source,
                 pincode: this.pincode,

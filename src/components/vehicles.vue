@@ -13,7 +13,7 @@
                       <img src="../assets/download.svg" width="20px" class="m-0 p-0">
                       <p class="m-0 p-0 pl-2">EXPORT TO CSV</p>
                     </button>
-                </vue-json-to-csv>
+                  </vue-json-to-csv>
                 </div>
                 <div class="col-md-3 pt-1 mr-3 d-flex justify-content-between">
                   <p class="p-0 m-0 pt-1">{{start }} - {{end}} <span class="mx-1"> of </span> {{procured_vehicels.length}} 
@@ -46,7 +46,7 @@
             </th>
             <th>MAKE/MODEL</th>
             <TH>MFG YEAR</TH>
-            <th>CHASIS NO</th>
+            <th>CHASSIS NO</th>
             <th v-if="permission.view_procured_price">C PRICE</th>
             <th>S PRICE</th>
             <th>STATUS</th>
@@ -658,7 +658,7 @@ export default {
             },
             procureVehicle: function(){
               this.loadonadd = true
-            this.$http.post('https://backend-bikex.herokuapp.com/api/procurements/',{
+              this.$http.post('https://backend-bikex.herokuapp.com/api/procurements/',{
               vehicle_number:this.vehicle_number,
               model_id:this.model,
               type:this.type,
@@ -704,7 +704,7 @@ export default {
             },
             updateForm: function(){
               this.update_loader= true
-              this.$http.put('https://backend-bikex.herokuapp.com/api/procurements/'+ this.idtoedit,{
+              this.$http.put('https://backend-bikex.herokuapp.com/api/procurements/update/'+ this.idtoedit,{
               vehicle_number:this.vehicle_number,
               model_id:this.model,
               type:this.type,

@@ -24,7 +24,7 @@ import customers from './components/customers'
 import viewCustomer from './components/viewCustomer'
 import purchased_vehicle from './components/purchasedVehicle'
 import nocPending from './components/noc-pending'
-import offline from './components/offlinesell'
+import offline from './components/sellOffline'
 import addcustomer from './components/addcustomer'
 import agentactivity from './components/agentactivity'
 import profile from './components/agent-profile'
@@ -32,7 +32,8 @@ import manageAgents from './components/manageAgents'
 import banners from './components/banners'
 import vehicle_refurbish from './components/vehicle-refurb'
 import agent_permission from './components/agent_permission'
-
+import campaign from './components/campaign'
+// import sellOffline from './components/sellOffline'
 
 
 
@@ -73,5 +74,7 @@ export default[
     {path:'/offline-sell', component:offline},
     {path:'/noc-pending',component:nocPending},
     {path:'/procured-vehicle', component:procuredVehicle},
+    {path:'/campaign', component:campaign},
+
     {path:'*', component:notfound}
     ]

@@ -29,6 +29,7 @@ state: {
   loading:true,
   toggler:true,
   messages:[],
+  social_data:[],
   lastweek:[
     [ 10, 0, 5, 5 ],
     [ 40, 10, 10, 10 ],
@@ -50,6 +51,9 @@ state: {
     },
     FETCH_FAQ(state, faqs) {
       state.faqs = faqs;
+    },
+    FETCH_SOCIAL_DATA(state, social_data) {
+      state.social_data = social_data;
     },
     FETCH_LIVE_VEHICLES(state, live_vehicles){
         state.live_vehicles = live_vehicles
@@ -117,10 +121,22 @@ state: {
         throw new Error(`API ${error}`);
       });
     },
+    
+
     loadFaq({commit}) {
       commit('LOAD_STATUS', true);
       axios.get(url +'/faq').then(result => {
         commit('FETCH_FAQ', result.data);
+        commit('LOAD_STATUS', false);
+      }).catch(error => {
+        throw new Error(`API ${error}`);
+      });
+    },
+
+    loadSocialData({commit}) {
+      commit('LOAD_STATUS', true);
+      axios.get(url +'/enquiry').then(result => {
+        commit('FETCH_SOCIAL_DATA', result.data);
         commit('LOAD_STATUS', false);
       }).catch(error => {
         throw new Error(`API ${error}`);
