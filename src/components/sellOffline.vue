@@ -86,7 +86,7 @@
                 <div class="mt-2" v-if="hasVehicleData">
                     <div class="results p-4 col-md-12 m-0 p-0 d-flex justify-content-between"> 
                         <div>
-                        <p class="p-0 m-0"><strong>{{vehicleTempData.model_id.modal_name}} {{vehicleTempData.model_id.make}}</strong></p>
+                        <p class="p-0 m-0"><strong>{{vehicleTempData.model_id.make}}  {{vehicleTempData.model_id.modal_name}}</strong></p>
                         <p class="p-0 m-0">{{vehicleTempData.vehicle_id}} | {{vehicleTempData.vehicle_number}}</p>
                         
                         <p v-if="vehicleTempData.status == 0" style="color:red">This vehicle is just procured, please bring the vehicle to stock before selling.</p>
@@ -171,7 +171,7 @@
                     <input class="ml-3" v-model="extended_w" type="radio" value="999" id="12"><label class="ml-2" for="12">1 Year</label>
                 </div>
 
-                 <div class="col-md-6 m-0 p-0">
+                 <div class="col-md-12 m-0 p-0">
                  <hr>
                  <p class="mr-3"><strong> Add-ons:</strong></p>
                 <input type="checkbox" class="mt-1" :value="550" id="tefflon" v-model="tefflon" required>
@@ -180,13 +180,18 @@
                  <input type="checkbox" class="mt-1" :value="350" v-model="rsa" id="box-4">
                 <label for="box-4" class="mx-3">Road Side Assistance</label>
 
-                 <input type="checkbox" class="mt-1" :value="550" v-model="comprehensive" id="box-5">
+                <input type="checkbox" class="mt-1" :value="550" v-model="comprehensive" id="box-5">
                 <label for="box-5" class="mx-3">Comprehensive</label>
+
+                <input type="checkbox" class="mt-1" :value="500" v-model="delivery" id="box-5">
+                <label for="box-5" class="mx-3">Delivery</label>
+
+
                  </div>
 
                </div>
                <div class="col-md-6 m-0 p-0">
-               <label for="modeofpay">Payement Mode</label>
+               <label for="modeofpay">Payment Mode</label>
                <select name="" v-model="payment_mode" class="form-control" id="">
                 <option value="cash">Cash</option>
                 <option value="upi">UPI</option>
@@ -194,6 +199,10 @@
                 <option value="cheque">Cheque</option>
                 <option value="others">Others</option>
                </select>
+               </div>
+               <div class="col-md-6 m-0 p-0">
+               <label for="modeofpay">Selling Price</label>
+               <input type="number" v-model="sell_price" class="form-control">
                </div>
                <div class="mt-4 text-center col-md-12">
                 <p style="color:red" v-if="auth_msg.length > 0">{{auth_msg}}</p>
@@ -241,7 +250,9 @@ export default {
             rsa:[],
             comprehensive:[],
             extended_w:[],
+            delivery:[],
             mode_of_payment:'',
+            sell_price:'',
 
             fname:'',
             lname:'',
@@ -325,6 +336,7 @@ export default {
         },
         submitVehicle(){
             this.vehicleData = this.vehicleTempData
+            this.sell_price = this.vehicleData.selling_price
             this.currentActive = 3
         },
 
@@ -333,7 +345,7 @@ export default {
             this.$http.post('https://backend-bikex.herokuapp.com/api/purchases/offline-sell',{
                     customer_id:this.customerData._id,
                     vehicle_id:this.vehicleData.vehicle_id,
-                    amount:this.vehicleData.selling_price,
+                    amount:this.sell_price,
                     firstname: this.fname,
                     lastname: this.lname,
                     phone: this.phone,
@@ -347,6 +359,7 @@ export default {
                     extended_w: Number(this.extended_w),
                     rsa: Number(this.rsa),
                     comprehensive: Number(this.comprehensive),
+                    delivery: Number(this.delivery),
                     mode_of_payment:this.payment_mode,
                     razorpay_order_id:'offline-sell',
                     razorpay_payment_id:'offline-sell',

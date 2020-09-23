@@ -221,7 +221,7 @@ export default {
             this.view = edit
             this.vehicle_id = this.view[0].vehicle_id
             window.console.log(this.view)
-            this.totalAmount = Number(this.view[0].tefflon) + Number(this.view[0].extended_w) + Number(this.view[0].rsa) + Number(this.view[0].comprehensive) + 500
+            this.totalAmount = Number(this.view[0].tefflon) + Number(this.view[0].extended_w) + Number(this.view[0].rsa) + Number(this.view[0].comprehensive) + Number(this.view[0].delivery)
             window.console.log(this.totalAmount)
         },
         close(){
@@ -247,7 +247,7 @@ downloadProforma(){
   doc.line(88, 46, 122, 46);
   doc.line(20, 102, 190, 102);
   doc.line(20, 252, 190, 252);
-  doc.line(135, 165, 190, 165);
+  
   doc.text("INVOICE/RECEIPT", 105, 45, null, null, "center");
   doc.setFont("helvetica", "normal");
   doc.text(`Date: ${moment(this.view[0].date).format('LL')}`, 20, 60);
@@ -263,9 +263,7 @@ downloadProforma(){
   doc.setFontSize(12);
   doc.text("Particulars", 20, 100);
   doc.text("Unit Price", 150, 100, null, null, "right");
-  doc.text("Sub Total", 152, 170, null, null, "right");
-  doc.text(`${this.totalAmount + vehicle[0].selling_price}.00`, 190, 170, null, null, "right");
-  doc.text(`(${converter.toWords(this.totalAmount + vehicle[0].selling_price)} only)`, 190, 176, null, null, "right");
+  
   doc.text("Total Amount", 190, 100, null, null, "right");
   doc.setFont("helvetica", "normal");
   doc.setFontSize(11);
@@ -275,25 +273,62 @@ downloadProforma(){
   doc.text(`${vehicle[0].model_id.make} ${vehicle[0].model_id.modal_name} with Vehicle ID BX${this.vehicle_id},`, 20, 110);
   doc.text(`${vehicle[0].regn_no}`, 70, 115);
   doc.text(`${vehicle[0].chassis_no} `, 60, 120);
-  doc.text(`Teflon Coating `, 20, 128);
-  doc.text(`Extended Warranty `, 20, 136);
-  doc.text(`Road Side Assistance (RSA) `, 20, 144);
-  doc.text(`Comprehensive Insurance `, 20, 152);
-  doc.text(`Delivery `, 20, 160);
   doc.setFont("helvetica", "normal");
   doc.text(`and Chassis number:`, 20, 120);
-  doc.text(`${vehicle[0].selling_price}.00`, 132, 110);
+  doc.text(`${this.view[0].amount}.00`, 132, 110);
+  
+ 
+
+  doc.text(`${this.view[0].amount}.00`, 190, 110, null, null, "right");
+  var x = 128
+  if(this.view[0].tefflon>0){
+  doc.text(`Teflon Coating `, 20, 128);
   doc.text(`550.00`, 132, 128);
-  doc.text(`999.00`, 132, 136);
-  doc.text(`350.00`, 132, 144);
-  doc.text(`550.00`, 132, 152);
-  doc.text(`500.00`, 132, 160);  
-  doc.text(`${vehicle[0].selling_price}.00`, 190, 110, null, null, "right");
   doc.text(`${this.view[0].tefflon}.00`, 190, 128, null, null, "right");
-  doc.text(`${this.view[0].extended_w}.00`, 190, 136, null, null, "right");
-  doc.text(`${this.view[0].rsa}.00`, 190, 144, null, null, "right");
-  doc.text(`${this.view[0].comprehensive}.00`, 190, 152, null, null, "right");
-  doc.text(`500.00`, 190, 160, null, null, "right");
+    x = 136
+  }
+  if(this.view[0].extended_w == 699){
+  doc.text(`Extended Warranty (6 months)`, 20, x);
+  doc.text(`699.00`, 132, x);
+  doc.text(`${this.view[0].extended_w}.00`, 190, x, null, null, "right");
+  x = 144
+  }else if(this.view[0].extended_w == 999){
+    doc.text(`Extended Warranty (12 months)`, 20, x);
+    doc.text(`999.00`, 132, x);
+    doc.text(`${this.view[0].extended_w}.00`, 190, x, null, null, "right");
+    x=144
+  }
+  if(this.view[0].rsa>0){
+  doc.text(`Road Side Assistance (RSA) `, 20, x);
+  doc.text(`350.00`, 132, x);
+  doc.text(`${this.view[0].rsa}.00`, 190, x, null, null, "right");
+  x = 152
+  }
+  if(this.view[0].comprehensive>0){
+  doc.text(`Comprehensive Insurance `, 20, x);
+  doc.text(`550.00`, 132, x);
+  doc.text(`${this.view[0].comprehensive}.00`, 190, x, null, null, "right");
+  x = 160
+  }
+  if(this.view[0].delivery>0){
+  doc.text(`Delivery `, 20, x);
+  doc.text(`500.00`, 132, x);
+  doc.text(`${this.view[0].delivery}.00`, 190, x, null, null, "right");
+  x=170
+  }
+
+  if(x<144){
+    x= 150
+  }
+  doc.setFont("helvetica", "bold");
+  doc.text("Sub Total", 152, x, null, null, "right");
+  doc.line(135, x-5, 190, x-5);
+  doc.text(`${this.totalAmount + this.view[0].amount}.00`, 190, x, null, null, "right");
+  x=x+6
+  doc.text(`(${converter.toWords(this.totalAmount + this.view[0].amount)} only)`, 190, x, null, null, "right");
+
+  doc.setFont("helvetica", "normal");
+
   doc.setFontSize(10.5);
 
   doc.text("All amounts are in Indian Rupees. All invoices are payable by the date mentioned. A 10% service charge", 20, 200);
@@ -404,8 +439,8 @@ downloadProforma(){
           doc.text("abide by and be bound by the same.", 25, 192);
 
           doc.text("f.", 15, 198);
-          doc.text(`The  Purchaser  has  agreed  to  pay  a  sum  of  Rs. ${vehicle[0].selling_price}/-`, 25, 198);
-          doc.text(`(${converter.toWords(vehicle[0].selling_price)}s only) towards purchase of the Vehicle,`, 25, 204);
+          doc.text(`The  Purchaser  has  agreed  to  pay  a  sum  of  Rs. ${this.view[0].amount}/-`, 25, 198);
+          doc.text(`(${converter.toWords(this.view[0].amount)}s only) towards purchase of the Vehicle,`, 25, 204);
           doc.text("excluding any charges or fees towards additional services provided by Bimal Hero.", 25, 210);
 
           doc.text("g.", 15, 216);
