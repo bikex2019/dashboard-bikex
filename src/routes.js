@@ -37,6 +37,7 @@ import campaign from './components/campaign'
 import apis from './components/apis'
 import apiList from './components/apiList'
 import insert_api from './components/insert_api'
+import broker from './components/broker'
 
 
 
@@ -58,6 +59,7 @@ export default[
     {path:'/all-purchase', component:purchased_vehicle},
     {path:'/login', component:login},
     {path:'/refurbish', component:vehicle_refurbish},
+    {path:'/broker', component:broker},
 
     
     {path:'/uploads/:id', component:uploads},
