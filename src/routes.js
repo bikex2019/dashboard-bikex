@@ -34,7 +34,9 @@ import vehicle_refurbish from './components/vehicle-refurb'
 import agent_permission from './components/agent_permission'
 import campaign from './components/campaign'
 // import sellOffline from './components/sellOffline'
-
+import apis from './components/apis'
+import apiList from './components/apiList'
+import insert_api from './components/insert_api'
 
 
 
@@ -75,6 +77,9 @@ export default[
     {path:'/noc-pending',component:nocPending},
     {path:'/procured-vehicle', component:procuredVehicle},
     {path:'/campaign', component:campaign},
+    {path:'/apis/:id', component:apis,meta: { requiresAuth: true }},
+    {path:'/apiList', component:apiList,meta: { requiresAuth: true }},
+    {path:'/insert-api', component:insert_api,meta: { requiresAuth: true }},
 
-    {path:'*', component:notfound}
+    {path:'*', component:notfound,meta: { requiresAuth: true }}
     ]

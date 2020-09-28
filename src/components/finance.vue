@@ -1,6 +1,6 @@
 <template>
-    <div class="notification">
-         <div class="col-md-12 p-4 mb-2 mt-4 col-12 mobile top-content">
+    <div class="notification col-md-12 px-4">
+         <div class="col-md-12 pt-4 m-0 p-0 mt-4 col-12 mobile top-content">
             <div class="row">
                 <div class="col-md-6 p-0 m-0 pl-4 text-left d-flex justify-content-between">
                   <h5 class="header"><strong>FINANCE REQUEST</strong></h5>
@@ -15,11 +15,12 @@
                     </button>
                 </vue-json-to-csv>
                 </div>
-                <div class="col-md-3 pt-1 mr-3 d-flex justify-content-between">
+                <div class="col-md-3 pt-1 d-flex justify-content-between">
                   <p class="p-0 m-0 pt-1">{{start }} - {{end}} <span class="mx-1"> of </span> {{finance.length}} 
                   <span>entries.</span></p>
-                  <span class="ml-3 mr-3 pt-1"> Page No. {{pageNumber}}</span>
+                  
                    <div>
+                   <span class="ml-3 mr-3 pt-1"> Page No. {{pageNumber}}</span>
                      <button class="btn mr-2 m-0 p-0" v-on:click="prevPage" :disabled="pageNumber==1">
                      <i class="fa fa-chevron-left" style="font-size:13px" aria-hidden="true"></i>
                    </button>
@@ -28,7 +29,7 @@
                   </button>
                    </div>
                 </div>
-                <div class="col-md-2 p-0 m-0 text-right d-flex justify-content-between">
+                <div class="col-md-3 pr-4 p-0 m-0 text-right d-flex justify-content-between">
                     <input type="text" v-model="search" placeholder="search here.." class="search">
                     <!-- <button class="btn round" v-on:click="openModal">
                       <i class="fa fa-plus" aria-hidden="true"></i>
@@ -36,7 +37,7 @@
                 </div>
             </div>
     </div>
-        <table class="table table-striped col-md-11 ml-4">
+        <table class="table table-striped col-md-12 ">
         <thead>
             <tr>
             <th>Name</th>
@@ -46,7 +47,7 @@
             <th>Income</th>
             <th>Looking</th>
             <th>Date</th>
-            <th>Mark Read</th>
+            <th>VW</th>
         </tr>
         </thead>
         <tbody>

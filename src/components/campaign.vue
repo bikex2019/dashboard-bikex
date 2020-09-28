@@ -1,20 +1,23 @@
 <template>
-    <div class="faqs">
-        <div class="col-md-12 p-4 mb-0 mt-4 col-12 mobile top-content">
+    <div class="faqs col-md-12 px-4">
+        <div class="col-md-12 pt-4 mt-4 col-12 mobile top-content">
             <div class="row">
-                <div class="col-md-5 p-0 m-0 pl-4 text-left d-flex">
-                  <h5 class="header"><strong>Social Enquiries</strong></h5>
+                <div class="col-md-4 p-0 m-0 pl-4 text-left d-flex">
+                  <h5 class="header"><strong>SOCIAL ENQUIRIES</strong></h5>
                 </div>
-                <div class="col-md-6 pt-1 d-flex justify-content-between">
-                  <p class="p-0 m-0 pt-1 no-wrap">Showing {{limitData.length}} of {{loadSocialData.length}} entries.</p>
+                <div class="col-md-8 pt-1 d-flex justify-content-between">
+                  <p class="p-0 m-0 pt-1 no-wrap">Showing {{filteredList.length}} of {{loadSocialData.length}} entries.</p>
                    
                    <select name="" class="mx-3" id="" v-model="filter">
                    <option value="" disabled>Filter</option>
                     <option value="0">New</option>
                     <option value="1">Under Action</option>
                     <option value="2">Closed</option>
+                    <option value="3">Follow Up Today<span v-if="followUpsToday > 0" style="color:red"> ({{followUpsToday}})</span></option>
                     <option value="all">All</option>
                    </select>
+                   
+                   
 
                    <select name="" class="mx-3" id="" v-model="limit">
                    <option value="" disabled>Limit</option>
@@ -29,16 +32,18 @@
                 </div>
             </div>
     </div>
-    <div class="col-md-11 mt-0" style="margin:0 auto">
-        <table  class="table text-center col-md-12">
+    <div class="col-md-12 mt-0" style="margin:0 auto">
+        <table  class="table text-center col-md-12 mx-3">
             <tr>
                 <th>USERNAME</th>
                 <th>BIKE</th>
                 <th>MOBILE</th>
                 <th>EMAIL</th>
-                <th>DATE</th>
-                <th>Actions</th>
-                
+                <th v-if="sortbydate == 'desc'" @click="sortData('asc')">DATE <i class="fa fa-sort-numeric-desc" aria-hidden="true"></i></th>
+                <th v-if="sortbydate == 'asc'"  @click="sortData('desc')">DATE <i class="fa fa-sort-numeric-asc" aria-hidden="true"></i></th>
+                <th>STATUS</th>
+                <th>ACTION</th> 
+                <th>VW</th> 
             </tr>
             <tr v-for="(faq, index) in filteredList" :key="index">
                 <td class="">{{faq.name}}</td>
@@ -46,19 +51,23 @@
                 <td>{{faq.mobile}}</td>
                 <td>{{faq.email}}</td>
                 <td>{{faq.date |  moment('calendar')}}</td>
+                <td>{{statuscheck(faq.status)}}</td>
 
                 <td>
                 <div class="dropdown dropleft">
-                <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenu2" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                <button class="btn btn-secondary m-0 p-0 dropdown-toggle" type="button" id="dropdownMenu2" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                     Action
                 </button>
                 <div class="dropdown-menu" aria-labelledby="dropdownMenu2">
-                    <button class="dropdown-item" @click="updateCampaign(faq._id, 0)" type="button">New</button>
-                    <button class="dropdown-item" @click="updateCampaign(faq._id, 1)" type="button">Under Action</button>
-                    <button class="dropdown-item" @click="updateCampaign(faq._id, 2)" type="button">Closed</button>
+                    <button class="dropdown-item" @click="updateCampaign(faq._id, 0, faq.comment)" type="button">New</button>
+                    <button class="dropdown-item" @click="updateCampaign(faq._id, 1, faq.comment)" type="button">Under Action</button>
+                    <button class="dropdown-item" @click="updateCampaign(faq._id, 2, faq.comment)" type="button">Closed</button>
+                    <button class="dropdown-item" @click="updateCampaign(faq._id, 10, faq.comment)" type="button">Push to bin</button>
+
                 </div>
                 </div>
                 </td>
+                <td @click="quickView(faq)"><i class="fa fa-eye pt-2" aria-hidden="true"></i></td>
             </tr>
 
             
@@ -81,9 +90,136 @@
                         <span class="sr-only">Loading...</span>
             </div>
         </div>
+
+    <div id="mymodals" class="modals" v-bind:class="{'displayModal':changeStatus}">
+    <!-- modals content -->
+        <div class="modals-content text-left col-md-6 mt-5">
+            <span class="close" v-on:click="changeStatus=!changeStatus">&times;</span>
+            <p><strong>Are you sure to change the status ?</strong></p>
+            <hr>
+            <div>
+                <div class="col-md-12 m-0 p-0 text-left">
+                <p><strong>Last Comment:</strong></p>
+                <p>{{lastComment}}</p>
+                </div>
+                <div class="row">
+                    <div class="form-group col-md-12 text-left">
+                        <p><strong>Add new comment:</strong></p>
+                        <textarea type="text" placeholder="please add comment" v-model="comment" class="form-control" id="query"></textarea>
+                    </div>
+                    
+                    <div class="col-md-12" v-if="statusToChange == 1">
+                        <div class="col-md-6 m-0 p-0 text-left">
+                            <p><strong>Next follow-up date:</strong></p>
+                            <input type="date" class="form-control" v-model="next_action_date">
+                        </div>
+
+                        <div class="col-md-4 m-0 my-4 p-0 d-flex permission">
+                            <p><strong>Walk-in</strong></p>
+                            <p class="ml-4" v-if="walkin_status">
+                              <i v-on:click="walkin_status=!walkin_status" class="fa fa-toggle-on mr-3" aria-hidden="true"></i>
+                            </p>
+                            <p class="ml-4" v-else>
+                              <i v-on:click="walkin_status=!walkin_status" class="fa fa-toggle-off " aria-hidden="true"></i>
+                              </p>
+                        </div>
+                        <div class="col-md-12 m-0 p-0 mb-3 text-left" v-if="walkin_status">
+                            <p><strong>Walk In comment:</strong></p>
+                            <textarea class="form-control" v-model="walkin_comment"></textarea>
+                        </div>
+                    </div>
+                    <div class="col-md-12" v-if="statusToChange == 2">
+                        <div class="col-md-4 m-0 my-4 p-0 d-flex permission">
+                            <p><strong>Sold ?</strong></p>
+                            <p class=" ml-4" v-if="sold_status">
+                              <i v-on:click="sold_status=!sold_status" class="fa fa-toggle-on mr-3" aria-hidden="true"></i>
+                            </p>
+                            <p class=" ml-4" v-else>
+                              <i v-on:click="sold_status=!sold_status" class="fa fa-toggle-off " aria-hidden="true"></i>
+                              </p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-12 m-0 p-0" v-if="statusToChange == 10">
+                <p style="color:red">Please note pushing lead to bin is not deleting the lead, the lead won't appear anywhere in the funnel but is archeived at the datatable.</p>
+                </div>
+                <div class="col-md-12 m-0 p-0 text-center">
+                <button type="submit" v-on:click="confirmUpdate" class="button1 btn btn-primary">
+                    <span v-if="!loading">Change Status</span>
+                    <span v-else>loading.</span>
+                </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div id="mymodals" class="modals" v-bind:class="{'displayModal':quickViewToggle}">
+    <!-- modals content -->
+        <div class="modals-content text-left col-md-6 mt-5">
+            <div class="header">
+                <span class="close" v-on:click="closeQuickView">&times;</span>
+                <p><strong>Quick View !</strong></p>
+                <hr>
+            </div>
+            <div class="body">
+                <div class="row m-0 p-0 col-md-12 my-4">
+                    <div class="col-md-12 m-0 p-0 justify-content-between d-flex">
+                        <p><strong>Last Comment: </strong> {{quickViewData.comment}}</p>
+                    </div>
+                    <div class="col-md-6 m-0 p-0 d-flex">
+                        <p><strong>Next Action on:</strong></p>
+                        <p class="ml-4">{{quickViewData.next_action_date}}</p>
+                    </div>
+                    <div class="col-md-6 m-0 p-0 d-flex">
+                        <p><strong>Walk in ?</strong></p>
+                        <p class="ml-4">{{quickViewData.walkin_status}}</p>
+                    </div>
+                    <div class="col-md-6 m-0 p-0 d-flex">
+                        <p><strong>Sold status ?</strong></p>
+                        <p class="ml-4">{{quickViewData.sold_status}}</p>
+                    </div>
+                    <div class="col-md-12 m-0 p-0 d-flex">
+                        <p><strong>Walk in comment- </strong> {{quickViewData.walkin_comment}}</p>
+                        
+                    </div>
+                </div>
+            </div>
+            
+                
+            
+        </div>
+    </div>
+
+    <div id="mymodals" class="modals" v-bind:class="{'displayModal':showFollowUp}">
+    <!-- modals content -->
+        <div class="modals-content text-left col-md-6 mt-5">
+            <div class="header">
+                <p><strong>Action Required!</strong></p>
+                <hr>
+            </div>
+            <div class="body">
+                <div class="m-0 p-0 col-md-12 my-4">
+                    <p><Strong>We have pending task</Strong></p>
+                    <p><strong>{{followUpsToday}}</strong> followups scheduled for today!</p>
+                </div>
+                <div class="col-md-12 m-0 p-0 text-right">
+                <button class="btn btn border mr-3" @click="closeFollowUp = true">Later</button>
+                <button class="btn btn-primary " @click="dealNow">Take Action</button>
+                
+                </div>
+            </div>
+            
+                
+            
+        </div>
+    </div>
+
+
 </div>
 </template>
 <script>
+import moment from 'moment'
+import * as _ from 'lodash'
 export default {
     data(){
         return {
@@ -99,8 +235,22 @@ export default {
             loading:false,
             search:'',
             username:'',
-            limit:'all',
-            filter:'all'
+            limit:20,
+            filter:'all',
+            comment:'',
+            next_action_date:'',
+            walkin_status:false,
+            walkin_comment:"NA",
+
+            idToChange:'',
+            lastComment:'',
+            statusToChange:'',
+            changeStatus: false,
+            sold_status:false,
+            quickViewData:'',
+            quickViewToggle:false,
+            sortbydate:'asc',
+            closeFollowUp: false
         }
     },
     created(){
@@ -123,6 +273,31 @@ export default {
       })
     },
     methods:{
+        dealNow(){
+            this.closeFollowUp = true,
+            this.filter = 3
+        },
+        sortData(id){
+            this.sortbydate = id
+        },
+        quickView(data){
+            this.quickViewToggle = true
+            this.quickViewData = data
+        },
+        closeQuickView(){
+            this.quickViewToggle = false
+        },
+        statuscheck(id){
+            if(id == 0){
+                return 'NW'
+            }else if(id == 1){
+                return 'UA'
+            }else if(id == 2){
+                return 'C'
+            }else{
+                return 'NA'
+            }
+        },
         openModal: function(){
             this.addModal = true;
         },
@@ -138,48 +313,33 @@ export default {
         closeModal: function(){
             this.addModal = false;
         },
-        addfaqs: function(){
-            this.loading=true
-            this.$http.post('https://backend-bikex.herokuapp.com/api/faq',{
-            question: this.question,
-            answer: this.answer
-            }).
-            then(response=>{
-            this.addModal = false;
-            this.$swal('Tada! FAQ has been added');
-            this.data = response.body;
-             this.$http.get("https://ipapi.co/json/").then((res)=>{
-                this.locate = res.body
-                this.$http.post('https://backend-bikex.herokuapp.com/api/agent-activity',{
-                    agent_username:localStorage.getItem('token'),
-                    activity: 'Agent'+ this.username+' added faq'+ this.data._id,
-                    details:res.body
-                }).then((res)=>{
-                    window.console.log(res)
-                })
-            }) 
-            setTimeout(()=>{
-                    window.location.reload()
-                    this.loading = false
-            },2000)
-            }).catch(error => { 
-                    this.message = error.body.msg
-                    this.loading= false
-            })
+        
+        updateCampaign: function(id, status, comment){
+            this.changeStatus = true
+            this.statusToChange = status
+            this.idToChange = id
+            this.lastComment = comment
         },
-        updateCampaign: function(id, status){
+        confirmUpdate(){
             this.loading = true
-            this.$http.put('https://backend-bikex.herokuapp.com/api/enquiry/'+ id,{
-            status: status,
+            this.$http.put('https://corsanywhere.herokuapp.com/https://backend-bikex.herokuapp.com/api/enquiry/'+ this.idToChange,{
+            status:  this.statusToChange,
+            comment: this.comment,
+            next_action_date:this.format_date(this.next_action_date),
+            walkin_status:this.walkin_status,
+            walkin_comment:this.walkin_comment,
+            sold_status:this.sold_status,
             }).
             then(()=>{
                 this.$swal('Sucessfully updated');
-            this.loading= false
-            this.$store.dispatch('loadSocialData')
+                this.loading= false
+                this.$store.dispatch('loadSocialData')
+             this.changeStatus = false
             
             }).catch(()=>{
                 this.loading =  false
                 this.$swal('Some error occured!');
+                 this.changeStatus = false
             })
         },
         chop: function(id){
@@ -193,10 +353,39 @@ export default {
                 this.loading = false
             })
             },
+        format_date(date){
+                return moment(date).format("DD-MM-YYYY")
+            },
         },
         computed:{
+            
             loadSocialData(){
-                return this.$store.state.social_data
+                if(this.sortbydate == 'asc'){
+                    return this.$store.state.social_data
+                }else{
+                    return _.sortBy(this.$store.state.social_data, 'date', 'desc')
+                }
+            },
+            followUpsToday(){
+                var x =  this.loadSocialData.filter(x=>{
+                        return x.next_action_date == this.format_date(Date.now())
+                    })
+                return x.length
+            },
+            followUpData(){
+                var x =  this.loadSocialData.filter(x=>{
+                        return x.next_action_date == this.format_date(Date.now())
+                    })
+                return x
+            },
+            showFollowUp(){
+                if(this.loadSocialData.length > 0 && this.followUpsToday > 0 && !this.closeFollowUp){
+                    return true
+                }else if(this.loadSocialData.length > 0 && this.followUpsToday > 0 && this.closeFollowUp){
+                    return false
+                }else{
+                    return false
+                }
             },
             searchFilter(){
                 return this.loadSocialData.filter(post => {
@@ -212,9 +401,9 @@ export default {
             },
             limitData(){
                 if(this.limit=="all"){
-                    return this.loadSocialData
+                    return this.searchFilter
                 }else{
-                    return this.loadSocialData.slice(0, this.limit)
+                    return this.searchFilter.slice(0, this.limit)
                 }
             },
             faqs:function(){
@@ -223,9 +412,12 @@ export default {
 
             filteredList() {
                 if(this.filter == 'all'){
-                    return this.searchFilter
-                }else{
-                    return this.searchFilter.filter(x=>{
+                    return this.limitData
+                }else if(this.filter == 3){
+                    return this.followUpData
+                }
+                else{
+                    return this.limitData.filter(x=>{
                         return x.status == this.filter
                     })
                 }
@@ -249,9 +441,12 @@ export default {
     margin: 0;
     font-size: 14px;
 }
+.table tr th{
+    padding: 20px 0px;
+}
 .faqs{
     margin: 0 auto;
-    font-size: 12px;
+    font-size: 14px;
 }
 .button{
     border-radius: 50%;

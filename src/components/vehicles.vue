@@ -50,6 +50,7 @@
             <th v-if="permission.view_procured_price">C PRICE</th>
             <th>S PRICE</th>
             <th>STATUS</th>
+            <th>SOURCE</th>
             <!-- <th>TYPE</th> -->
             <!-- <th>UPLOAD</th> -->
             <th>ACTION</th>
@@ -82,9 +83,8 @@
                 <td v-on:click="see_vehicle(data.vehicle_id)" class="py-1" v-if="data.imageUpload == 1"><span style="color:#FFB52F"><i class="fa fa-clock-o" aria-hidden="true"></i></span></td>
                 <td v-on:click="see_vehicle(data.vehicle_id)" class="py-1" v-if="data.imageUpload == 2"><span><i class="fa fa-check" aria-hidden="true"></i></span></td>
                 <td v-on:click="see_vehicle(data.vehicle_id)" class="py-1"  v-if="data.imageUpload == null"><span>-</span></td> -->
-                <td class="py-1">
-
-
+          <td class="py-1 no-wrap" style="text-wrap:no-wrap">{{data.source}}</td>
+          <td class="py-1">
           <div class="btn-group dropleft">
             <button id="tooltip2" type="button" class="btn dropdown-toggle m-0 p-1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
              Action
@@ -948,6 +948,7 @@ export default {
         post.vehicle_id.toString().includes(this.search.toLowerCase())
         ||
         post.vehicle_number.toLowerCase().includes(this.search.toLowerCase())
+        || post.source.toLowerCase().includes(this.search.toLowerCase())
         )
       })
     },

@@ -1,5 +1,5 @@
 <template>
-  <div id="app">
+  <div id="app" v-bind:class="{'background': api}">
     <navigation v-if="show"></navigation>
        <div class="custom" v-bind:class="{toggle: !toggle}">
          <router-view></router-view>
@@ -13,7 +13,8 @@ export default {
   name: 'app',
   data(){
     return{
-      show:true
+      show:true,
+      api:false
     }
   },
   components: {
@@ -22,6 +23,11 @@ export default {
   created(){
     // this.$store.dispatch('total_vehicle_procured');
     // this.$store.dispatch('load_models');
+
+    if(this.$route.meta.requiresAuth == true){
+      this.show = false
+      this.api = true
+    }
     this.$store.dispatch('total_sold');
     this.$store.dispatch('total_booked');
     this.$store.dispatch('total_vehicle');
@@ -47,13 +53,13 @@ export default {
 </script>
 
 <style scoped>
-@import url('https://fonts.googleapis.com/css2?family=Exo+2:wght@100;300;500&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Ubuntu:wght@500&display=swap');
 #app {
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
     text-align: center;
     color: #2c3e50;
-    font-family: 'Exo 2', sans-serif;
+    font-family: 'Ubuntu', sans-serif;
 }
 .custom{
   padding-left: 68px;
