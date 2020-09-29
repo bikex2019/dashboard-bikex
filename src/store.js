@@ -10,6 +10,7 @@ export default new Vuex.Store({
 state: {
   procured_vehicles:[],
   faqs: [],
+  brokers:[],
   live_vehicles:[],
   models:[],
   agents:[],
@@ -51,6 +52,9 @@ state: {
     },
     FETCH_FAQ(state, faqs) {
       state.faqs = faqs;
+    },
+    FETCH_BROKER(state, brokers) {
+      state.brokers = brokers;
     },
     FETCH_SOCIAL_DATA(state, social_data) {
       state.social_data = social_data;
@@ -127,6 +131,15 @@ state: {
       commit('LOAD_STATUS', true);
       axios.get(url +'/faq').then(result => {
         commit('FETCH_FAQ', result.data);
+        commit('LOAD_STATUS', false);
+      }).catch(error => {
+        throw new Error(`API ${error}`);
+      });
+    },
+    loadBroker({commit}) {
+      commit('LOAD_STATUS', true);
+      axios.get(url +'/broker').then(result => {
+        commit('FETCH_BROKER', result.data);
         commit('LOAD_STATUS', false);
       }).catch(error => {
         throw new Error(`API ${error}`);
