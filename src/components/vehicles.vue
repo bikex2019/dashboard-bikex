@@ -95,6 +95,8 @@
               <a class="dropdown-item" v-on:click="editStatus(data)" v-if="permission.edit_vehicle">Change Status</a>
               <a class="dropdown-item" v-on:click="goToUpload(data.vehicle_id)">View Images</a>
               <a class="dropdown-item" v-on:click="goto(data.vehicle_id)" v-if="permission.view_refurbish">Refurbishment</a>
+              <a class="dropdown-item" v-on:click="assignTask(data.vehicle_id)" v-if="permission.edit_vehicle">Assign Task</a>
+
               <!-- <a class="dropdown-item" v-on:click="opensmsModal(data.id, data.customerMobile)">Send SMS</a> -->
             </div>
           </div>
@@ -622,6 +624,9 @@ export default {
     methods:{
       goto(id){
           this.$router.push({path: '/refurbish', query:{id: id}})
+      },
+      assignTask(id){
+          this.$router.push({path: '/broker-task', query:{id: id}})
       },
        see_vehicle(identity){
          window.console.log('working')

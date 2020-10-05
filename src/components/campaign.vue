@@ -1,11 +1,22 @@
 <template>
-    <div class="faqs col-md-12 px-4">
-        <div class="col-md-12 pt-4 mt-4 col-12 mobile top-content">
-            <div class="row">
-                <div class="col-md-4 p-0 m-0 pl-4 text-left d-flex">
+    <div class="faqs col-md-12 m-0 px-4">
+        <div class="col-md-12 pt-4 mt-4 m-0 p-0 col-12 mobile top-content">
+            <div class="row col-md-12 m-0 p-0">
+                <div class="col-md-3 p-0 m-0 text-left d-flex">
                   <h5 class="header"><strong>SOCIAL ENQUIRIES</strong></h5>
                 </div>
-                <div class="col-md-8 pt-1 d-flex justify-content-between">
+                <div class="col-md-9 pt-1 d-flex justify-content-between">
+
+                <vue-json-to-csv
+                :json-data="filteredList"
+                :labels="label"
+                :csv-title="'bikex_sell_report'"
+                >
+                <button class="teal custom px-4 mr-4 mt-0 py-1 d-flex justify-content-between">
+                <img src="../assets/download.svg" width="20px" class="m-0 p-0">
+                <p class="m-0 p-0 pl-2">EXPORT</p>
+                </button>
+                </vue-json-to-csv>
                   <p class="p-0 m-0 pt-1 no-wrap">Showing {{filteredList.length}} of {{loadSocialData.length}} entries.</p>
                    
                    <select name="" class="mx-3" id="" v-model="filter">
@@ -32,8 +43,18 @@
                 </div>
             </div>
     </div>
-    <div class="col-md-12 mt-0" style="margin:0 auto">
-        <table  class="table text-center col-md-12 mx-3">
+    <div class="row col-md-12 p-0" style="margin:0 auto">
+            <div class="card mr-2 m-0 p-0 px-3 py-1"  v-for="(data, index) in leadCount" :key="index">
+                <p class="m-0 p-0">{{data.source}}</p>
+                <p class="m-0 p-0">{{data.count}}</p>
+            </div>
+            <div class="card mr-2 text-left m-0 p-0 px-3 py-1" v-if="leadCount.length == 0">
+                <p class="m-0 p-0">Loading..</p>
+                <p class="m-0 p-0">Source Count</p>
+            </div>
+    </div>
+    <div class="col-md-12 mt-0 m-0 p-0" style="margin:0 auto">
+        <table  class="table text-center col-md-12 m-0 p-0">
             <tr>
                 <th>USERNAME</th>
                 <th>BIKE</th>
@@ -42,7 +63,9 @@
                 <th v-if="sortbydate == 'desc'" @click="sortData('asc')">DATE <i class="fa fa-sort-numeric-desc" aria-hidden="true"></i></th>
                 <th v-if="sortbydate == 'asc'"  @click="sortData('desc')">DATE <i class="fa fa-sort-numeric-asc" aria-hidden="true"></i></th>
                 <th>STATUS</th>
-                <th>ACTION</th> 
+                <th>SOURCE</th>
+                <th>ACTION</th>
+                
                 <th>VW</th> 
             </tr>
             <tr v-for="(faq, index) in filteredList" :key="index">
@@ -52,7 +75,7 @@
                 <td>{{faq.email}}</td>
                 <td>{{faq.date |  moment('calendar')}}</td>
                 <td>{{statuscheck(faq.status)}}</td>
-
+                <td>{{faq.source}}</td>
                 <td>
                 <div class="dropdown dropleft">
                 <button class="btn btn-secondary m-0 p-0 dropdown-toggle" type="button" id="dropdownMenu2" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
@@ -218,6 +241,7 @@
 </div>
 </template>
 <script>
+import VueJsonToCsv from 'vue-json-to-csv'
 import moment from 'moment'
 import * as _ from 'lodash'
 export default {
@@ -241,6 +265,8 @@ export default {
             next_action_date:'',
             walkin_status:false,
             walkin_comment:"NA",
+            leadCount:[],
+            currentSource: 'all',
 
             idToChange:'',
             lastComment:'',
@@ -250,8 +276,16 @@ export default {
             quickViewData:'',
             quickViewToggle:false,
             sortbydate:'asc',
-            closeFollowUp: false
+            closeFollowUp: false,
+             label:{ 
+ _id: {title: 'ID'} ,name: { title: 'First name' },
+ bike_name: { title: 'bike' }, mobile: { title: 'Contact' }, email: { title: 'email' }
+ , comment: { title: 'comment' }, source: { title: 'source'}, walkin_status: { title: 'walkin_status'}, sold_status: { title: 'sold_status'}
+ },
         }
+    },
+    components:{
+    VueJsonToCsv
     },
     created(){
         this.$store.dispatch('loadSocialData')
@@ -264,6 +298,14 @@ export default {
             this.$swal('Please Log in.');
             this.$router.push('/login')
         }
+    this.$http.get('https://backend-bikex.herokuapp.com/api/enquiry/fetch/leadcount')
+        .then(response=>{
+        this.leadCount= response.body;
+        this.loadingData =  false
+      }).catch(()=>{
+          this.loadingData = false
+      })
+
         this.$http.get('https://backend-bikex.herokuapp.com/api/agent-activity')
         .then(response=>{
         this.faqsData= response.body;
@@ -404,6 +446,15 @@ export default {
                     return this.searchFilter
                 }else{
                     return this.searchFilter.slice(0, this.limit)
+                }
+            },
+            sourceFilter(){
+                if(this.limit=="all"){
+                    return this.limitData
+                }else{
+                    return this.limitData.filter(x=>{
+                        return x.source == this.currentSource
+                    })
                 }
             },
             faqs:function(){

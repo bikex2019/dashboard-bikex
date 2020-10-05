@@ -1,21 +1,22 @@
 <template>
  <div class="sell_leads">
- <div class="col-md-12 p-4 mb-2 mt-4 col-12 mobile top-content">
+ 
+ <div class="col-md-12 pt-4 m-0 mt-4 col-12 mobile top-content">
  <div class="row col-md-12 m-0 p-0">
     <div class="col-md-5 p-0 m-0 text-left d-flex justify-content-between">
     <h5 class="header"><strong>SELL REQUEST</strong></h5>
     <vue-json-to-csv
-    :json-data="sell"
+    :json-data="paginatedData"
     :labels="label"
     :csv-title="'bikex_sell_report'"
     >
-    <button class="teal custom px-4 mr-4 mt-0 py-2 d-flex justify-content-between">
+    <button class="teal custom px-4 mr-4 mt-0 m-0 py-2 d-flex justify-content-between">
     <img src="../assets/download.svg" width="20px" class="m-0 p-0">
-    <p class="m-0 p-0 pl-2">EXPORT TO CSV</p>
+    <p class="m-0 p-0">EXPORT</p>
     </button>
     </vue-json-to-csv>
     </div>
-    <div class="col-md-4 m-0 p-0 px-2 d-flex justify-content-between">
+    <div class="col-md-7 m-0 p-0 px-2 d-flex justify-content-between">
         <p class="p-0 m-0 pt-2">{{start }} - {{end}} <span class="mx-1"> of </span> {{sell.length}} 
         <span>entries.</span></p>    
         <div class="pr-5 pt-1">
@@ -27,15 +28,23 @@
         <i class="fa fa-chevron-right" style="font-size:13px" aria-hidden="true"></i>
         </button>
         </div>
+        <div>
+        <input type="text" v-model="search" placeholder="search here.." class="search">
+        </div>
     </div>
- <div class="col-md-3 p-0 m-0 text-right d-flex justify-content-between">
- <input type="text" v-model="search" placeholder="search here.." class="search">
- <!-- <button class="btn round" v-on:click="openModal">
- <i class="fa fa-plus" aria-hidden="true"></i>
- </button> -->
+
  </div>
  </div>
- </div>
+ <div class="row col-md-12 m-0 mb-2" style="margin:0 auto">
+            <div class="card mr-2 m-0 p-0 px-3 py-1"  v-for="(data, index) in leadCount" :key="index">
+                <p class="m-0 p-0">{{data.source}}</p>
+                <p class="m-0 p-0">{{data.count}}</p>
+            </div>
+            <div class="card mr-2 m-0 text-left p-0 px-3 py-1" v-if="leadCount.length == 0">
+                <p class="m-0 p-0">Loading..</p>
+                <p class="m-0 p-0">Source Count</p>
+            </div>
+    </div>
 
  <div class="col-md-12 m-0 p-0 d-flex justify-content-between">
     <div class="col-md-1">
@@ -55,11 +64,14 @@
         <option value=10>10</option>
         <option value=30>30</option>
         <option value=50>50</option>
-        <option :value="paginatedData.length">All</option>
+        <option :value="sell.length">All</option>
         </select>
     </div>
 
  </div>
+
+ 
+
  <table class="table table-striped col-md-12">
  <thead>
  <tr>
@@ -68,6 +80,7 @@
  <th>City</th>
  <th>Make</th>
  <th>Model</th>
+<th>Source</th>
  <th>Year</th>
  <th v-if="sortbydate == 'desc'" @click="sortData('asc')">DATE <i class="fa fa-sort-numeric-desc" aria-hidden="true"></i></th>
 <th v-if="sortbydate == 'asc'"  @click="sortData('desc')">DATE <i class="fa fa-sort-numeric-asc" aria-hidden="true"></i></th>
@@ -83,6 +96,8 @@
  <td class="py-1">{{sell.city}}</td>
  <td class="py-1">{{sell.make}}</td>
  <td class="py-1">{{sell.model}}</td>
+  <td class="py-1">{{sell.source}}</td>
+
  <td class="py-1">{{sell.manufacture_year}}</td>
  <td class="py-1">{{sell.date| moment("calendar")}}</td>
 <td class="py-1">{{statuscheck(sell.status)}}</td>
@@ -280,6 +295,7 @@ export default {
  statusToChange:'',
  idToChange:'',
  lastComment:'',
+ leadCount:[],
 
 comment:'',
 next_call_date:'',
@@ -300,6 +316,13 @@ sortbydate: 'asc'
  mounted(){
  this.pageNumber=this.$route.query.page || 1
 this.loadData()
+this.$http.get('https://backend-bikex.herokuapp.com/api/sell/fetch/leadcount')
+        .then(response=>{
+        this.leadCount= response.body;
+        this.loadingData =  false
+      }).catch(()=>{
+          this.loadingData = false
+      })
  },
  methods:{
      sortData(id){
@@ -389,7 +412,7 @@ statuscheck(id){
  ||
  post.mobile.toString().includes(this.search.toLowerCase())
  ||
- post.vehicle_no.toString().includes(this.search.toLowerCase())
+ post.source.toLowerCase().includes(this.search.toLowerCase()) 
  )
  })
  },

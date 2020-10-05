@@ -38,6 +38,7 @@ import apis from './components/apis'
 import apiList from './components/apiList'
 import insert_api from './components/insert_api'
 import broker from './components/broker'
+import broker_task from './components/broker_task'
 
 
 
@@ -60,6 +61,7 @@ export default[
     {path:'/login', component:login},
     {path:'/refurbish', component:vehicle_refurbish},
     {path:'/broker', component:broker},
+    {path:'/broker-task', component:broker_task},
 
     
     {path:'/uploads/:id', component:uploads},
