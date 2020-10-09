@@ -100,7 +100,7 @@
 
  <td class="py-1">{{sell.manufacture_year}}</td>
  <td class="py-1">{{sell.date| moment("calendar")}}</td>
-<td class="py-1">{{sell.status}}</td>
+<td class="py-1">{{statuscheck(sell.status)}}</td>
 
 <td class="py-1">
 
