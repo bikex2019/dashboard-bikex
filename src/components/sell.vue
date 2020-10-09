@@ -446,7 +446,7 @@ statuscheck(id){
     }
      else{
          return this.sort.filter(x=>{
-             return x.status == this.filter
+             return x.status == Number(this.filter)
          })
      }
  },

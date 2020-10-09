@@ -309,7 +309,7 @@ export default {
             then(()=>{
                 this.$swal('Sucessfully updated');
                 this.loading= false
-                this.loadData()
+                this.$store.dispatch('customers');
              this.changeStatus = false
             
             }).catch(()=>{
@@ -434,9 +434,23 @@ export default {
      end(){
         return this.start + this.itemperpage
     },
+    filtered(){
+     if(this.filter == 'all'){
+         return this.filteredList
+     }else if(this.filter == 10){
+                    return this.filteredList.filter(x=>{
+                        return x.next_call_date == this.format_date(Date.now())
+                    })
+    }
+     else{
+         return this.filteredList.filter(x=>{
+             return x.flag == Number(this.filter)
+         })
+     }
+ },
     paginatedData(){
 
-     return this.filteredList.slice(this.start, this.end);
+     return this.filtered.slice(this.start, this.end);
         },
     pageCount(){
       let l = this.filteredList.length,
