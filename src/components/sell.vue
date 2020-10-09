@@ -100,7 +100,7 @@
 
  <td class="py-1">{{sell.manufacture_year}}</td>
  <td class="py-1">{{sell.date| moment("calendar")}}</td>
-<td class="py-1">{{statuscheck(sell.status)}}</td>
+<td class="py-1">{{sell.status}}</td>
 
 <td class="py-1">
 
@@ -328,12 +328,16 @@ this.$http.get('https://backend-bikex.herokuapp.com/api/sell/fetch/leadcount')
      sortData(id){
             this.sortbydate = id
         },
-updateSell(id, status, comment){
+        updateSell(id, status, comment){
             this.changeStatus = true
             this.statusToChange = status
             this.idToChange = id
             this.lastComment = comment
-        },format_date(date){return moment(date).format("DD-MM-YYYY")},
+        },
+        
+        format_date(date){return moment(date).format("DD-MM-YYYY")},
+
+
         confirmUpdate(){
             this.loading = true
             this.$http.put('https://corsanywhere.herokuapp.com/https://backend-bikex.herokuapp.com/api/sell/changstatus/'+ this.idToChange,{
@@ -358,24 +362,24 @@ updateSell(id, status, comment){
                  this.changeStatus = false
             })
 		},
-loadData(){
-this.$http.get('https://backend-bikex.herokuapp.com/api/sell')
-.then(response=>{
-this.sell = response.body
-this.loading = false
-})
-},
- read(id){
- window.console.log(id)
- this.loading = true
- this.$http.put('https://backend-bikex.herokuapp.com/api/sell/'+ id)
- .then(()=>{
- this.loading = false
- this.openmodal = true
- const edit = this.sell.filter(x=>x._id == id)
- this.view = edit
- })
- },
+        loadData(){
+        this.$http.get('https://backend-bikex.herokuapp.com/api/sell')
+        .then(response=>{
+        this.sell = response.body
+        this.loading = false
+        })
+        },
+        read(id){
+        window.console.log(id)
+        this.loading = true
+        this.$http.put('https://backend-bikex.herokuapp.com/api/sell/'+ id)
+        .then(()=>{
+        this.loading = false
+        this.openmodal = true
+        const edit = this.sell.filter(x=>x._id == id)
+        this.view = edit
+        })
+        },
 statuscheck(id){
             if(id == 0){
                 return 'NW'
@@ -441,7 +445,7 @@ statuscheck(id){
                     })
     }
      else{
-         return this.filteredList.filter(x=>{
+         return this.sort.filter(x=>{
              return x.status == this.filter
          })
      }

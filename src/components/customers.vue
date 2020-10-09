@@ -43,6 +43,17 @@
             </div>
     </div>
 
+    <div class="col-md-6 ml-4 my-3 p-0 d-flex justify-content-between">
+      <div class="col-md-3">
+          <select name="" class="form-control" id="" v-model="filter">
+            <option value=0>New</option>
+            <option value=1>Under Action</option>
+            <option value=2>Closed</option>
+            <option value="all">All</option>
+          </select>
+      </div>
+    </div>
+
     <div class="col-md-11 text-left ml-5 d-flex justify-content-between" style="margin:0 auto" v-if="selected.length > 0">
       <div class="d-flex">
         <p><i class="fa fa-paper-plane-o hand my-2" v-on:click="openSendMessage()" style="font-size:13px" aria-hidden="true"></i></p>
@@ -63,6 +74,8 @@
             <th>PHONE</th>
             <th>EMAIL</th>
             <th>JOIN DATE</th>
+            <th>VIEW</th>
+            <th>STATUS</th>
             <th>ACTION</th>
         </tr>
         </thead>
@@ -92,9 +105,99 @@
                    <i class="fa fa-eye" aria-hidden="true"></i>
                 </button>
                 </td>
-            </tr>
+                <td class="py-1">{{statuscheck(customer.flag)}}</td>
+                <td class="py-1">
+                  <div class="dropdown dropleft">   
+                    <button class="btn btn-secondary m-0 p-0 dropdown-toggle" type="button" id="dropdownMenu2" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        Action
+                    </button>
+                    <div class="dropdown-menu" aria-labelledby="dropdownMenu2">
+                        <button class="dropdown-item" @click="updateCustomer(customer._id, 0, customer.comment)" type="button">New</button>
+                        <button class="dropdown-item" @click="updateCustomer(customer._id, 1, customer.comment)" type="button">Under Action</button>
+                        <button class="dropdown-item" @click="updateCustomer(customer._id, 2, customer.comment)" type="button">Closed</button>
+                    </div>
+                  </div>
+                </td>
+          </tr>
         </tbody>
     </table>
+
+
+     <div id="mymodals" class="modals" v-bind:class="{'displayModal':changeStatus}">
+    <!-- modals content -->
+        <div class="modals-content">
+
+            <span class="close" v-on:click="changeStatus=!changeStatus">&times;</span>
+            <p><strong>Are you sure to change the status ?</strong></p>
+            <hr>
+            <div>
+                <div class="col-md-12 m-0 p-0 text-left">
+                <p><strong>Last Comment:</strong></p>
+                <p>{{lastComment}}</p>
+                </div>
+                <div class="row col-md-12">
+                    <div class="col-md-12 row" v-if="statusToChange == 1">
+                        <div class="col-md-6 m-0 p-0 text-left">
+                            <p><strong>Next call-up date:</strong></p>
+                            <input type="date" class="form-control" v-model="next_call_date">
+                        </div>
+
+                        <div class="col-md-4 m-0 my-3 px-4 p-0 d-flex permission" style="font-size:30px">
+                            <p class="pt-4" style="font-size:12px"><strong>Called?</strong></p>
+                            <p class="ml-4 pt-2" v-if="call_status">
+                              <i v-on:click="call_status=!call_status" class="fa fa-toggle-on mr-3" aria-hidden="true"></i>
+                            </p>
+                            <p class="ml-4 pt-2" v-else>
+                              <i v-on:click="call_status=!call_status" class="fa fa-toggle-off mr-3" aria-hidden="true"></i>
+                              </p>
+                        </div>
+                        <!-- <div class="col-md-6 m-0 p-0 pr-3 text-left">
+                            <p><strong>Expected Price:</strong></p>
+                            <input type="text" placeholder="optional" class="form-control" v-model="expected_price">
+                        </div>
+						<div class="col-md-6 m-0 p-0 mb-3 text-left">
+                            <p><strong>Offered Price:</strong></p>
+                            <input type="text" placeholder="optional" class="form-control" v-model="offered_price">
+                        </div> -->
+						<!-- <div class="col-md-4 m-0 my-2 m-0 p-0 d-flex permission" style="font-size:30px">
+                            <p class="pt-3" style="font-size:12px"><strong>Inspection?</strong></p>
+                            <p class="ml-4 m-0 p-0" v-if="inspection">
+                              <i v-on:click="inspection=!inspection" class="fa fa-toggle-on" aria-hidden="true"></i>
+                            </p>
+                            <p class="ml-4 m-0 p-0" v-else>
+                              <i v-on:click="inspection=!inspection" class="fa fa-toggle-off " aria-hidden="true"></i>
+                              </p>
+                        </div> -->
+                    </div>
+                    <div class="col-md-12 m-0 p-0" v-if="statusToChange == 2">
+                        <div class="col-md-4 m-0 my-4 p-0 d-flex permission">
+                            <p><strong>Sold ?</strong></p>
+                            <p class=" mr-2" v-if="procured_status">
+                              <i v-on:click="procured_status=!procured_status" class="fa fa-toggle-on mr-3" aria-hidden="true"></i>
+                            </p>
+                            <p class=" ml-4" v-else>
+                              <i v-on:click="procured_status=!procured_status" class="fa fa-toggle-off " aria-hidden="true"></i>
+                              </p>
+                        </div>
+                    </div>
+                    <div class="form-group col-md-12 m-0 p-0 text-left">
+                        <p><strong>Add new comment:</strong></p>
+                        <textarea type="text" placeholder="please add comment" v-model="comment" class="form-control" id="query"></textarea>
+                    </div>
+                    <div class="col-md-12 p-0 m-0" v-if="statusToChange == 10">
+                <p style="color:red">Please note pushing lead to bin is not deleting the lead, the lead won't appear anywhere in the funnel but is archeived at the datatable.</p>
+                </div>
+                </div>
+                <div class="col-md-12 m-0 p-0 my-3 text-center">
+                <button type="submit" v-on:click="confirmUpdate" class="button1 btn btn-primary">
+                    <span v-if="!loading">Change Status</span>
+                    <span v-else>loading.</span>
+                </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
     <div class="container" style="margin-top:80px" v-if="!loading && filteredList.length == 0">
       <p>Sorry :(</p>
       <p>No results Found</p>
@@ -123,6 +226,8 @@
         </div>
     </div>
 
+   
+  
     </div>
 </template>
 <script>
@@ -134,18 +239,36 @@ export default {
           pageNumber: 1,
           itemperpage:10,
           search:'',
-          filter:'all',
+     
           label:{ 
               _id: {title: 'ID'} ,firstname: { title: 'First Name' },
-              lastname: { title: 'Last Name' }, email:{title: 'Email'}, phone: { title: 'Contact' }, date: { title: 'Date'}
+              lastname: { title: 'Last Name' }, email:{title: 'Email'}, phone: { title: 'Contact' }, date: { title: 'Date'},
+              
           },
+
+          changeStatus:false,
+          statusToChange:'',
           selected: [],
           selectAll: false,
           sendMessage: false,
           message:'',
           username:'',
           agent_id:'',
-          sending: false
+          sending: false,
+ 
+          idToChange:'',
+          lastComment:'',
+          leadCount:[],
+          comment:'',
+          next_call_date:'',
+          call_status:false,
+          expected_price:"NA",
+          offered_price:"NA",
+          inspection:false,
+          procured_status:false	,
+          filter: 'all',
+          limit:10,
+          sortbydate: 'asc'
     }},
     components:{
               VueJsonToCsv
@@ -167,6 +290,63 @@ export default {
       deletecx(){
                this.$swal('ohh uhh..not authorized to do so !');
       },
+      updateCustomer(id, status, comment){
+            this.changeStatus = true
+            this.statusToChange = status
+            this.idToChange = id
+            this.lastComment = comment
+        },
+         
+
+
+        confirmUpdate(){
+            this.loading = true
+            this.$http.put('https://backend-bikex.herokuapp.com/api/customers/'+ this.idToChange,{
+            flag:  this.statusToChange,
+            comment: this.comment,
+      
+            }).
+            then(()=>{
+                this.$swal('Sucessfully updated');
+                this.loading= false
+                this.loadData()
+             this.changeStatus = false
+            
+            }).catch(()=>{
+                this.loading =  false
+                this.$swal('Some error occured!');
+                 this.changeStatus = false
+            })
+		},
+    loadData(){
+      this.$http.get('https://backend-bikex.herokuapp.com/customers')
+      .then(response=>{
+      this.customer = response.body
+      this.loading = false
+      })
+    },
+ read(id){
+ window.console.log(id)
+ this.loading = true
+ this.$http.put('https://backend-bikex.herokuapp.com/api/customers/'+ id)
+ .then(()=>{
+ this.loading = false
+ this.openmodal = true
+ const edit = this.customer.filter(x=>x._id == id)
+ this.view = edit
+ })
+ },
+      statuscheck(id){
+            if(id == 0){
+                return 'NW'
+            }else if(id == 1){
+                return 'UA'
+            }else if(id == 2){
+                return 'C'
+            }else{
+                return 'NA'
+            }
+        },
       sendaMessage(){
         this.sending = true
             this.$http.post('https://backend-bikex.herokuapp.com/api/sendmessage/array',{
@@ -267,6 +447,31 @@ export default {
 }
 </script>
 <style scoped>
+.modals {
+  display: none; /* Hidden by default */
+  position: fixed; /* Stay in place */
+  z-index: 999999; /* Sit on top */
+  padding-top: 10px; /* Location of the box */
+  left: 0;
+  top: 0;
+  width: 100%; /* Full width */
+  height: 100%; /* Full height */
+  overflow: auto; /* Enable scroll if needed */
+  background-color: rgb(0,0,0); /* Fallback color */
+  background-color: rgba(0,0,0,0.4); /* Black w/ opacity */
+}
+.displayModal{
+    display: block !important
+}
+/* modals Content */
+.modals-content {
+  background-color: #fefefe;
+  margin: auto;
+  padding: 20px;
+  border: 1px solid #888;
+  width: 80%;
+}
+
 .my-button{
   border: none;
   background-color: rgb(255, 182, 46,0.7);
