@@ -149,6 +149,7 @@
                 <option value="commuters">Commuters</option>
                  <option value="bikes">Bikes</option>                         
                   <option value="adventurer">Adventurer</option> 
+                  <option value="electric">Electrical</option> 
             </select>
                   <span class="floating-label">Vehicle Type</span>
                 </div>
@@ -387,6 +388,7 @@
                 <option value="commuters">Commuters</option>
                  <option value="bikes">Bikes</option>                         
                   <option value="adventurer">Adventurer</option> 
+                  <option value="electric">Electrical</option>
             </select>
                   <span class="floating-label">Vehicle Type</span>
                 </div>
