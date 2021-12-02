@@ -154,6 +154,11 @@
                   <span class="floating-label">Vehicle Type</span>
                 </div>
 
+                <div class="col-md-4 mb-5">
+                  <input  type="number" class="form-control" v-model="price" required>
+                  <span class="floating-label">Price</span>
+                </div>
+
             </div>
             <div class="form row">
               <div class="col-md-4 mb-4">
@@ -393,6 +398,11 @@
                   <span class="floating-label">Vehicle Type</span>
                 </div>
 
+                <div class="col-md-4 mb-5">
+                  <input  type="number" class="form-control" v-model="price" required>
+                  <span class="floating-label">Price</span>
+                </div>
+
             </div>
             <div class="form row">
               <div class="col-md-4 mb-4">
@@ -628,6 +638,7 @@ export default {
                 fuelsystem: '',
                 abs: '',
                 gears:'',
+                price:0,
                 mileage:'',
                 transmission_type:'',
                 wheel_type:'',
@@ -713,6 +724,7 @@ export default {
                 number_of_gears:this.gears,
                 transmission_type:this.transmission_type,
                 wheel_type:this.wheel_type,
+                price:this.price,
                 tyre_type:this.tyre_type,
                 tank_capacity:this.tank_capacity,
                 front_brake_type:this.front_brake,
@@ -776,6 +788,7 @@ export default {
                 mileage:this.mileage,
                 abs:this.abs,
                 number_of_gears:this.gears,
+                price: Number(this.price),
                 transmission_type:this.transmission_type,
                 wheel_type:this.wheel_type,
                 tyre_type:this.tyre_type,
@@ -871,6 +884,7 @@ export default {
             this.console = vehicleToEdit.console
             this.weight = vehicleToEdit.kerb_weight
             this.comments = vehicleToEdit.comments
+            this.price = vehicleToEdit.price
         },
     },
     computed:{
